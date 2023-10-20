@@ -18,13 +18,22 @@
     .news-content {
         margin-right: 10rem;
         max-width: 100%;
+        font-family: 'Nanum Myeongjo', serif;
     }
+
 
     .newstitle {
         text-align: center;
         padding-top: 3.5rem;
         padding-bottom: 7rem;
-        font-size: 2.5rem;
+        font-size: 3.5rem;
+        font-family: 'TheJamsil5Bold';
+    }
+
+    .news-title {
+        font-weight: bold;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
     }
 
     .news-item {
@@ -41,6 +50,19 @@
 
     .news-content {
         flex: 1;
+    }
+
+    @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+
+    .nanummyeongjo * {
+        font-family: 'Nanum Myeongjo', serif;
     }
 </style>
 
@@ -66,10 +88,14 @@
 
         <div class="news-content">
             <!-- 뉴스 기사의 제목 -->
-            <h3 th:text="${item.title}"></h3>
+            <a th:href="${item.link}" target="_blank">
+                <h3 class="news-title" th:utext="${item.title}"></h3>
+            </a>
 
             <!-- 뉴스 기사의 내용을 요약한 패시지 정보 -->
-            <p th:text="${item.description}"></p>
+            <a th:href="${item.link}" target="_blank">
+                <p th:utext="${item.description}"></p>
+            </a>
 
             <!-- 뉴스 기사 원문의 URL -->
             <p><strong>원문 링크:</strong>
@@ -82,7 +108,7 @@
             </p>
 
             <!-- 뉴스 기사가 네이버에 제공된 시간 -->
-            <p><strong>제공 시간:</strong>
+            <p><strong>기사 작성 시간:</strong>
                 <span th:text="${item.pubDate}"></span>
             </p>
         </div>
