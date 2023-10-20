@@ -35,7 +35,9 @@ public class NewsController {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
-        String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text + "&display=30";
+        String apiURL = "https://openapi.naver.com/v1/search/news?query=" + text + "&display=3";
+        // String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text +
+        // "&display=30";
         // String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text;
         // // XML 결과
 

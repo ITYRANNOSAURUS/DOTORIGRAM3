@@ -1,17 +1,92 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
+<head th:replace="common/head"></head>
+
+<style>
+    body {
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+        color: white;
+    }
+
+    .news-content {
+        margin-right: 10rem;
+        max-width: 100%;
+    }
+
+    .newstitle {
+        text-align: center;
+        padding-top: 3.5rem;
+        padding-bottom: 7rem;
+        font-size: 2.5rem;
+    }
+
+    .news-item {
+        display: flex;
+        align-items: start;
+        gap: 10rem;
+        margin-bottom: 2rem;
+    }
+
+    .news-image {
+        max-width: 100px;
+        margin-left: 4rem;
+    }
+
+    .news-content {
+        flex: 1;
+    }
+</style>
+
 <body>
+    <div th:replace="common/header">
 
-    <h2>블로그 검색 결과</h2>
-
-    <div th:each="item : ${news}">
-        <h3 th:text="${item.title}"></h3> <!-- 블로그 포스트 제목 -->
-        <p th:text="${item.description}"></p> <!-- 포스트 요약 내용 -->
-        <p><strong>블로그 이름:</strong> <span th:text="${item.bloggername}"></span></p> <!-- 블로그 이름 -->
-        <a th:href="${item.link}" target="_blank">Read more</a> <!-- 포스트 링크 -->
     </div>
 
+    <nav th:replace="common/nav">
+
+    </nav>
+
+
+    <h2 class="newstitle">전기차 뉴스 검색 결과</h2>
+
+    <div th:each="item : ${news}" class="news-item">
+        <!-- 뉴스 이미지 -->
+        <div class="news-image">
+            <a th:href="${item.link}" target="_blank">
+                <img th:src="@{/daram.png}" alt="News image" width="200" height="auto">
+            </a>
+        </div>
+
+        <div class="news-content">
+            <!-- 뉴스 기사의 제목 -->
+            <h3 th:text="${item.title}"></h3>
+
+            <!-- 뉴스 기사의 내용을 요약한 패시지 정보 -->
+            <p th:text="${item.description}"></p>
+
+            <!-- 뉴스 기사 원문의 URL -->
+            <p><strong>원문 링크:</strong>
+                <a th:href="${item.originallink}" target="_blank">원문 보기</a>
+            </p>
+
+            <!-- 뉴스 기사의 네이버 뉴스 URL -->
+            <p><strong>네이버 뉴스 링크:</strong>
+                <a th:href="${item.link}" target="_blank">네이버에서 보기</a>
+            </p>
+
+            <!-- 뉴스 기사가 네이버에 제공된 시간 -->
+            <p><strong>제공 시간:</strong>
+                <span th:text="${item.pubDate}"></span>
+            </p>
+        </div>
+    </div>
 </body>
 
 </html>
