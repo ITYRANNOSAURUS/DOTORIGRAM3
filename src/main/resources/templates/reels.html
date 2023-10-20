@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="common/head"></head>
+<head th:replace="common/head">
+
+</head>
+
 <style>
     /* 영상 컨테이너 스타일 */
     .video-container {
@@ -13,8 +16,7 @@
     .video-container iframe {
         width: 100%;
         height: 20rem;
-        /* 원하는 높이로 설정하세요 */
-        border: 2px solid rgb(255, 179, 0);
+        border: 5px solid rgb(255, 179, 0);
         border-radius: 5%;
     }
 
@@ -29,38 +31,46 @@
         flex-wrap: wrap;
         justify-content: center;
         margin-top: 4rem;
-
     }
 
     body {
         height: 100vh;
-        /* 화면 높이의 100%로 설정 */
         background-color: #000;
         background-size: cover;
-        /* 이미지를 화면에 맞게 조절 */
         background-repeat: no-repeat;
-        /* 이미지 반복을 중지 */
+    }
+
+    .video-title {
+        margin-top: 10px;
+        font-size: 18px;
+        color: white;
+        text-align: center;
     }
 </style>
 
-
-
-
 <body>
-    <div th:replace="common/header">
+    <div th:replace="common/header"></div>
 
+    <nav th:replace="common/nav"></nav>
+
+    <div style="text-align: center;">
+        <label for="electricCarCheckbox" style="color: white;">
+            <input type="checkbox" id="electricCarCheckbox" onchange="updateVideos">
+            전기차
+        </label>
+    
+        <label for="chargingStationCheckbox" style="color: white;">
+            <input type="checkbox" id="chargingStationCheckbox" onchange="updateVideos">
+            충전소
+        </label>
     </div>
-
-    <nav th:replace="common/nav">
-
-    </nav>
-
     <div id="videos"></div>
 
     <script src="https://apis.google.com/js/api.js"></script>
     <script>
-        // YouTube API 키
-        var apiKey = 'AIzaSyCwSYQokrfQYCMxsbtekqIZfJewtrmGYms';
+        var defaultKeyword = '전기차';
+
+        var apiKey = 'AIzaSyAnU2IFFqXyJEBpNdHQzXFvOUBkb6VqHVY';
 
         // YouTube Data API 로드
         gapi.load('client', function () {
@@ -69,25 +79,54 @@
                 discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"]
             }).then(function () {
                 // YouTube API 초기화 성공
-                searchVideos('전기차');
+                searchVideos(defaultKeyword);
             });
         });
+
+        // 체크박스 상태를 확인하고 검색어 업데이트
+        function updateVideos() {
+            var electricCarCheckbox = document.getElementById('electricCarCheckbox');
+            var chargingStationCheckbox = document.getElementById('chargingStationCheckbox');
+
+            var keyword = '';
+
+            if (electricCarCheckbox.checked && chargingStationCheckbox.checked) {
+                // 두 체크박스 모두 선택된 경우, 모든 동영상을 검색합니다.
+                keyword = '전기차 충전소';
+            } else if (electricCarCheckbox.checked) {
+                keyword = '전기차';
+            } else if (chargingStationCheckbox.checked) {
+                keyword = '친환경';
+            } else {
+                // 모든 체크박스가 선택 해제된 경우 기본 키워드로 검색
+                keyword = defaultKeyword;
+            }
+
+            searchVideos(keyword);
+        }
 
         // 특정 키워드로 동영상 검색
         function searchVideos(keyword) {
             gapi.client.youtube.search.list({
                 q: keyword,
                 part: 'snippet',
-                maxResults: 15 // 3x3 배열이므로 9개의 동영상을 가져옵니다.
+                maxResults: 15
             }).then(function (response) {
                 var videos = response.result.items;
                 displayVideos(videos);
             });
         }
 
+        function decodeHTMLEntities(text) {
+            var textArea = document.createElement("textarea");
+            textArea.innerHTML = text;
+            return textArea.value;
+        }
+
         // 동영상을 HTML에 표시
         function displayVideos(videos) {
             var videosDiv = document.getElementById('videos');
+            videosDiv.innerHTML = ''; // 기존 동영상 삭제
 
             videos.forEach(function (video) {
                 var videoId = video.id.videoId;
@@ -108,7 +147,7 @@
 
                 // 영상, 제목을 컨테이너에 추가
                 videoContainer.appendChild(videoFrame);
-                // videoContainer.appendChild(videoTitle);
+                videoContainer.appendChild(videoTitle);
 
                 // 컨테이너를 videosDiv에 추가
                 videosDiv.appendChild(videoContainer);
@@ -118,4 +157,4 @@
     </script>
 </body>
 
-</html>
+</html> 
