@@ -27,13 +27,10 @@ import javax.servlet.http.HttpSession;
 import com.example.board.model.Qna;
 import com.example.board.model.Comment;
 import com.example.board.model.FileAtch;
-import com.example.board.model.Qna;
 import com.example.board.model.User;
 import com.example.board.repository.QnaRepository;
 import com.example.board.repository.CommentRepository;
 import com.example.board.repository.FileAtchRepository;
-import com.example.board.repository.QnaRepository;
-
 @Controller
 public class QnaController {
 	@Autowired
