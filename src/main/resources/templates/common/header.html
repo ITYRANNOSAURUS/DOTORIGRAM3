@@ -1,27 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+
+</head>
+
 <style>
   .my-bg-color {
-    background-color: #f0e3d9;
+    background-color: none;
   }
 
   .my-text-size {
     font-size: 50px;
     font-weight: bold;
-    color: black;
+    color: rgb(255, 179, 0);
   }
 
   .title {
-    text-decoration: none;
-    color: black;
+    width: 20rem;
   }
 
   .title:hover {
     text-decoration: none;
-    color: black;
+    color: rgb(255, 179, 0);
+  }
+
+  .nav-color {
+    background-color: none;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: rgb(255, 179, 0);
+    font-size: 20px;
+    transition-duration: .3s;
+  }
+
+  .nav-link:hover {
+    color: 255, 179, 0 !important;
+    border-bottom: solid rgb(255, 179, 0) !important;
+  }
+
+  .link-dark {
+    text-decoration: none;
+  }
+
+  .dropdown-submenu {
+    position: relative;
+  }
+
+  .dropdown-menu {
+    border-color: none;
+    border: none !important;
+    text-align: center;
+    width: 13rem;
+    background-color: rgb(255, 179, 0, 0.2);
+  }
+
+  .navbar-nav .dropdown-menu {
+    position: fixed;
+  }
+
+  .dropdown-toggle::after {
+    display: none;
+  }
+
+  .navbar-nav.ml-auto li a {
+    font-size: 15px;
+  }
+
+  .navbar-nav .nav-link {
+
+    padding-left: 0;
+    width: 13rem;
+  }
+
+  .navbar-nav {
+    flex-direction: row;
+  }
+
+  .dropdown-item {
+    width: 13rem;
+    color: white;
   }
 </style>
 
-<div class="p-5 my-bg-color text-white text-center">
-  <h1 class="my-text-size">
-    🐿 <a class="title" href="/">Dotorigram 2</a>
-  </h1>
-</div>
+<body>
+  <div class="p-5 my-bg-color text-white d-flex justify-content-between">
+    <h1 class="my-text-size">
+      <a href="/"><img class="title" th:src="@{/logo.png}" alt=""></a>
+    </h1>
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item dropdown mr-3">
+        <a class="nav-link dropdown-toggle active" href="#" id="infoDropdown" role=" button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" style="color: rgb(255, 179, 0);">충전소 찾기</a>
+        <div class="dropdown-menu" aria-labelledby="infoDropdown">
+          <a class='dropdown-item' href='/post/a'>지도</a>
+          <div class="dropdown">
+            <a class='dropdown-item' href='/post/a'>목록</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown mr-3">
+        <a class="nav-link dropdown-toggle active" href="#" id="postsDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" style="color: rgb(255, 179, 0);">게시판</a>
+        <div class="dropdown-menu" aria-labelledby="infoDropdown">
+          <a class='dropdown-item' href='/board/list'>공지사항</a>
+          <div class="dropdown">
+            <a class='dropdown-item' href='/qna/list'>Q&A</a>
+            <div class="dropdown">
+              <a class='dropdown-item' href='/post/a'>충전소 추가 요청</a>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown mr-3">
+        <a class="nav-link dropdown-toggle active" href="#" id="infoDropdown" role=" button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" style="color: rgb(255, 179, 0);">충전정보</a>
+        <div class="dropdown-menu" aria-labelledby="infoDropdown">
+          <a class='dropdown-item' href='/info/news?searchText=전기차'>전기차Blog</a>
+          <div class="dropdown">
+            <a class='dropdown-item' href='/info/reels'>전기차Reels</a>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script type='text/javascript'>
+    $(document).ready(function () {
+      $('.dropdown').on('mouseenter', function () {
+        $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+      });
+
+      $('.dropdown').on('mouseleave', function () {
+        $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+      });
+    });
+  </script>
+</body>
+
+</html>

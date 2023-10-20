@@ -12,12 +12,17 @@ import lombok.Data;
 @Entity
 @Data
 public class Comment {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     int id;
 
     String content;
     String writer;
     Date creDate;
 
-    @ManyToOne Board board;
+    @ManyToOne
+    Board board;
+
+    @ManyToOne
+    Qna qna;
 }

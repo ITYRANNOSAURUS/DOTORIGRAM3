@@ -60,7 +60,7 @@ public class UserController {
 		boolean isMatch = passwordEncoder.matches(userPwd, encodedPwd);
 		if (isMatch) {
 			session.setAttribute("user_info", dbUser);
-			return "redirect:/";
+			return "redirect:/home";
 		} else {
 			model.addAttribute("error", "이메일 또는 비밀번호가 일치하지 않습니다.");
 			return "signin";

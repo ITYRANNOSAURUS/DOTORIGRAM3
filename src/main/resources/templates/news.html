@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <h2>블로그 검색 결과</h2>
+
+    <div th:each="item : ${news}">
+        <h3 th:text="${item.title}"></h3> <!-- 블로그 포스트 제목 -->
+        <p th:text="${item.description}"></p> <!-- 포스트 요약 내용 -->
+        <p><strong>블로그 이름:</strong> <span th:text="${item.bloggername}"></span></p> <!-- 블로그 이름 -->
+        <a th:href="${item.link}" target="_blank">Read more</a> <!-- 포스트 링크 -->
+    </div>
+
+</body>
+
+</html>

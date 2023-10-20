@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="common/head"></head>
+<style>
+    /* 영상 컨테이너 스타일 */
+    .video-container {
+        flex: 0 0 calc(33.33% - 2%);
+        margin: 1%;
+        box-sizing: border-box;
+    }
+
+    .video-container iframe {
+        width: 100%;
+        height: 20rem;
+        /* 원하는 높이로 설정하세요 */
+        border: 2px solid rgb(255, 179, 0);
+        border-radius: 5%;
+    }
+
+    .video-title {
+        margin-top: 10px;
+        font-size: 18px;
+    }
+
+    /* videos 컨테이너 스타일 */
+    #videos {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 4rem;
+
+    }
+
+    body {
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+    }
+</style>
+
+
+
+
+<body>
+    <div th:replace="common/header">
+
+    </div>
+
+    <nav th:replace="common/nav">
+
+    </nav>
+
+    <div id="videos"></div>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        // YouTube API 키
+        var apiKey = 'AIzaSyCwSYQokrfQYCMxsbtekqIZfJewtrmGYms';
+
+        // YouTube Data API 로드
+        gapi.load('client', function () {
+            gapi.client.init({
+                apiKey: apiKey,
+                discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"]
+            }).then(function () {
+                // YouTube API 초기화 성공
+                searchVideos('전기차');
+            });
+        });
+
+        // 특정 키워드로 동영상 검색
+        function searchVideos(keyword) {
+            gapi.client.youtube.search.list({
+                q: keyword,
+                part: 'snippet',
+                maxResults: 15 // 3x3 배열이므로 9개의 동영상을 가져옵니다.
+            }).then(function (response) {
+                var videos = response.result.items;
+                displayVideos(videos);
+            });
+        }
+
+        // 동영상을 HTML에 표시
+        function displayVideos(videos) {
+            var videosDiv = document.getElementById('videos');
+
+            videos.forEach(function (video) {
+                var videoId = video.id.videoId;
+                var title = video.snippet.title;
+
+                // 영상 컨테이너 생성
+                var videoContainer = document.createElement('div');
+                videoContainer.className = 'video-container';
+
+                // iframe 생성
+                var videoFrame = document.createElement('iframe');
+                videoFrame.src = 'https://www.youtube.com/embed/' + videoId;
+
+                // 제목 생성
+                var videoTitle = document.createElement('h2');
+                videoTitle.textContent = title;
+                videoTitle.className = 'video-title';
+
+                // 영상, 제목을 컨테이너에 추가
+                videoContainer.appendChild(videoFrame);
+                // videoContainer.appendChild(videoTitle);
+
+                // 컨테이너를 videosDiv에 추가
+                videosDiv.appendChild(videoContainer);
+            });
+        }
+
+    </script>
+</body>
+
+</html>

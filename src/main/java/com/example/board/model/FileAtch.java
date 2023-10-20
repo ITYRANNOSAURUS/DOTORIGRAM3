@@ -18,4 +18,7 @@ public class FileAtch {
 
     @ManyToOne
     Board board;
+
+    @ManyToOne
+    Qna qna;
 }

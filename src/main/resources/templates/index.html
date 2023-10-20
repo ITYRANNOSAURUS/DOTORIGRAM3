@@ -6,93 +6,112 @@
 </head>
 
 <style>
-  .icon {
-    width: 80px;
-    height: 80px;
+  body {
+    height: 100vh;
+    /* 화면 높이의 100%로 설정 */
+    background-color: #000;
+    background-size: cover;
+    /* 이미지를 화면에 맞게 조절 */
+    background-repeat: no-repeat;
+    /* 이미지 반복을 중지 */
   }
 
-  .weatherbox {
-    background-color: #efc19d;
-    border: 2px solid #efc19d;
-    border-radius: 10px;
-  }
-
-  .about-us-color {
-    background-color: #f0e3d9;
-    font-size: 35px;
-    text-decoration: none;
-  }
-
-  .new-content-color {
-    background-color: #f0e3d9;
-  }
-
-  h2 a {
-    color: black;
-    text-decoration: none;
-    font-size: 35px;
-  }
-
-  h2 a:hover {
-    color: #c67d24;
-    text-decoration: underline;
-  }
-
-  .post-title {
-    color: black;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 20px;
-  }
-
-  .post-title:hover {
-    color: #c67d24;
-  }
-
-  .post-content {
-    color: black;
-    text-decoration: none;
-    font-weight: normal;
-    font-size: 18px;
-  }
-
-  .post-content:hover {
-    color: #c67d24;
-  }
-
-  .post-list-start {
-    margin-top: 30px;
-  }
-
-  .bold-number {
-    font-weight: bold;
-    font-size: 20px;
+  canvas {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    /* 배경에 번개가 있어도 마우스 이벤트가 동작하지 않도록 합니다. */
   }
 
   .image-box {
-    width: 100%;
-    overflow-y: auto;
-    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+  }
+
+  .abcd {
+    visibility: visible;
   }
 
   .image-box img {
     display: inline-block;
-    max-height: 100%;
+    height: 800px;
+    width: 700px;
+    align-content: center;
+    margin-top: 300px;
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: fadeInMoveDownImage 2s ease forwards;
   }
 
-  .link-style {
-    color: black;
+  @keyframes fadeInMoveDownImage {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .slogan1 {
+    color: rgb(237, 191, 66);
+    font-size: 4rem;
+    font-weight: bold;
+    font-family: 'Giants-Inline';
+    opacity: 0;
+    transform: translateX(-12rem);
+    animation: fadeInMoveRight 1s ease-out forwards;
+    margin-top: 140px;
+  }
+
+  .slogan2 {
+    color: rgb(237, 191, 66);
+    font-size: 4rem;
+    font-weight: bold;
+    font-family: 'Giants-Inline';
+    opacity: 0;
+    transform: translateX(10rem);
+    animation: fadeInMoveRight 1s ease-out forwards;
+    margin-right: 4rem;
+    margin-top: 2rem;
+  }
+
+
+  @keyframes fadeInMoveRight {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  a {
     text-decoration: none;
+    color: #000;
+    text-transform: uppercase;
   }
 
-  .link-style:hover {
-    color: #c67d24;
-    text-decoration: underline;
+  @font-face {
+    font-family: 'Giants-Inline';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Giants-Inline.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
   }
 </style>
 
 <body>
-
+  <div class="evt_wrap">
+    <div class="line_box">
+      <div class="line_01"></div>
+      <div class="line_02"></div>
+      <div class="line_03"></div>
+    </div>
+  </div>
   <div th:replace="common/header">
 
   </div>
@@ -102,91 +121,220 @@
   </nav>
 
   <div class="container mt-5">
-    <div class="row">
-      <div class="col-sm-4">
-        <h2 class="about-us-color"><a href="/map">🌏MAP</a></h2>
-        <a href="/map">
-          <img src="map.png" alt="Image Description" height="200px">
-        </a>
-        <p><a href="/map/where" class="link-style">🚩장소를 저장해요</a></p>
-        <p><a href="/map/search" class="link-style">🌮광주 맛집도 알아봅시다</a></p>
-
-        <h2 class="mt-5 new-content-color"><a href="/weather">🌞오늘의 날씨</a></h2>
-        <div class="text-center border p-3 weatherbox">
-          <span class="nowtime"></span>
-          <p class="point">나의 위치: </p>
-          <h3 class="Icon"></h3>
-          <p class="Nowweather">현재날씨: </p>
-          <span class="Nowtemp">기온: </span>°C
-          <br>
-          <span class="Humidity">습도: </span>%
-          <br>
-          <span class="WindSpeed">풍속: </span>m/s
-        </div>
-        </ul>
-        <hr class="d-sm-none">
+    <div class="image-box">
+      <div class="abcd">
+        <p class="slogan1">백만 볼트의 시대,</p>
+        <p class="slogan2">Are you ready?</p>
       </div>
-      <div class="col-sm-8 ">
-
-        <h2 class="about-us-color"><a href="/board/image">🌰Dotorigram</a></h2>
-        <div class="image-box">
-          <a href="/board/image">
-            <img src="do1.jpg" alt="Image Description" height="200px">
-            <img src="dotol.png" alt="Image Description" height="200px">
-            <img src="do3.jpg" alt="Image Description" height="200px">
-          </a>
-        </div>
-        <p>Forever Young, Oct 11, 2023</p>
-        <p>(왼쪽부터) 이채은 조수현 이혜빈 박서희.</p>
-
-        <h2 class="mt-5 new-content-color"><a href="/board/list">❤️‍🔥최신 게시글 목록</a></h2>
-        <div th:each="post, stat : ${latestPosts}" class="post-list-start">
-          <p><span class="bold-number" th:text="${stat.index + 1} + '. '"></span><a class="post-title"
-              th:href="@{/board/{id}(id=${post.id})}" th:text="'제목: ' + ${post.title}"></a></p>
-          <p>&emsp;<a class="post-content" th:href="@{/board/{id}(id=${post.id})}"
-              th:text="'🌰 ' + ${post.content}"></a></p>
-        </div>
-
-      </div>
+      <img class="card-front" src="energy.png" alt="Image Description">
+      <!-- <a class="card" href="">
+        <img class="card-back" src="hehe.png" alt="Image Description">
+      </a> -->
     </div>
+    <canvas id="canvas"></canvas>
+</body>
 
-    <div th:replace="common/footer">
-    </div>
+<script>
+  var canvasLightning = function (c, cw, ch) {
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/path/to/your/script.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
 
-        function convertTime() {
-          var now = new Date();
-          var month = now.getMonth() + 1;
-          var date = now.getDate();
-          return month + '월' + date + '일';
+    this.init = function () {
+      this.loop();
+    };
+    var _this = this;
+    this.c = c;
+    this.ctx = c.getContext('2d');
+    this.cw = cw;
+    this.ch = ch;
+    this.mx = 0;
+    this.my = 0;
+
+    this.lightning = [];
+    this.lightTimeCurrent = 0;
+    this.lightTimeTotal = 50;
+
+    this.rand = function (rMi, rMa) { return ~~((Math.random() * (rMa - rMi + 1)) + rMi); };
+    this.hitTest = function (x1, y1, w1, h1, x2, y2, w2, h2) { return !(x1 + w1 < x2 || x2 + w2 < x1 || y1 + h1 < y2 || y2 + h2 < y1); };
+
+    this.createL = function (x, y, canSpawn) {
+      this.lightning.push({
+        x: x,
+        y: y,
+        xRange: this.rand(5, 30),
+        yRange: this.rand(5, 25),
+        path: [{
+          x: x,
+          y: y
+        }],
+        pathLimit: this.rand(10, 35),
+        canSpawn: canSpawn,
+        hasFired: false
+      });
+    };
+
+    this.updateL = function () {
+      var i = this.lightning.length;
+      while (i--) {
+        var light = this.lightning[i];
+
+
+        light.path.push({
+          x: light.path[light.path.length - 1].x + (this.rand(0, light.xRange) - (light.xRange / 2)),
+          y: light.path[light.path.length - 1].y + (this.rand(0, light.yRange))
+        });
+
+        if (light.path.length > light.pathLimit) {
+          this.lightning.splice(i, 1)
+        }
+        light.hasFired = true;
+      };
+    };
+
+    this.renderL = function () {
+      var i = this.lightning.length;
+      while (i--) {
+        var light = this.lightning[i];
+
+        this.ctx.strokeStyle = 'hsla(0, 100%, 100%, ' + this.rand(10, 100) / 100 + ')';
+        this.ctx.lineWidth = 1;
+        if (this.rand(0, 30) == 0) {
+          this.ctx.lineWidth = 2;
+        }
+        if (this.rand(0, 60) == 0) {
+          this.ctx.lineWidth = 3;
+        }
+        if (this.rand(0, 90) == 0) {
+          this.ctx.lineWidth = 4;
+        }
+        if (this.rand(0, 120) == 0) {
+          this.ctx.lineWidth = 5;
+        }
+        if (this.rand(0, 150) == 0) {
+          this.ctx.lineWidth = 6;
         }
 
-        var currentTime = convertTime();
-        $('.nowtime').append(currentTime);
-      });
+        this.ctx.beginPath();
 
-      $.getJSON('https://api.openweathermap.org/data/2.5/weather?lat=35.158109&lon=126.795508&appid=691b9681b64032def97f5cc8af02abb6&units=metric',
-        function (WeatherResult) {
+        var pathCount = light.path.length;
+        this.ctx.moveTo(light.x, light.y);
+        for (var pc = 0; pc < pathCount; pc++) {
 
-          $('.Nowweather').append(WeatherResult.weather[0].main);
-          $('.Nowtemp').append(WeatherResult.main.temp);
-          $('.Humidity').append(WeatherResult.main.humidity);
-          $('.WindSpeed').append(WeatherResult.wind.speed);
-          $('.point').append(WeatherResult.name);
-          var weathericonUrl =
-            '<img class="icon" src="http://openweathermap.org/img/wn/'
-            + WeatherResult.weather[0].icon +
-            '.png" alt="' + WeatherResult.weather[0].description + '" />'
+          this.ctx.lineTo(light.path[pc].x, light.path[pc].y);
 
-          $('.Icon').html(weathericonUrl);
-        });
-    </script>
+          if (light.canSpawn) {
+            if (this.rand(0, 100) == 0) {
+              light.canSpawn = false;
+              this.createL(light.path[pc].x, light.path[pc].y, false);
+            }
+          }
+        }
+
+        if (!light.hasFired) {
+          this.ctx.fillStyle = 'rgba(255, 255, 255, ' + this.rand(4, 12) / 100 + ')';
+          this.ctx.fillRect(0, 0, this.cw, this.ch);
+        }
+
+        if (this.rand(0, 30) == 0) {
+          this.ctx.fillStyle = 'rgba(255, 255, 255, ' + this.rand(1, 3) / 100 + ')';
+          this.ctx.fillRect(0, 0, this.cw, this.ch);
+        }
+
+        this.ctx.stroke();
+      };
+    };
 
 
-</body>
+    this.lightningTimer = function () {
+      this.lightTimeCurrent++;
+      if (this.lightTimeCurrent >= this.lightTimeTotal) {
+        var newX = this.rand(100, cw - 100);
+        var newY = this.rand(0, ch / 2);
+        var createCount = this.rand(1, 3);
+        while (createCount--) {
+          this.createL(newX, newY, true);
+        }
+        this.lightTimeCurrent = 0;
+        this.lightTimeTotal = this.rand(200, 400);
+      }
+    }
+
+    this.clearCanvas = function () {
+      this.ctx.globalCompositeOperation = 'destination-out';
+      this.ctx.fillStyle = 'rgba(0,0,0,' + this.rand(1, 30) / 100 + ')';
+      this.ctx.fillRect(0, 0, this.cw, this.ch);
+      this.ctx.globalCompositeOperation = 'source-over';
+    };
+
+    $(window).on('resize', function () {
+      _this.cw = _this.c.width = window.innerWidth;
+      _this.ch = _this.c.height = window.innerHeight;
+    });
+
+    this.loop = function () {
+      var loopIt = function () {
+        requestAnimationFrame(loopIt, _this.c);
+        _this.clearCanvas();
+        _this.updateL();
+        _this.lightningTimer();
+        _this.renderL();
+      };
+      loopIt();
+    };
+
+  };
+
+  var isCanvasSupported = function () {
+    var elem = document.createElement('canvas');
+    return !!(elem.getContext && elem.getContext('2d'));
+  };
+
+  var setupRAF = function () {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+      window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+      window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+    };
+
+    if (!window.requestAnimationFrame) {
+      window.requestAnimationFrame = function (callback, element) {
+        var currTime = new Date().getTime();
+        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+        var id = window.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
+        lastTime = currTime + timeToCall;
+        return id;
+      };
+    };
+
+    if (!window.cancelAnimationFrame) {
+      window.cancelAnimationFrame = function (id) {
+        clearTimeout(id);
+      };
+    };
+  };
+
+  $(document).ready(function () {
+    if (isCanvasSupported) {
+      var c = document.getElementById('canvas');
+      var cw = c.width = window.innerWidth;
+      var ch = c.height = window.innerHeight;
+      var cl = new canvasLightning(c, cw, ch);
+
+      setupRAF();
+      cl.init();
+    }
+  });
+  window.addEventListener('load', function () {
+    if (isCanvasSupported) {
+      var c = document.getElementById('canvas');
+      var cw = c.width = window.innerWidth;
+      var ch = c.height = window.innerHeight;
+      var cl = new canvasLightning(c, cw, ch);
+
+      setupRAF();
+      cl.init();
+    }
+  });
+</script>
 
 </html>

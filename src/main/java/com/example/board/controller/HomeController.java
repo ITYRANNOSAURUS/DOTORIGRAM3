@@ -16,7 +16,12 @@ public class HomeController {
 	@Autowired
 	private BoardRepository boardRepository;
 
-	@GetMapping({ "/", "/home" })
+	@GetMapping({ "/" })
+	public String open() {
+		return "open";
+	}
+
+	@GetMapping({ "/home" })
 	public String index(Model model) {
 		List<Board> latestPosts = boardRepository.findTop5ByOrderByIdDesc();
 		model.addAttribute("latestPosts", latestPosts);

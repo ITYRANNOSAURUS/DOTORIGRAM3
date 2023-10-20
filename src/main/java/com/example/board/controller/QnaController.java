@@ -24,18 +24,20 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
-import com.example.board.model.Board;
+import com.example.board.model.Qna;
 import com.example.board.model.Comment;
 import com.example.board.model.FileAtch;
+import com.example.board.model.Qna;
 import com.example.board.model.User;
-import com.example.board.repository.BoardRepository;
+import com.example.board.repository.QnaRepository;
 import com.example.board.repository.CommentRepository;
 import com.example.board.repository.FileAtchRepository;
+import com.example.board.repository.QnaRepository;
 
 @Controller
-public class BoardController {
+public class QnaController {
 	@Autowired
-	BoardRepository boardRepository;
+	QnaRepository qnaRepository;
 
 	@Autowired
 	CommentRepository commentRepository;
@@ -46,40 +48,40 @@ public class BoardController {
 	@Autowired
 	HttpSession session;
 
-	@GetMapping("/board/image")
+	@GetMapping("/qna/image")
 	public String image() {
-		return "/board/image";
+		return "/qna/image";
 	}
 
-	@GetMapping("/board/delete/{id}")
-	public String boardDelete(@PathVariable("id") long id) {
+	@GetMapping("/qna/delete/{id}")
+	public String qnaDelete(@PathVariable("id") long id) {
 		User loggedUser = (User) session.getAttribute("user_info");
 		String loggedName = loggedUser.getEmail();
-		Optional<Board> dbBoard = boardRepository.findById(id);
-		String savedName = dbBoard.get().getUserId();
+		Optional<Qna> dbQna = qnaRepository.findById(id);
+		String savedName = dbQna.get().getUserId();
 
 		if (savedName.equals(loggedName)) {
-			Board board = new Board();
-			board.setId(id);
-			boardRepository.deleteById(id);
-			return "redirect:/board/list";
+			Qna qna = new Qna();
+			qna.setId(id);
+			qnaRepository.deleteById(id);
+			return "redirect:/qna/list";
 		} else {
 
-			return "redirect:/board/view?id=" + id;
+			return "redirect:/qna/view?id=" + id;
 		}
 	}
 
-	@GetMapping("/board/update/{id}")
-	public String boardUpdate(Model model, @PathVariable("id") long id) {
-		Optional<Board> data = boardRepository.findById(id);
-		Board board = data.get();
-		model.addAttribute("board", board);
-		return "board/update";
+	@GetMapping("/qna/update/{id}")
+	public String qnaUpdate(Model model, @PathVariable("id") long id) {
+		Optional<Qna> data = qnaRepository.findById(id);
+		Qna qna = data.get();
+		model.addAttribute("qna", qna);
+		return "qna/update";
 	}
 
-	@PostMapping("/board/update/{id}")
-	public String boardUpdate(
-			@ModelAttribute Board board,
+	@PostMapping("/qna/update/{id}")
+	public String qnaUpdate(
+			@ModelAttribute Qna qna,
 			@RequestParam("file") MultipartFile mFile,
 			@PathVariable("id") long id) {
 
@@ -89,26 +91,26 @@ public class BoardController {
 		}
 		String userId = user.getEmail();
 
-		Optional<Board> data = boardRepository.findById(id);
+		Optional<Qna> data = qnaRepository.findById(id);
 
 		if (data.isPresent()) {
-			Board existingBoard = data.get();
+			Qna existingQna = data.get();
 
-			if (!userId.equals(existingBoard.getUserId())) {
+			if (!userId.equals(existingQna.getUserId())) {
 				// 사용자가 게시물의 작성자가 아닌 경우 처리할 내용
-				return "redirect:/board/view?id=" + id; // 예: 게시물 보기 페이지로 리디렉션
+				return "redirect:/qna/view?id=" + id; // 예: 게시물 보기 페이지로 리디렉션
 			}
 
 			// 게시물 수정 권한이 있는 경우, 업데이트 진행
-			existingBoard.setTitle(board.getTitle());
-			existingBoard.setContent(board.getContent());
+			existingQna.setTitle(qna.getTitle());
+			existingQna.setContent(qna.getContent());
 
 			// 파일 저장 로직 시작
 			String originalFilename = mFile.getOriginalFilename();
 			FileAtch fileAtch = new FileAtch();
 			fileAtch.setOriginalName(originalFilename);
 			fileAtch.setSaveName(originalFilename);
-			fileAtch.setBoard(existingBoard);
+			fileAtch.setQna(existingQna);
 
 			fileAtchRepository.save(fileAtch);
 
@@ -122,36 +124,36 @@ public class BoardController {
 			}
 			// 파일 저장 로직 끝
 
-			boardRepository.save(existingBoard);
+			qnaRepository.save(existingQna);
 		}
 
-		return "redirect:/board/" + id;
+		return "redirect:/qna/" + id;
 	}
 
-	@GetMapping("/board/{id}")
-	public String boardView(Model model, @PathVariable("id") long id) {
-		Optional<Board> data = boardRepository.findById(id);
-		Board board = data.get();
-		model.addAttribute("board", board);
-		return "board/view";
+	@GetMapping("/qna/{id}")
+	public String qnaView(Model model, @PathVariable("id") long id) {
+		Optional<Qna> data = qnaRepository.findById(id);
+		Qna qna = data.get();
+		model.addAttribute("qna", qna);
+		return "qna/view";
 	}
 
-	@GetMapping("/board/list")
-	public String boardList(Model model,
+	@GetMapping("/qna/list")
+	public String qnaList(Model model,
 			@RequestParam(required = false) String keyword,
 			@RequestParam(defaultValue = "1") int P) {
 		Sort sort = Sort.by(Order.desc("id"));
 		Pageable pageable = PageRequest.of(P - 1, 10, sort);
-		// Page<Board> list = boardRepository.findAll(pageable);
+		// Page<Qna> list = qnaRepository.findAll(pageable);
 
-		Page<Board> page;
+		Page<Qna> page;
 		if (keyword != null && !keyword.isEmpty()) {
-			page = boardRepository.findByTitleContaining(keyword, pageable);
+			page = qnaRepository.findByTitleContaining(keyword, pageable);
 		} else {
-			page = boardRepository.findAll(pageable);
+			page = qnaRepository.findAll(pageable);
 		}
 
-		List<Board> list = page.getContent();
+		List<Qna> list = page.getContent();
 
 		model.addAttribute("list", list);
 
@@ -169,26 +171,26 @@ public class BoardController {
 		model.addAttribute("nextGroupStart", Math.min(totalPages, startPage + 10));
 		model.addAttribute("totalPages", totalPages);
 
-		return "board/list";
+		return "qna/list";
 	}
 
-	@GetMapping("/board/write")
-	public String boardWrite() {
+	@GetMapping("/qna/write")
+	public String qnaWrite() {
 
-		return "board/write";
+		return "qna/write";
 	}
 
-	@PostMapping("/board/write")
+	@PostMapping("/qna/write")
 	@Transactional(rollbackFor = { ArithmeticException.class })
-	public String boardWrite(
-			@ModelAttribute Board board,
+	public String qnaWrite(
+			@ModelAttribute Qna qna,
 			@RequestParam("file") MultipartFile[] mFiles) {
 
-		Board saveBoard = boardRepository.save(board);
+		Qna saveQna = qnaRepository.save(qna);
 
 		User user = (User) session.getAttribute("user_info");
 		String userId = user.getEmail();
-		board.setUserId(userId);
+		qna.setUserId(userId);
 
 		for (MultipartFile mFile : mFiles) {
 			String originalFilename = mFile.getOriginalFilename();
@@ -196,7 +198,7 @@ public class BoardController {
 			FileAtch fileAtch = new FileAtch();
 			fileAtch.setOriginalName(originalFilename);
 			fileAtch.setSaveName(originalFilename);
-			fileAtch.setBoard(saveBoard);
+			fileAtch.setQna(saveQna);
 
 			fileAtchRepository.save(fileAtch);
 
@@ -210,13 +212,13 @@ public class BoardController {
 			}
 		}
 
-		boardRepository.save(board);
+		qnaRepository.save(qna);
 
-		return "redirect:/board/list";
+		return "redirect:/qna/list";
 	}
 
-	@PostMapping("/board/comment")
-	public String comment(@ModelAttribute Comment comment, @RequestParam int boardId) {
+	@PostMapping("/qna/comment")
+	public String comment(@ModelAttribute Comment comment, @RequestParam int qnaId) {
 		User user = (User) session.getAttribute("user_info");
 		String name;
 
@@ -230,41 +232,36 @@ public class BoardController {
 		comment.setWriter(name);
 		comment.setCreDate(new Date());
 
-		Board board = new Board();
-		board.setId(boardId);
-		comment.setBoard(board);
+		Qna qna = new Qna();
+		qna.setId(qnaId);
+		comment.setQna(qna);
 
 		commentRepository.save(comment);
 
-		return "redirect:/board/view?id=" + boardId;
+		return "redirect:/qna/view?id=" + qnaId;
 	}
 
-	@GetMapping("/board/comment/remove")
-	public String commentRemove(@ModelAttribute Comment comment, @RequestParam int boardId) {
+	@GetMapping("/qna/comment/remove")
+	public String commentRemove(@ModelAttribute Comment comment, @RequestParam int qnaId) {
 		// 1번 new Comment(), setId()
 		// 2번 @ModelAttribute Comment comment
 		commentRepository.delete(comment);
-		return "redirect:/board/view?id=" + boardId;
+		return "redirect:/qna/view?id=" + qnaId;
 	}
 
-	@GetMapping("/board/fileAtch/remove")
-	public String fileAtchRemove(@ModelAttribute FileAtch fileAtch, @RequestParam int boardId) {
+	@GetMapping("/qna/fileAtch/remove")
+	public String fileAtchRemove(@ModelAttribute FileAtch fileAtch, @RequestParam int qnaId) {
 		// 1번 new Comment(), setId()
 		// 2번 @ModelAttribute Comment comment
 		fileAtchRepository.delete(fileAtch);
-		return "redirect:/board/view?id=" + boardId;
+		return "redirect:/qna/view?id=" + qnaId;
 	}
 
-	@GetMapping("/board/view")
+	@GetMapping("/qna/view")
 	public String view(Model model, @RequestParam long id) {
-		Optional<Board> opt = boardRepository.findById(id);
-		model.addAttribute("board", opt.get());
-		return "board/view";
-	}
-
-	@GetMapping("/info/reels")
-	public String reels() {
-		return "reels";
+		Optional<Qna> opt = qnaRepository.findById(id);
+		model.addAttribute("qna", opt.get());
+		return "qna/view";
 	}
 
 }
