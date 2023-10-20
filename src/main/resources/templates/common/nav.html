@@ -31,7 +31,7 @@
           회원가입🐿️
         </a>
       </li>
-      <h1 th:unless="${session.user_info == null}" style='font-size: 20px;'>
+      <li th:unless="${session.user_info == null}" style='font-size: 20px;'>
         <a class="link-dark">
           [[ ${session.user_info.name} + '님 반갑습니다.😎' ]]
         </a>
@@ -41,7 +41,12 @@
         <a th:href="@{/mypage(email=${session.user_info.email})}" class="link-dark">
           Mypage🐿️
         </a>
-      </h1>
+        </li>
+        <li th:if="${session.user_info != null and session.user_info.role == 'ADMIN'}" style='font-size: 20px;'>
+          <a th:href="@{/admin}" class="link-dark">
+          Admin
+          </a> 
+        </li>
       </li>
     </ul>
   </div>

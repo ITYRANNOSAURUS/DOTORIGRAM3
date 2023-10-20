@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>자동차 정보 입력</title>
+</head>
+<body>
+    <h1>자동차 정보 입력</h1>
+    <form action="/addCar" method="post">
+        <div>
+            <label for="carType">회사 선택:</label>
+            <select class="form-select" id="company" name="company">
+                <option value="">회사를 선택하세요</option>
+                <option th:each="type : ${companys}" th:value="${type.companyName}" th:text="${type.companyName}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="name">차 이름:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <button type="submit">등록</button>
+    </form>
+</body>
+</html>
