@@ -55,20 +55,40 @@
 
     <div style="text-align: center;">
         <label for="electricCarCheckbox" style="color: white;">
-            <input type="checkbox" id="electricCarCheckbox" onchange="updateVideos">
+            <input type="checkbox" id="electricCarCheckbox" onchange="updateVideos" checked>
             전기차
         </label>
-    
-        <label for="chargingStationCheckbox" style="color: white;">
-            <input type="checkbox" id="chargingStationCheckbox" onchange="updateVideos">
-            충전소
+
+        <label for="ecoCheckbox" style="color: white;">
+            <input type="checkbox" id="ecoCheckbox" onchange="updateVideos">
+            친환경
         </label>
     </div>
+
     <div id="videos"></div>
 
     <script src="https://apis.google.com/js/api.js"></script>
+
     <script>
         var defaultKeyword = '전기차';
+
+        // Add an event listener to the "친환경" checkbox
+        document.getElementById('ecoCheckbox').addEventListener('change', function () {
+            // If "친환경" is checked, uncheck "전기차"
+            if (this.checked) {
+                document.getElementById('electricCarCheckbox').checked = false;
+            }
+            updateVideos();
+        });
+
+        // Add an event listener to the "전기차" checkbox
+        document.getElementById('electricCarCheckbox').addEventListener('change', function () {
+            // If "전기차" is checked, uncheck "친환경"
+            if (this.checked) {
+                document.getElementById('ecoCheckbox').checked = false;
+            }
+            updateVideos();
+        });
 
         var apiKey = 'AIzaSyAnU2IFFqXyJEBpNdHQzXFvOUBkb6VqHVY';
 
@@ -86,16 +106,16 @@
         // 체크박스 상태를 확인하고 검색어 업데이트
         function updateVideos() {
             var electricCarCheckbox = document.getElementById('electricCarCheckbox');
-            var chargingStationCheckbox = document.getElementById('chargingStationCheckbox');
+            var ecoCheckbox = document.getElementById('ecoCheckbox');
 
             var keyword = '';
 
-            if (electricCarCheckbox.checked && chargingStationCheckbox.checked) {
+            if (electricCarCheckbox.checked && ecoCheckbox.checked) {
                 // 두 체크박스 모두 선택된 경우, 모든 동영상을 검색합니다.
                 keyword = '전기차 충전소';
             } else if (electricCarCheckbox.checked) {
                 keyword = '전기차';
-            } else if (chargingStationCheckbox.checked) {
+            } else if (ecoCheckbox.checked) {
                 keyword = '친환경';
             } else {
                 // 모든 체크박스가 선택 해제된 경우 기본 키워드로 검색
@@ -110,7 +130,7 @@
             gapi.client.youtube.search.list({
                 q: keyword,
                 part: 'snippet',
-                maxResults: 15
+                maxResults: 3
             }).then(function (response) {
                 var videos = response.result.items;
                 displayVideos(videos);
@@ -123,38 +143,42 @@
             return textArea.value;
         }
 
-        // 동영상을 HTML에 표시
-        function displayVideos(videos) {
-            var videosDiv = document.getElementById('videos');
-            videosDiv.innerHTML = ''; // 기존 동영상 삭제
+       // 동영상을 HTML에 표시
+function displayVideos(videos) {
+    var videosDiv = document.getElementById('videos');
 
-            videos.forEach(function (video) {
-                var videoId = video.id.videoId;
-                var title = video.snippet.title;
+    // Remove all existing videos
+    while (videosDiv.firstChild) {
+        videosDiv.removeChild(videosDiv.firstChild);
+    }
 
-                // 영상 컨테이너 생성
-                var videoContainer = document.createElement('div');
-                videoContainer.className = 'video-container';
+    videos.forEach(function (video) {
+        var videoId = video.id.videoId;
+        var title = decodeHTMLEntities(video.snippet.title);
 
-                // iframe 생성
-                var videoFrame = document.createElement('iframe');
-                videoFrame.src = 'https://www.youtube.com/embed/' + videoId;
+        // 영상 컨테이너 생성
+        var videoContainer = document.createElement('div');
+        videoContainer.className = 'video-container';
 
-                // 제목 생성
-                var videoTitle = document.createElement('h2');
-                videoTitle.textContent = title;
-                videoTitle.className = 'video-title';
+        // iframe 생성
+        var videoFrame = document.createElement('iframe');
+        videoFrame.src = 'https://www.youtube.com/embed/' + videoId;
 
-                // 영상, 제목을 컨테이너에 추가
-                videoContainer.appendChild(videoFrame);
-                videoContainer.appendChild(videoTitle);
+        // 제목 생성
+        var videoTitle = document.createElement('h2');
+        videoTitle.textContent = title;
+        videoTitle.className = 'video-title';
 
-                // 컨테이너를 videosDiv에 추가
-                videosDiv.appendChild(videoContainer);
-            });
-        }
+         // 영상, 제목을 컨테이너에 추가
+         videoContainer.appendChild(videoFrame);
+         videoContainer.appendChild(videoTitle);
+
+         // 컨테이너를 videosDiv에 추가
+         videosDiv.appendChild(videoContainer);
+     });
+}
 
     </script>
 </body>
 
-</html> 
+</html>
