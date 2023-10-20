@@ -176,6 +176,11 @@
             <br>
             <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
             <br>
+            <a th:href="${session.user_info != null and session.user_info.role == 'ADMIN'}"></a>
+            <a th:href="@{/admin}" class="word">
+              Admin
+            </a>
+            <br>
             <a th:href="@{/signout}" class="word">로그아웃</a>
           </div>
         </div>
