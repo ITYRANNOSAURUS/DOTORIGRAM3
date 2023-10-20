@@ -56,7 +56,8 @@ public class BoardController {
 		User loggedUser = (User) session.getAttribute("user_info");
 		String loggedName = loggedUser.getEmail();
 		Optional<Board> dbBoard = boardRepository.findById(id);
-		String savedName = dbBoard.get().getUserId();
+		// String savedName = dbBoard.get().getUserId();
+		String savedName = dbBoard.get().getUser().getEmail();
 
 		if (savedName.equals(loggedName)) {
 			Board board = new Board();
@@ -93,8 +94,8 @@ public class BoardController {
 
 		if (data.isPresent()) {
 			Board existingBoard = data.get();
-
-			if (!userId.equals(existingBoard.getUserId())) {
+			// !userId.equals(existingBoard.getUserId())
+			if (!userId.equals(existingBoard.getUser().getEmail())) {
 				// 사용자가 게시물의 작성자가 아닌 경우 처리할 내용
 				return "redirect:/board/view?id=" + id; // 예: 게시물 보기 페이지로 리디렉션
 			}
@@ -184,11 +185,13 @@ public class BoardController {
 			@ModelAttribute Board board,
 			@RequestParam("file") MultipartFile[] mFiles) {
 
-		Board saveBoard = boardRepository.save(board);
-
 		User user = (User) session.getAttribute("user_info");
-		String userId = user.getEmail();
-		board.setUserId(userId);
+		if (user == null) {
+			return "redirect:/signin";
+		}
+		board.setUser(user);
+		user.getBoards().add(board);
+		Board saveBoard = boardRepository.save(board);
 
 		for (MultipartFile mFile : mFiles) {
 			String originalFilename = mFile.getOriginalFilename();

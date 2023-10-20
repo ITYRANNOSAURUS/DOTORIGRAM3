@@ -166,95 +166,105 @@
             </div>
           </div>
 
-          <div th:if="${session.user_info == null}" class="menubar">
-            <a href="/signin" class="word">로그인</a>
-            <a href="/signup" class="word">회원가입</a>
-          </div>
-
-          <div th:unless="${session.user_info == null}" class="menubar">
-            <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
-            <br>
-            <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
-            <br>
-            <a th:href="@{/signout}" class="word">로그아웃</a>
-          </div>
+          <ul class="navbar-nav">
+            <li th:if="${session.user_info == null}" style='font-size: 20px;'>
+              <a th:href="@{/signin}" class="link-dark">
+                로그인🌰
+              </a>
+              <a th:href="@{/signup}" class="link-dark">
+                회원가입🐿️
+              </a>
+            </li>
+            <li th:unless="${session.user_info == null}" style='font-size: 20px;'>
+              <a class="link-dark">
+                [[ ${session.user_info.name} + '님 반갑습니다.😎' ]]
+              </a>
+              <a th:href="@{/signout}" class="link-dark">
+                로그아웃👋
+              </a>
+              <a th:href="@{/mypage(email=${session.user_info.email})}" class="link-dark">
+                Mypage🐿️
+              </a>
+            </li>
+            <li th:if="${session.user_info != null and session.user_info.role == 'ADMIN'}" style='font-size: 20px;'>
+              <a th:href="@{/admin}" class="link-dark">
+                Admin
+              </a>
+            </li>
+            </li>
+          </ul>
         </div>
       </div>
-
     </div>
-    </nav>
-  </div>
-  </div>
-  </div>
-  <script>
-    const button = document.querySelector(".button");
-    const sidebar = document.querySelector(".sidebar");
-    let isSidebarOpen = false;
-    let timeoutId;
+    <script>
+      const button = document.querySelector(".button");
+      const sidebar = document.querySelector(".sidebar");
+      let isSidebarOpen = false;
+      let timeoutId;
 
-    sidebar.style.width = "0";
+      sidebar.style.width = "0";
 
-    button.addEventListener("click", () => {
-      if (!isSidebarOpen) {
-        sidebar.style.width = "300px";
-        isSidebarOpen = true;
-      } else {
-        sidebar.style.width = "0";
-        button.style.right = "80px";
-        closeSubmenus();
-        isSidebarOpen = false;
-      }
-    });
-
-    function closeSubmenus() {
-      const submenus = document.querySelectorAll(".submenu");
-      submenus.forEach((submenu) => {
-        submenu.style.display = "none";
-      });
-
-      // If there's no submenu open, move the button back to right.
-      if (!document.querySelector('.submenu[style*="block"]')) {
-        button.style.right = "80px";
-      }
-    }
-
-    const menuItems = document.querySelectorAll(".menubar");
-
-    menuItems.forEach((menuItem) => {
-
-      menuItem.addEventListener("mouseover", () => {
-
-        if (isSidebarOpen) {
+      button.addEventListener("click", () => {
+        if (!isSidebarOpen) {
+          sidebar.style.width = "300px";
+          isSidebarOpen = true;
+        } else {
+          sidebar.style.width = "0";
+          button.style.right = "80px";
           closeSubmenus();
-          const submenu = menuItem.querySelector(".submenu");
-
-          if (submenu) {
-            submenu.style.display = "block";
-            button.style.right = "310px"; // If a submenu opens, move the button right.
-          }
+          isSidebarOpen = false;
         }
       });
 
-      menuItem.addEventListener("mouseout", () => {
+      function closeSubmenus() {
+        const submenus = document.querySelectorAll(".submenu");
+        submenus.forEach((submenu) => {
+          submenu.style.display = "none";
+        });
 
-        if (isSidebarOpen) {
-          const submenu = menuItem.querySelector(".submenu");
-
-          if (submenu && submenu.style.display === "block") {
-            timeoutId = setTimeout(() => {
-              submenu.style.display = "none";
-              if (!document.querySelector('.submenu[style*="block"]')) { // check if there's no other opened sub-menu
-                button.style.right = "80px"; // If a submenu closes, move the button back to right.
-              }
-            }, 1000); // wait for one second before closing the submenu
-          }
+        // If there's no submenu open, move the button back to right.
+        if (!document.querySelector('.submenu[style*="block"]')) {
+          button.style.right = "80px";
         }
+      }
+
+      const menuItems = document.querySelectorAll(".menubar");
+
+      menuItems.forEach((menuItem) => {
+
+        menuItem.addEventListener("mouseover", () => {
+
+          if (isSidebarOpen) {
+            closeSubmenus();
+            const submenu = menuItem.querySelector(".submenu");
+
+            if (submenu) {
+              submenu.style.display = "block";
+              button.style.right = "310px"; // If a submenu opens, move the button right.
+            }
+          }
+        });
+
+        menuItem.addEventListener("mouseout", () => {
+
+          if (isSidebarOpen) {
+            const submenu = menuItem.querySelector(".submenu");
+
+            if (submenu && submenu.style.display === "block") {
+              timeoutId = setTimeout(() => {
+                submenu.style.display = "none";
+                if (!document.querySelector('.submenu[style*="block"]')) { // check if there's no other opened sub-menu
+                  button.style.right = "80px"; // If a submenu closes, move the button back to right.
+                }
+              }, 1000); // wait for one second before closing the submenu
+            }
+          }
+        });
+
+        menuItem.addEventListener("mouseover", () => clearTimeout(timeoutId)); // if mouse comes back on item before timeout ends, clear the timeout
+
       });
-
-      menuItem.addEventListener("mouseover", () => clearTimeout(timeoutId)); // if mouse comes back on item before timeout ends, clear the timeout
-
-    });
-  </script>
+    </script>
 </body>
 
 </html>

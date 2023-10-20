@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.example.board.model.CarType;
+import com.example.board.model.Company;
 import com.example.board.model.User;
+import com.example.board.repository.CarTypeRepository;
+import com.example.board.repository.CompanyRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -27,6 +32,12 @@ public class UserController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	CarTypeRepository carTypeRepository;
+
+	@Autowired
+	CompanyRepository companyRepository;
 
 	@GetMapping("/email-check")
 	@ResponseBody
@@ -44,6 +55,7 @@ public class UserController {
 
 	@GetMapping("/signin")
 	public String signin() {
+
 		return "signin";
 	}
 
@@ -51,6 +63,7 @@ public class UserController {
 	public String signinPost(@ModelAttribute User user, Model model) {
 		User dbUser = userRepository.findByEmail(user.getEmail());
 
+		// 오류
 		if (dbUser == null) {
 			model.addAttribute("error", "이메일 또는 비밀번호가 일치하지 않습니다.");
 			return "signin";
@@ -58,9 +71,11 @@ public class UserController {
 		String encodedPwd = dbUser.getPwd();
 		String userPwd = user.getPwd();
 		boolean isMatch = passwordEncoder.matches(userPwd, encodedPwd);
+
 		if (isMatch) {
 			session.setAttribute("user_info", dbUser);
-			return "redirect:/home";
+
+			return "redirect:/";
 		} else {
 			model.addAttribute("error", "이메일 또는 비밀번호가 일치하지 않습니다.");
 			return "signin";
@@ -74,19 +89,40 @@ public class UserController {
 	}
 
 	@GetMapping("/signup")
-	public String signup() {
+	public String signup(Model model) {
+		List<CarType> carTypes = carTypeRepository.findAll();
+		model.addAttribute("carTypes", carTypes);
+		List<Company> companys = companyRepository.findAll();
+		model.addAttribute("companys", companys);
 		return "signup";
 	}
 
 	@PostMapping("/signup")
-	public String signupPost(@ModelAttribute User user) {
+	public String signupPost(@ModelAttribute User user,
+			@RequestParam(value = "isAdmin", required = false) boolean isAdmin,
+			@RequestParam("carname") String carname) {
 		String userPwd = user.getPwd();
-
 		String encodePwd = passwordEncoder.encode(userPwd);
 		user.setPwd(encodePwd);
 		user.setCreDate(new Date());
 
+		// 사용자 역할 설정
+		User.UserRole userRole = isAdmin ? User.UserRole.ADMIN : User.UserRole.CUSTOMER;
+
+		// 사용자 정보 저장
+		user.setRole(userRole);
+		user.setCarname(carname);
 		userRepository.save(user);
+
+		// User 수 증가
+		List<User> users = userRepository.findAll();
+		int userCount = users.size();
+		userCount++;
+		for (User u : users) {
+			u.setCount(userCount);
+		}
+		userRepository.saveAll(users);
+
 		return "redirect:/";
 	}
 
@@ -120,5 +156,22 @@ public class UserController {
 	@GetMapping("/loginnoti")
 	public String loginnoti() {
 		return "loginnoti";
+	}
+
+	@GetMapping("/getCarType")
+	@ResponseBody
+	public List<CarType> getCarType(String companyName) {
+		Company company = companyRepository.findByCompanyName(companyName);
+		List<CarType> carTypes = carTypeRepository.findByCompany(company);
+		return carTypes;
+	}
+
+	// 탈퇴하기
+	@GetMapping("/exit")
+	public String exit() {
+		User user = (User) session.getAttribute("user_info");
+		userRepository.delete(user);
+		session.invalidate();
+		return "redirect:/";
 	}
 }
