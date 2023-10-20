@@ -2,10 +2,13 @@
 <html>
 
 <head>
-  <title>제목 테스트</title>
 </head>
 
 <style>
+  .menubar a {
+    text-decoration: none;
+  }
+
   .container {
     background: none;
   }
@@ -102,10 +105,6 @@
     position: relative;
   }
 
-  .menubar a {
-    text-decoration: none;
-  }
-
   .submenu {
     display: none;
     position: fixed;
@@ -147,7 +146,7 @@
           </div> -->
         <div class="nav-2">
           <div class="menubar">
-            <a class="word">홈</a>
+            <a class="word" th:href="@{/}">홈</a>
           </div>
           <div class="menubar">
             <a class="word">충전소 찾기</a>
@@ -155,21 +154,21 @@
           <div class="menubar">
             <a class="word">정보</a>
             <div class="submenu">
-              <a class="word" href="#">서브 메뉴 1</a>
-              <a class="word" href="#">서브 메뉴 2</a>
+              <a class="word" th:href="@{/info/news}">전기차 뉴스</a>
+              <a class="word" th:href="@{/info/reels}">전기차 영상</a>
             </div>
           </div>
           <div class="menubar">
             <a class="word">게시판</a>
             <div class="submenu">
-              <a class="word" href="/board/list">공지사항</a>
-              <a class="word" href="/qna/list">Q&A</a>
+              <a class="word" th:href="@{/board/list}">공지사항</a>
+              <a class="word" th:href="@{/qna/list}">Q&A</a>
             </div>
           </div>
 
           <div th:if="${session.user_info == null}" class="menubar">
-            <a href="/signin" class="word">로그인</a>
-            <a href="/signup" class="word">회원가입</a>
+            <a th:href="@{/signin}" class="word">로그인</a>
+            <a th:href="@{/signup}" class="word">회원가입</a>
           </div>
 
           <div th:unless="${session.user_info == null}" class="menubar">
@@ -179,11 +178,6 @@
             <br>
             <a th:href="@{/signout}" class="word">로그아웃</a>
           </div>
-          <div th:if="${session.user_info != null and session.user_info.role == 'ADMIN'}">
-            <a th:href="@{/admin}" class="word">
-              Admin
-            </a>
-          </div>
         </div>
       </div>
 
@@ -192,6 +186,7 @@
   </div>
   </div>
   </div>
+
   <script>
     const button = document.querySelector(".button");
     const sidebar = document.querySelector(".sidebar");
