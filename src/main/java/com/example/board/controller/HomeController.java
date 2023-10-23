@@ -28,4 +28,9 @@ public class HomeController {
 		return "index";
 	}
 
+	@GetMapping("/media/gamepage")
+	public String gamepage() {
+		return "/gamepage";
+	}
+
 }
