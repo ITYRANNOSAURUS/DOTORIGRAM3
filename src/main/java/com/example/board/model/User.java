@@ -38,6 +38,9 @@ public class User implements Serializable{
 	public String getRole() {
 		return role.name(); // 열거형 값의 이름을 문자열로 반환
 	}
+
+	private Integer coin;
+	
 	@OneToMany(mappedBy = "user",
 						cascade = CascadeType.REMOVE,
 						orphanRemoval = true,

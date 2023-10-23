@@ -202,7 +202,8 @@
             <button class="get-coins" style="display: none;">찌리릿 코인 받기</button>
         </div>
     </div>
-
+    <div th:replace="common/footer">
+    </div>
     <script th:inline="javascript">
         const homeButton = document.querySelector(".home");
         homeButton.addEventListener("click", function () {
@@ -284,7 +285,6 @@
             }
         }
 
-
         // score
         let score = 0;
         let scoreInterval;
@@ -301,6 +301,7 @@
         let destination;
 
         let isDestinationVisible = false; // 도착지 표시 여부
+
         // 장애물 생성 함수
         function createBox() {
             let box = new Box();
@@ -333,11 +334,17 @@
                 updateScore();
             }
             // 무작위로 장애물 소환
-            if (Math.random() < 0.015) {
+            if (Math.random() < 0.005) {
                 createBox();
             }
 
-            if (score >= 200 && !isDestinationVisible && score % 200 === 0) {
+            if (score >= 400 && !isDestinationVisible && score % 400 === 0) {
+                isDestinationVisible = true;
+                destination = new Destination();
+            } else if (score >= 300 && !isDestinationVisible && score % 300 === 0) {
+                isDestinationVisible = true;
+                destination = new Destination();
+            } else if (score >= 150 && !isDestinationVisible && score % 150 === 0) {
                 isDestinationVisible = true;
                 destination = new Destination();
             }
@@ -436,6 +443,10 @@
             jumpSwitch = false;
             lastSpacePressTime = 0;
 
+
+            isDestinationVisible = false;
+            destination = null;
+
             frameRun();
 
             const sun = document.querySelector(".sun");
@@ -468,14 +479,21 @@
 
             let gameOverMsgElement = document.querySelector('.game-over .pop-up h2');
             gameOverMsgElement.textContent = '충전소에 도착했습니다!';
+
             const getCoinsButton = document.querySelector(".get-coins");
-            getCoinsButton.style.display = "block";
+            getCoinsButton.style.display = "block"; // 버튼 표시
+
             getCoinsButton.addEventListener("click", function () {
-                // "찌리릿 코인 받기" 버튼이 클릭되었을 때 수행할 동작
-                const coins = parseInt(localStorage.getItem("coins") || "0");
-                const newCoins = coins + 10; // 예: 10개의 찌리릿 코인 추가
-                localStorage.setItem("coins", newCoins.toString());
-                alert("찌리릿 코인 10개를 획득했습니다.");
+                fetch("/getCoins", {
+                    method: "GET",
+                })
+                    .then(data => {
+                        alert("찌리릿 코인 1개를 획득했습니다.");
+                        window.location.href = "/home";
+                    })
+                    .catch(error => {
+                        console.error("찌리릿 코인을 받는 중 오류가 발생했습니다: " + error);
+                    });
             });
 
             // "다시하기" 버튼을 숨깁니다.

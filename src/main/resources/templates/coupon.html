@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="common/head">
+
+</head>
+<style>
+    body {
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+    }
+
+    h2 {
+        color: black;
+    }
+    .exchange-box {
+    margin: 0 auto;
+    background: linear-gradient(to right, #f1d274, #f1e9be);
+
+    /* 더욱 둥근 모서리와 부드러운 그림자 스타일 적용 */
+    border-radius: 50%;
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.1);
+
+    /* 내부 정렬 및 크기 설정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center; 
+    width: 25rem;
+    height :25rem; 
+
+     /* 간단한 애니메이션 추가 */
+     transition : all .5s ease-in-out;
+
+     /* 내부 텍스트 스타일 변경 - 굴림체로 변경하여 플레이풀함 강조 */
+     color:#495057;
+     font-size :1rem; 
+     font-family:'Gulim';
+}
+
+/* 마우스 호버시 약간 확대되는 효과 추가 */
+.exchange-box:hover {
+     transform : scale(1.05);
+}
+</style>
+
+<body>
+    <div th:replace="common/header">
+
+    </div>
+
+    <nav th:replace="common/nav">
+
+    </nav>
+    <div class="exchange-box">
+        <h2>찌리릿코인 교환하기</h2>
+        <a>나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
+        <a>보유한 쿠폰:</a>
+        <button id="exchangeButton">교환하기</button>
+    </div>
+
+    <div th:replace="common/footer">
+    </div>
+    <script>
+        const exchangeButton = document.getElementById("exchangeButton");
+        exchangeButton.addEventListener("click", function () {
+
+            const userCoin = parseInt(document.querySelector("a span").textContent);
+
+            if (userCoin >= 10) {
+                // 코인 교환 로직
+                const numberOfCoupons = Math.floor(userCoin / 10);
+                exchangeCoinsForCoupons(numberOfCoupons);
+            } else {
+                alert("코인이 부족하여 교환할 수 없습니다.");
+            }
+        });
+
+        function exchangeCoinsForCoupons(numberOfCoupons) {
+            fetch("/exchangeCoins", {
+                method: "POST",
+                body: JSON.stringify({ numberOfCoupons }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(`코인 ${numberOfCoupons * 10}개를 사용하여 ${numberOfCoupons}개 쿠폰을 교환했습니다.`);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error("코인 교환 중 오류가 발생했습니다: " + error);
+                });
+        }
+
+     
+    </script>
+</body>
