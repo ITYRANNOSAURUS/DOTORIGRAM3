@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+
+    <h1>피카충전소 게임</h1>
+    <p>게임하고 무료로 전기차 충전하기⚡</p>
+    <p>장애물을 피해 전기차 주유소까지 도달하면 도토리🌰 1개를 드립니다.<br>
+        도토리 10개는 전기차 무료 충전 1회 쿠폰과 바꿀 수 있습니다.</p>
+    <p>게임 방법 : 스페이스바를 눌러 다가오는 장애물을 점프로 피하세요.<br>
+        주유소까지 도달하면 도토리 1개를 받을 수 있어요.🐿️</div>
+    </p>
+
+</head>
+
+<body onload="loaded()" onkeydown="keydown()" onkeyup="keyup()">
+    <canvas width="1100" height="587" style="border: 2px solid black;" id="c1"></canvas>
+
+
+
+    <script>
+
+        var canvas; //도화지 객체
+        var context; //화가 객체
+
+        // 플레이어 이동 방향과 속도
+        var dx = 0;
+        var dy = 0;
+
+        // 키 이벤트로 인해 인식된 keycode변수
+        var keycode;
+
+        // 전역변수로서 이미지 객체 생성
+        var imgCharRight = new Image();
+        imgCharRight.src = "/gamecar_right.png";
+
+        var imgCharLeft = new Image();
+        imgCharLeft.src = "/gamecar_left.png";
+
+        var bgImages = [];
+        for (var i = 1; i <= 9; i++) {
+            bgImages[i] = new Image();
+            bgImages[i].src = "/map" + i + ".png";
+        }
+        var currentBgIndex = 1;
+        var imgBg = bgImages[currentBgIndex];
+
+        // 플레이어 캐릭터의 중심좌표
+        var x = 800, y = 425; //정 가운데로 위치
+        var w = 40, h = 40; //플레이어 이미지의 절반 사이즈
+
+        function loaded() {
+            canvas = document.getElementById('c1');
+            context = canvas.getContext('2d');
+
+            // 플레이어 초기 위치를 캔버스 중앙으로 설정
+            var playerWidth = 200; // 캐릭터 이미지의 가로 크기
+            var playerHeight = 112; // 캐릭터 이미지의 세로 크기
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+
+            // 플레이어 초기 위치 설정
+            x = centerX;
+            y = centerY;
+
+
+            runGame(); //게임을 진행하는 함수
+            //10ms 마다 runGame()를 다시 호출
+            setInterval(runGame, 10); //1초에 100번 호출 
+        }
+
+        function runGame() {
+            moveAll(); //캐릭터 움직이기
+            drawAll(); // 이미지들 그리기
+        }
+
+        var targetX = Math.floor(Math.random() * 1000); // 목표 지점의 x 좌표
+        var targetY = Math.floor(Math.random() * 500); // 목표 지점의 y 좌표
+
+        function moveAll() {
+            x += dx;
+            y += dy;
+
+            if (x > canvas.width) {
+                x = 0;
+                changeBackground();
+            } else if (x < 0) {
+                x = canvas.width;
+                changeBackground();
+            }
+
+            if (y > canvas.height) {
+                y = 0;
+                changeBackground();
+            } else if (y < 0) {
+                y = canvas.height;
+                changeBackground();
+            }
+            checkTargetReached();
+        }
+
+        var imgTarget = new Image();
+        imgTarget.src = "/charger.png";
+        imgTarget.onload = function () {
+            targetReady = true;
+        };
+
+
+        function checkTargetReached() {
+            context.drawImage(imgTarget, targetX, targetY); // 목표 지점에 이미지 그리기
+
+            if (Math.abs(x - targetX) <= w && Math.abs(y - targetY) <= h) {
+                window.location.href = '/media/game';   // 현재 페이지에서 /media/game으로 이동.
+            }
+        }
+
+        function changeBackground() {
+            currentBgIndex++;
+            if (currentBgIndex > bgImages.length - 1) {
+                currentBgIndex = 1;
+            }
+            imgBg = bgImages[currentBgIndex];
+        }
+
+
+        function drawAll() {
+            //배경 그리기
+            context.drawImage(imgBg, 0, 0, 1600, 850);
+
+            if (targetReady) {
+                context.drawImage(imgTarget, targetX, targetY, w * 3, h * 3);
+                // 위에서 w와 h는 플레이어 캐릭터의 절반 사이즈입니다.
+                // 이 값을 두 배로 설정하여 목표 지점 이미지의 가로 세로 길이를 설정했습니다.
+            }
+
+            let playerImage = imgCharRight;
+            if (dx > 0) playerImage = imgCharRight;
+            else if (dx < 0) playerImage = imgCharLeft;
+            else if (dy < 0) playerImage = imgCharLeft;
+
+            //플레이어 그리기
+            context.drawImage(playerImage, x - w / 2, y - h / 2, w * 3.5, h * 3);
+
+
+            // 키 코드값 글씨 그리기
+            context.fillStyle = "white";
+            context.font = "30px sans-serif";
+            context.fillText(keycode, 10, 40);
+        }
+
+        function keydown() {
+            //눌러진 key의 코드값
+            keycode = event.keyCode;
+            switch (keycode) {
+                case 37: dx = -2.5; event.preventDefault(); break; //left
+                case 38: dy = -2.5; event.preventDefault(); break; //up
+                case 39: dx = 2.5; event.preventDefault(); break; //right
+                case 40: dy = 2.5; event.preventDefault(); break; //down
+            }
+        }
+        function keyup() {
+            //떨어진 key의 코드값
+            keycode = event.keyCode;
+            switch (keycode) {
+                case 37:
+                case 39: dx = 0; event.preventDefault(); break;
+                case 38:
+                case 40: dy = 0; event.preventDefault(); break;
+            }
+        }
+
+        // // 사운드 작업 : 크롬은 자동 재생을 막은 듯 함. Edge는 될 것임
+        // var sd = new Audio('./dragon_flight.mp3');
+        // sd.volume = 1.0; //0.0 ~ 1.0
+        // sd.loof = true; //반복재생여부
+        // sd.play();
+
+    </script>
+
+
+</body>
+
+</html>
