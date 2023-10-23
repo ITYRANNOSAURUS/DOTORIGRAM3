@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class NewsController {
-    @GetMapping("info/news")
+    @GetMapping("media/news")
     public String news(String searchText, Model model) {
 
         String clientId = "OEFNplKpH997Tcm_VSaI"; // 애플리케이션 클라이언트 아이디

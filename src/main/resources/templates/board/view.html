@@ -36,12 +36,12 @@
         첨부된 파일📥
         <!-- 첨부된 파일 목록 -->
         <ul th:each="fileAtch : ${board.fileAtchs}">
-          <li>
+          <li style="list-style-type: none;">
             <a th:href="@{/download(id=${fileAtch.id})}">
               [[${fileAtch.originalName}]]
             </a>
             <!-- 파일 삭제 버튼 -->
-            <button th:if="${session.user_info != null && session.user_info.email == board.user.email}"
+            <button th:if="${session.user_info != null && session.user_info.email == board.user.email&& && fileAtch != null}"
               th:onclick="'fileRm(' + ${fileAtch.id} +')'">파일삭제✂️</button>
           </li>
         </ul>
@@ -72,7 +72,7 @@
     document.querySelector('#update').addEventListener('click', (e) => {
       e.preventDefault();
       // 사용자 정보 가져오기
-      var currentUser = "[[${session.user_info != null ? session.user_info.email : ''}]]"; // null 체크 추가
+      var currentUser = "${session.user_info != null ? session.user_info.email : ''}]]"; // null 체크 추가
       if (currentUser !== authorUserId) {
         alert('게시글 작성자만 수정할 수 있습니다.'); // 수정 권한이 없을 때 경고창 표시
       } else {

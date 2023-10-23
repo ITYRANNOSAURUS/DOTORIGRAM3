@@ -28,4 +28,13 @@ public class HomeController {
 		return "index";
 	}
 
+	@GetMapping("/media/reels")
+	public String reels() {
+		return "reels";
+	}
+
+	@GetMapping("/media/game")
+	public String game() {
+		return "game";
+	}
 }

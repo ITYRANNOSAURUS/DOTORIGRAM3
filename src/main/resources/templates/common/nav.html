@@ -156,20 +156,23 @@
             </div>
           </div>
           <div class="menubar">
-            <a class="word">정보</a>
-            <div class="submenu">
-              <a class="word" href='/info/news?searchText=전기차'>전기차 뉴스</a>
-              <a class="word" th:href="@{/info/reels}">전기차 영상</a>
-            </div>
-          </div>
-          <div class="menubar">
             <a class="word">게시판</a>
             <div class="submenu">
               <a class="word" th:href="@{/board/list}">공지사항</a>
               <a class="word" th:href="@{/qna/list}">Q&A</a>
             </div>
+          </div> 
+          <div class="menubar">
+            <a class="word">미디어</a>
+            <div class="submenu">
+              <a class="word" th:href="@{/media/news?searchText=전기차}">전기차 뉴스</a>
+              <a class="word" th:href="@{/media/reels}">전기차 영상</a>
+              <a class="word" th:href="@{/media/game}">전기차 게임</a>
+            </div>
           </div>
-
+          </div>
+          <br>
+          <br>
           <div th:if="${session.user_info == null}" class="menubar">
             <a th:href="@{/signin}" class="word">로그인</a>
             <a th:href="@{/signup}" class="word">회원가입</a>
