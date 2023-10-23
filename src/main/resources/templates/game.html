@@ -7,7 +7,6 @@
     <title>Pika</title>
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon.ico">
 </head>
-
 <style>
     body {
         background-color: #000;
@@ -39,7 +38,6 @@
         position: relative;
         width: 100%;
         height: 100%;
-
     }
 
     .sun {
@@ -169,14 +167,12 @@
     }
 </style>
 
-<body>
-    <!-- <div th:replace="common/header">
-
-    </div> -->
+<body> <!-- <div th:replace="common/header">
+</div> -->
 
     <!-- <nav th:replace="common/nav">
 
-    </nav> -->
+</nav> -->
 
     <!-- 게임 -->
     <div class="game-wrap">
@@ -219,8 +215,8 @@
         canvas.width = window.innerWidth;
 
         var carImages = [new Image(), new Image()];
-        carImages[0].src = /*[[@{/cargame.png}]]*/ "";
-        carImages[1].src = /*[[@{/cargame.png}]]*/ "";
+        carImages[0].src = "/cargame.png";
+        carImages[1].src = "/cargame.png";
 
         let electricCar = {
             x: 20,
@@ -249,27 +245,32 @@
         };
 
         // 장애물
-        let boxImage = new Image();
-        boxImage.src = /*[[@{/pong.png}]]*/"";
+        var boxImages = [new Image(), new Image()];
+        boxImages[0].src = "/pong.png";
+        boxImages[1].src = "/pong2.png";
+
         class Box {
             constructor() {
                 this.width = 40;
                 this.height = 40;
                 this.x = canvas.width - this.width;
                 this.y = 155;
+
+                // 장애물 이미지 선택
+                const randomImageIndex = Math.floor(Math.random() * boxImages.length);
+                this.image = boxImages[randomImageIndex];
             }
             draw() {
-                ctx.drawImage(boxImage, this.x, this.y, this.width, this.height);
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
             }
         }
-
         // 도착지 좌표
         const destinationX = 20; // 도착지 x 좌표
         const destinationY = 50;  // 도착지 y 좌표
 
         // 도착지 이미지 로드
         let destinationImage = new Image();
-        destinationImage.src = /*[[@{/link.png}]]*/"";
+        destinationImage.src = "/link.png";
 
         class Destination {
             constructor() {
@@ -300,6 +301,25 @@
         let destination;
 
         let isDestinationVisible = false; // 도착지 표시 여부
+        // 장애물 생성 함수
+        function createBox() {
+            let box = new Box();
+
+            // 새로 생성한 장애물과 다른 장애물들과의 충돌 확인
+            let isCollision = manyBoxes.some(existingBox => {
+                return (
+                    box.x < existingBox.x + existingBox.width &&
+                    box.x + box.width > existingBox.x
+                );
+            });
+
+            // 충돌이 없으면 배열에 추가, 있으면 다시 생성
+            if (!isCollision) {
+                manyBoxes.push(box);
+            } else {
+                createBox();  // 다시 생성 시도
+            }
+        }
 
         // 프레임마다 실행하기
         function frameRun() {
@@ -313,9 +333,8 @@
                 updateScore();
             }
             // 무작위로 장애물 소환
-            if (Math.random() < 0.005) {
-                let box = new Box();
-                manyBoxes.push(box);
+            if (Math.random() < 0.015) {
+                createBox();
             }
 
             if (score >= 200 && !isDestinationVisible && score % 200 === 0) {
@@ -466,6 +485,3 @@
 
         frameRun();
     </script>
-</body>
-
-</html>
