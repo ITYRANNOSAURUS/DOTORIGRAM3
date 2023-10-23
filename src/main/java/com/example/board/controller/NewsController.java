@@ -57,7 +57,7 @@ public class NewsController {
 
         model.addAttribute("news", json.get("items"));
 
-        return "news";
+        return "/media/news";
     }
 
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
