@@ -33,4 +33,13 @@ public class HomeController {
 		return "/gamepage";
 	}
 
+	@GetMapping("/media/reels")
+	public String reels() {
+		return "reels";
+	}
+
+	@GetMapping("/media/game")
+	public String game() {
+		return "game";
+	}
 }

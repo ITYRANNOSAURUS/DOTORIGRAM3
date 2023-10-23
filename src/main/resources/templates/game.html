@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="kor">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" , initial-scale="1.0">
+    <title>Pika</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon.ico">
+</head>
+<style>
+    body {
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+    }
+
+    @font-face {
+        font-family: "netmarbleB";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/netmarbleB.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    html,
+    button {
+        font-family: netmarbleB;
+    }
+
+    h2,
+    p {
+        margin: 0;
+    }
+
+    .game-wrap {
+        background-color: #000;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .sun {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        width: 5rem;
+        height: 5rem;
+        background-image: url("/src/main/resources/static/der.png");
+        background-size: cover;
+        animation: rotate 5s linear infinite;
+    }
+
+    @keyframes rotate {
+        to {
+            rotate: 1turn;
+        }
+    }
+
+    .ground {
+        position: absolute;
+        bottom: 0.8rem;
+        left: 0;
+        width: 100%;
+        height: 0.2rem;
+        background: #fff;
+        z-index: 0;
+    }
+
+    .score {
+        color: #fff;
+        display: flex;
+        gap: 6px;
+        position: absolute;
+        top: 8px;
+        left: 0;
+        font-size: 1.5rem;
+    }
+
+    .info {
+        color: #fff;
+        width: fit-content;
+        margin: 0 auto;
+        padding: 10px;
+        border: 4px solid;
+        border-radius: 8px;
+        text-align: center;
+        cursor: default;
+    }
+
+    #canvas {
+        margin-top: 12rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .game-over {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 10;
+    }
+
+    .game-over .pop-up {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        align-items: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 400px;
+        width: 100%;
+        height: fit-content;
+        padding: 40px 0 32px;
+        background-color: #fff;
+    }
+
+    .game-over .pop-up .replay {
+        padding: 4px 8px;
+        margin-top: 8px;
+        border: 3px solid #191919;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .game-over .pop-up .home {
+        padding: 4px 8px;
+        margin-top: 8px;
+        border: 3px solid #191919;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .game-over .pop-up .get-coins {
+        padding: 4px 8px;
+        margin-top: 8px;
+        border: 3px solid #191919;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    @media (max-width: 420px) {
+        .game-over .pop-up {
+            max-width: 300px;
+        }
+    }
+
+    .game-over-img {
+        width: 20rem;
+        height: 20rem;
+    }
+</style>
+
+<body> <!-- <div th:replace="common/header">
+</div> -->
+
+    <!-- <nav th:replace="common/nav">
+
+</nav> -->
+
+    <!-- 게임 -->
+    <div class="game-wrap">
+        <div class="bakcground">
+            <div class="ground"></div>
+            <a th:href="@{/home}">
+                <div class="sun" th:style="'background-image:url(' + @{/eco-house.png} + ')'"></div>
+
+            </a>
+        </div>
+        <div class="score">
+            <p>SCORE</p>
+            <span></span>
+        </div>
+        <canvas id="canvas" height="200"></canvas>
+    </div>
+    <!-- 안내 -->
+    <h3 class="info">SPACE BAR로 JUMP 하세요!</h3>
+    <!-- 게임오버 -->
+    <div class="game-over">
+        <div class="pop-up">
+            <img class="game-over-img" th:src="@{/link.png}" alt="게임오버" />
+            <h2>충전소를 찾지 못했다!</h2>
+            <p><span class="total-score"></span> 점</p>
+            <button class="replay">다시하기</button>
+            <button class="home">홈으로</button>
+            <button class="get-coins" style="display: none;">찌리릿 코인 받기</button>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const homeButton = document.querySelector(".home");
+        homeButton.addEventListener("click", function () {
+            window.location.href = "/home";
+        });
+
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        let currentCar = 0;
+        canvas.width = window.innerWidth;
+
+        var carImages = [new Image(), new Image()];
+        carImages[0].src = "/cargame.png";
+        carImages[1].src = "/cargame.png";
+
+        let electricCar = {
+            x: 20,
+            y: 50,
+            width: 80,
+            height: 80,
+            draw() {
+                ctx.drawImage(
+                    carImages[currentCar],
+                    this.x,
+                    this.y,
+                    this.width,
+                    this.height
+                );
+            },
+            jump() {
+                if (this.y > 40) {
+                    this.y -= 60;
+                }
+            },
+            fall() {
+                if (this.y < 120) {
+                    this.y += 10;
+                }
+            },
+        };
+
+        // 장애물
+        var boxImages = [new Image(), new Image()];
+        boxImages[0].src = "/pong.png";
+        boxImages[1].src = "/pong2.png";
+
+        class Box {
+            constructor() {
+                this.width = 40;
+                this.height = 40;
+                this.x = canvas.width - this.width;
+                this.y = 155;
+
+                // 장애물 이미지 선택
+                const randomImageIndex = Math.floor(Math.random() * boxImages.length);
+                this.image = boxImages[randomImageIndex];
+            }
+            draw() {
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            }
+        }
+        // 도착지 좌표
+        const destinationX = 20; // 도착지 x 좌표
+        const destinationY = 50;  // 도착지 y 좌표
+
+        // 도착지 이미지 로드
+        let destinationImage = new Image();
+        destinationImage.src = "/link.png";
+
+        class Destination {
+            constructor() {
+                this.width = 40;
+                this.height = 40;
+                this.x = canvas.width - this.width; // 장애물과 동일한 위치에서 시작
+                this.y = 155;
+            }
+            draw() {
+                ctx.drawImage(destinationImage, this.x, this.y, this.width, this.height);
+            }
+        }
+
+
+        // score
+        let score = 0;
+        let scoreInterval;
+
+        function updateScore() {
+            score += 1;
+            document.querySelector(".score span").textContent = score;
+        }
+
+        let timer = 0;
+        let jumpTimer = 0;
+        let manyBoxes = [];
+        let animation;
+        let destination;
+
+        let isDestinationVisible = false; // 도착지 표시 여부
+        // 장애물 생성 함수
+        function createBox() {
+            let box = new Box();
+
+            // 새로 생성한 장애물과 다른 장애물들과의 충돌 확인
+            let isCollision = manyBoxes.some(existingBox => {
+                return (
+                    box.x < existingBox.x + existingBox.width &&
+                    box.x + box.width > existingBox.x
+                );
+            });
+
+            // 충돌이 없으면 배열에 추가, 있으면 다시 생성
+            if (!isCollision) {
+                manyBoxes.push(box);
+            } else {
+                createBox();  // 다시 생성 시도
+            }
+        }
+
+        // 프레임마다 실행하기
+        function frameRun() {
+            animation = requestAnimationFrame(frameRun);
+            timer++;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 이미지 교체 & score 처리
+            if (timer % 10 === 0) {
+                currentCar = (currentCar + 1) % 2;
+                updateScore();
+            }
+            // 무작위로 장애물 소환
+            if (Math.random() < 0.015) {
+                createBox();
+            }
+
+            if (score >= 200 && !isDestinationVisible && score % 200 === 0) {
+                isDestinationVisible = true;
+                destination = new Destination();
+            }
+            if (isDestinationVisible) {
+                destination.x -= 2;
+                destination.draw();
+
+                // 도착지에 도달하면 성공 처리
+                if (electricCar.x + electricCar.width >= destination.x && electricCar.y + electricCar.height >= destination.y &&
+                    electricCar.x <= destination.x + destination.width && electricCar.y <= destination.y + destination.height) {
+                    showGameSuccess();
+                    cancelAnimationFrame(animation);
+                    clearInterval(scoreInterval);
+                    return;
+                }
+            }
+            // x좌표가 0미만이면 제거
+            manyBoxes.forEach((a, i, o) => {
+                if (a.x < 5) {
+                    o.splice(i, 1);
+                }
+                a.x -= 2;
+                // 충돌 체크
+                crash(electricCar, a);
+                a.draw();
+            });
+
+            // 점프!
+            if (jumpSwitch == true) {
+                electricCar.jump();
+                jumpTimer++;
+            }
+            if (jumpSwitch == false) {
+                if (electricCar.y < 120) {
+                    electricCar.y++;
+                }
+            }
+            if (jumpTimer > 40) {
+                jumpSwitch = false;
+                jumpTimer = 0;
+            }
+            electricCar.draw();
+        }
+
+        // 충돌확인
+        function crash(electricCar, box) {
+            let xCalculate = box.x - (electricCar.x + electricCar.width);
+            let yCalculate = box.y - (electricCar.y + electricCar.height);
+            if (xCalculate < 0 && yCalculate < 0) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                cancelAnimationFrame(animation);
+                clearInterval(scoreInterval);
+                const totalScore = document.querySelector(".total-score");
+                totalScore.textContent = `${score}`;
+                const sun = document.querySelector(".sun");
+                const gameOver = document.querySelector(".game-over");
+                sun.style.animationPlayState = "paused";
+                gameOver.style.display = "block";
+            }
+        }
+
+        // score 업데이트
+        scoreInterval = setInterval(updateScore, 2000);
+
+        // 리셋 버튼
+        const replayBtn = document.querySelector(".replay");
+
+        replayBtn.addEventListener("click", () => {
+            resetGame();
+        });
+
+        // spaceBar
+        var jumpSwitch = false;
+        let lastSpacePressTime = 0;
+
+        document.addEventListener("keydown", function (e) {
+            if (e.code === "Space") {
+                const currentTime = Date.now();
+                const timeSinceLastPress = currentTime - lastSpacePressTime;
+
+                if (timeSinceLastPress > 500) {
+                    jumpSwitch = true;
+                    lastSpacePressTime = currentTime;
+                }
+            }
+        });
+
+        // 게임리셋
+        function resetGame() {
+            cancelAnimationFrame(animation);
+            clearInterval(scoreInterval);
+            score = 0;
+            document.querySelector(".score span").textContent = score;
+            manyBoxes = [];
+            currentCar = 0;
+            jumpSwitch = false;
+            lastSpacePressTime = 0;
+
+            frameRun();
+
+            const sun = document.querySelector(".sun");
+            const gameOver = document.querySelector(".game-over");
+            sun.style.animationPlayState = "running";
+            gameOver.style.display = "none";
+
+            // 스코어 인터벌 제거
+            if (scoreInterval) {
+                clearInterval(scoreInterval);
+            }
+            // 스코어 인터벌 다시시작
+            scoreInterval = setInterval(updateScore, 2000);
+        }
+
+        // 도착지에 도달하면 게임 성공 팝업 표시
+        function showGameSuccess() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            cancelAnimationFrame(animation);
+            clearInterval(scoreInterval);
+
+            const totalScore = document.querySelector(".total-score");
+            totalScore.textContent = `${score}`;
+
+            const sun = document.querySelector(".sun");
+            const gameSuccess = document.querySelector(".game-over");
+
+            sun.style.animationPlayState = "paused";
+            gameSuccess.style.display = "block";
+
+            let gameOverMsgElement = document.querySelector('.game-over .pop-up h2');
+            gameOverMsgElement.textContent = '충전소에 도착했습니다!';
+            const getCoinsButton = document.querySelector(".get-coins");
+            getCoinsButton.style.display = "block";
+            getCoinsButton.addEventListener("click", function () {
+                // "찌리릿 코인 받기" 버튼이 클릭되었을 때 수행할 동작
+                const coins = parseInt(localStorage.getItem("coins") || "0");
+                const newCoins = coins + 10; // 예: 10개의 찌리릿 코인 추가
+                localStorage.setItem("coins", newCoins.toString());
+                alert("찌리릿 코인 10개를 획득했습니다.");
+            });
+
+            // "다시하기" 버튼을 숨깁니다.
+            const replayButton = document.querySelector(".replay");
+            replayButton.style.display = "none";
+        }
+
+        frameRun();
+    </script>
