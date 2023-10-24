@@ -10,17 +10,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.board.model.Membership;
 import com.example.board.model.User;
+import com.example.board.repository.MembershipRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
 public class MemberShipController {
   @Autowired
 	UserRepository userRepository;
+	
+  @Autowired
+	MembershipRepository membershipRepository;
 	
 	@Autowired
 	HttpSession session;
@@ -37,7 +39,7 @@ public class MemberShipController {
     User user = (User) session.getAttribute("user_info");
 
 		if (user == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // or any other error status/code
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
     }
 
 		// 2. Create a new membership
@@ -45,14 +47,12 @@ public class MemberShipController {
     newMembership.setStartDate(LocalDate.now());
     newMembership.setEndDate(LocalDate.now().plusMonths(1));
 
-		// 3. Add the new membership to the user's memberships
-    user.getMemberships().add(newMembership);
-
-		// 4.Don't forget to set the user in the membership as well
+		
+		//3. session user정보 newmembership에 저장
     newMembership.setUser(user);
 
-		// Save the updated user (and therefore also the new membership)
-  	userRepository.save(user);
+		//4. newmembership정보 membershipRepository저장
+		membershipRepository.save(newMembership);
 
 		return ResponseEntity.ok().build();
 	}

@@ -22,7 +22,7 @@ public class Membership implements Serializable {
     private LocalDate startDate;
   	private LocalDate endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
   	@JoinColumn(name = "user_id")
   	private User user;
 }
