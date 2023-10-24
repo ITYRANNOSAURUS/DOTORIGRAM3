@@ -41,11 +41,9 @@
               [[${fileAtch.originalName}]]
             </a>
             <!-- 파일 삭제 버튼 -->
-<<<<<<< HEAD
+
             <button th:if="${session.user_info != null && session.user_info.email == qna.userId&& && fileAtch != null}"
-=======
-            <button th:if="${session.user_info != null && session.user_info.email == qna.userId && && fileAtch != null}"
->>>>>>> 9b7c9e2bb835d55c04e7fc6b6975f9cd3a24a413
+
               th:onclick="'fileRm(' + ${fileAtch.id} +')'">파일삭제✂️</button>
           </li>
         </ul>

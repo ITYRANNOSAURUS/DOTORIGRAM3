@@ -177,20 +177,6 @@
           <a th:href="@{/signin}" class="word">로그인</a>
           <a th:href="@{/signup}" class="word">회원가입</a>
         </div>
-
-<<<<<<< HEAD
-        <div th:unless="${session.user_info == null}" class="menubar">
-          <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
-          <br>
-          <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
-          <br>
-          <a th:href="${session.user_info != null and session.user_info.role == 'ADMIN'}"></a>
-          <a th:href="@{/admin}" class="word">
-            Admin
-          </a>
-          <br>
-          <a th:href="@{/signout}" class="word">로그아웃</a>
-=======
           <div th:unless="${session.user_info == null}" class="menubar">
             <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
             <br>
@@ -205,7 +191,6 @@
             <br>
             <a th:href="@{/signout}" class="word">로그아웃</a>
           </div>
->>>>>>> 89e453b9bfdd674354db8da922e4f7c47c56cab4
         </div>
       </div>
     </div>
