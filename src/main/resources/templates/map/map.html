@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-    
-    <head th:replace="common/head" >
-        <meta charset="utf-8">
-        <title>지도와 마커 표시하기</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<head th:replace="common/head">
+    <meta charset="utf-8">
+    <title>지도와 마커 표시하기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <style>
     body {
-        position: relative; 
+        position: relative;
         height: 100vh;
         background-color: #000;
         background-size: cover;
         background-repeat: no-repeat;
     }
-    
+
     .map-design {
         width: 100%;
         height: 450px;
         right: 0;
-        margin-top: 0rem;
+        margin-top: 4rem;
     }
 
     .info-box {
@@ -52,7 +52,6 @@
         height: 150px;
         font-size: 12px;
     }
-
 </style>
 
 <body>
@@ -61,26 +60,32 @@
     <nav th:replace="common/nav"></nav>
 
     <div id="map" class="map-design"></div>
-    
-        
+
+
 
     <div id="info-box"></div>
 
-    <input type="checkbox" id="areacheck1" onchange="handleCheckboxChange('북구', this.checked)">북구
-    <input type="checkbox" id="areacheck2" onchange="handleCheckboxChange('광산구', this.checked)">광산구
-    <input type="checkbox" id="areacheck3" onchange="handleCheckboxChange('서구', this.checked)">서구
-    <input type="checkbox" id="areacheck4" onchange="handleCheckboxChange('동구', this.checked)">동구
-    <input type="checkbox" id="areacheck5" onchange="handleCheckboxChange('남구', this.checked)">남구
-    <input type="checkbox" id="areacheck6" onchange="handleCheckboxChange2('전체', this.checked)">전체
-    
-    
-    
-    
+    <label style="color: white;"><input type="checkbox" id="areacheck1"
+            onchange="handleCheckboxChange('북구', this.checked)">북구</label>
+    <label style="color: white;"><input type="checkbox" id="areacheck2"
+            onchange="handleCheckboxChange('광산구', this.checked)">광산구</label>
+    <label style="color: white;"><input type="checkbox" id="areacheck3"
+            onchange="handleCheckboxChange('서구', this.checked)">서구</label>
+    <label style="color: white;"><input type="checkbox" id="areacheck4"
+            onchange="handleCheckboxChange('동구', this.checked)">동구</label>
+    <label style="color: white;"><input type="checkbox" id="areacheck5"
+            onchange="handleCheckboxChange('남구', this.checked)">남구</label>
+    <label style="color: white;"><input type="checkbox" id="areacheck6"
+            onchange="handleCheckboxChange2('전체', this.checked)">전체</label>
+
+
+
+
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f6654953f7f2de9be8090793a3c14e09&libraries=services"></script>
     <script>
         let map;
         let markers = [];
-        
+
         navigator.geolocation.getCurrentPosition(function (position) {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
@@ -95,25 +100,25 @@
             };
             map = new kakao.maps.Map(container, options);
         }
-        var content='';
+        var content = '';
         const infowindow = new kakao.maps.InfoWindow({
             content: content,
             removable: true
         });
         function getData(city) {
             fetch('/tetest/data')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(v => {
-                    const lat = v.latitude;
-                    const lng = v.longitude;
-                    const cityData = v.city;
-                    
-                    if (cityData === city) {
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(v => {
+                        const lat = v.latitude;
+                        const lng = v.longitude;
+                        const cityData = v.city;
+
+                        if (cityData === city) {
                             var content = `<div class="info-box"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim}</div>`;
                             createMarker(lat, lng, content);
                         }
-                        
+
                     });
                 })
                 .catch(error => console.log(error));
@@ -123,41 +128,41 @@
             const markerPosition = new kakao.maps.LatLng(lat, lng);
             var imageSrc = 'https://cdn-icons-png.flaticon.com/512/7512/7512521.png', // 마커이미지의 주소입니다    
                 imageSize = new kakao.maps.Size(50, 52), // 마커이미지의 크기입니다
-                imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-                // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+                imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
             const marker = new kakao.maps.Marker({
                 position: markerPosition,
                 image: markerImage
             });
-            
-           
-            
+
+
+
             kakao.maps.event.addListener(marker, 'click', function () {
                 infowindow.open(map, marker);
                 map.panTo(markerPosition);
             });
-            
+
             markers.push(marker);
             marker.setMap(map);
         }
-        
-        
-        function removeInfo(){
+
+
+        function removeInfo() {
 
             infowindow.close();
         }
 
         function removeMarkers(city) {
-            markers.forEach(marker=> {
-                
+            markers.forEach(marker => {
+
                 marker.setMap(null); // 지도에서 제거
             });
             markers = markers.filter(marker => marker.city !== city);
-            
+
         }
 
-       
+
 
         function handleCheckboxChange(city, checked) {
             if (checked) {
@@ -165,9 +170,9 @@
             } else {
                 removeInfo();
                 removeMarkers(city);
-                }
             }
-        
+        }
+
         function handleCheckboxChange2(city, checked) {
             if (checked) {
                 getData('북구');
@@ -183,7 +188,7 @@
                 removeMarkers('서구');
             }
         }
-        
+
     </script>
 
 </body>

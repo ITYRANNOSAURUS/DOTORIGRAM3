@@ -150,12 +150,9 @@
           </div>
           <div class="menubar">
             <a class="word">충전소 찾기</a>
-          </div>
-          <div class="menubar">
-            <a class="word">정보</a>
             <div class="submenu">
-              <a class="word" href='/info/news?searchText=전기차'>전기차 뉴스</a>
-              <a class="word" th:href="@{/info/reels}">전기차 영상</a>
+              <a class="word" th:href="@{/map}">지도</a>
+              <a class="word" th:href="@{/map}">목록 추가</a>
             </div>
           </div>
           <div class="menubar">
@@ -165,14 +162,26 @@
               <a class="word" th:href="@{/qna/list}">Q&A</a>
             </div>
           </div>
-
-          <div th:if="${session.user_info == null}" class="menubar">
-            <a th:href="@{/signin}" class="word">로그인</a>
-            <a th:href="@{/signup}" class="word">회원가입</a>
+          <div class="menubar">
+            <a class="word">미디어</a>
+            <div class="submenu">
+              <a class="word" th:href="@{/media/news?searchText=전기차}">전기차 뉴스</a>
+              <a class="word" th:href="@{/media/reels}">전기차 영상</a>
+              <a class="word" th:href="@{/media/gamepage}">전기차 게임</a>
+            </div>
           </div>
+        </div>
+        <br>
+        <br>
+        <div th:if="${session.user_info == null}" class="menubar">
+          <a th:href="@{/signin}" class="word">로그인</a>
+          <a th:href="@{/signup}" class="word">회원가입</a>
+        </div>
 
           <div th:unless="${session.user_info == null}" class="menubar">
             <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
+            <br>
+              <a class="word" th:href="@{/coupon}">나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
             <br>
             <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
             <br>
@@ -185,9 +194,10 @@
           </div>
         </div>
       </div>
-
     </div>
-    </nav>
+
+  </div>
+  </nav>
   </div>
   </div>
   </div>

@@ -73,7 +73,7 @@
   .dropdown-toggle::after {
     display: none;
   }
-  
+
   .navbar-nav.ml-auto li a {
     font-size: 15px;
   }
@@ -103,7 +103,7 @@
         <a class="nav-link dropdown-toggle active" href="#" id="infoDropdown" role=" button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false" style="color: rgb(255, 179, 0);">충전소 찾기</a>
         <div class="dropdown-menu" aria-labelledby="infoDropdown">
-          <a class='dropdown-item' th:href='@{/map}'>지도</a>
+          <a class='dropdown-item' href='/map'>지도</a>
           <div class="dropdown">
             <a class='dropdown-item' href='/post/a'>목록</a>
           </div>
@@ -128,9 +128,12 @@
         <a class="nav-link dropdown-toggle active" href="#" id="infoDropdown" role=" button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false" style="color: rgb(255, 179, 0);">미디어</a>
         <div class="dropdown-menu" aria-labelledby="infoDropdown">
-          <a class='dropdown-item' href='/info/news?searchText=전기차'>전기차 뉴스</a>
+          <a class='dropdown-item' href='/media/news?searchText=전기차'>전기차 뉴스</a>
           <div class="dropdown">
-            <a class='dropdown-item' href='/info/reels'>전기차 영상</a>
+            <a class='dropdown-item' href='/media/reels'>전기차 영상</a>
+            <div class="dropdown">
+              <a class='dropdown-item' th:href='@{/media/gamepage}'>전기차 게임</a>
+            </div>
           </div>
         </div>
       </li>

@@ -265,9 +265,4 @@ public class BoardController {
 		return "board/view";
 	}
 
-	@GetMapping("/info/reels")
-	public String reels() {
-		return "reels";
-	}
-
 }

@@ -16,15 +16,19 @@
     }
 
     .news-content {
-        margin-right: 10rem;
+        margin-right: 17rem;
         max-width: 100%;
         font-family: 'Nanum Myeongjo', serif;
+    }
+
+    .news-link {
+        font-size: 1.2rem;
     }
 
 
     .newstitle {
         text-align: center;
-        padding-top: 3.5rem;
+        padding-top: 4rem;
         padding-bottom: 7rem;
         font-size: 3.5rem;
         font-family: 'TheJamsil5Bold';
@@ -33,23 +37,40 @@
     .news-title {
         font-weight: bold;
         font-size: 1.8rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        text-decoration: none !important;
+    }
+
+    .news-item a:hover,
+    .news-item a:focus {
+        color: #ffbf00;
+        text-decoration: none;
+    }
+
+    .news-item p {
+        text-decoration: none !important;
     }
 
     .news-item {
         display: flex;
         align-items: start;
         gap: 10rem;
-        margin-bottom: 2rem;
+        margin-bottom: 5rem;
     }
 
     .news-image {
         max-width: 100px;
-        margin-left: 4rem;
+        margin-left: 10rem;
     }
 
     .news-content {
         flex: 1;
+        margin-left: 2rem;
+    }
+
+    .news-detail {
+        font-size: 1rem;
+        margin-top: 2rem;
     }
 
     @font-face {
@@ -63,6 +84,17 @@
 
     .nanummyeongjo * {
         font-family: 'Nanum Myeongjo', serif;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+        color: #ffbf00;
+        text-decoration: none;
     }
 </style>
 
@@ -82,7 +114,7 @@
         <!-- 뉴스 이미지 -->
         <div class="news-image">
             <a th:href="${item.link}" target="_blank">
-                <img th:src="@{/daram.png}" alt="News image" width="200" height="auto">
+                <img th:src="@{/electriccar.jpg}" alt="News image" width="250" height="auto">
             </a>
         </div>
 
@@ -94,23 +126,26 @@
 
             <!-- 뉴스 기사의 내용을 요약한 패시지 정보 -->
             <a th:href="${item.link}" target="_blank">
-                <p th:utext="${item.description}"></p>
+                <h4 h3 class="news-link" th:utext="${item.description}"></h4>
             </a>
 
-            <!-- 뉴스 기사 원문의 URL -->
-            <p><strong>원문 링크:</strong>
-                <a th:href="${item.originallink}" target="_blank">원문 보기</a>
-            </p>
 
-            <!-- 뉴스 기사의 네이버 뉴스 URL -->
-            <p><strong>네이버 뉴스 링크:</strong>
-                <a th:href="${item.link}" target="_blank">네이버에서 보기</a>
-            </p>
+            <div class="news-detail">
+                <!-- 뉴스 기사 원문의 URL -->
+                <p><strong>원문 링크:</strong>
+                    <a th:href="${item.originallink}" target="_blank">원문 보기</a>
+                </p>
 
-            <!-- 뉴스 기사가 네이버에 제공된 시간 -->
-            <p><strong>기사 작성 시간:</strong>
-                <span th:text="${item.pubDate}"></span>
-            </p>
+                <!-- 뉴스 기사의 네이버 뉴스 URL -->
+                <p><strong>네이버 뉴스 링크:</strong>
+                    <a th:href="${item.link}" target="_blank">네이버에서 보기</a>
+                </p>
+
+                <!-- 뉴스 기사가 네이버에 제공된 시간 -->
+                <p><strong>기사 작성 시간:</strong>
+                    <span th:text="${item.pubDate}"></span>
+                </p>
+            </div>
         </div>
     </div>
 </body>
