@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+    .btn-primary {
+        background-color: #efc19d;
+        border-color: #efc19d;
+        color: black;
+    }
+</style>
+
+<body>
+    <div class="container mt-5">
+        <div>
+            <h2>Search Charging Stations</h2>
+
+            <div id='map' style='width:500px;height:400px;'></div>
+
+            <script type="text/javascript"
+                src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da146a2a6ff6a54903c1d2a7caecd1c7&libraries=services"></script>
+
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+
+            <script type='text/javascript'>
+                let map;
+                let markers =[];
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    createMap(lat, lng);
+                    getData();
+                    createMarker2(lat,lng);
+                });
+                function createMap(lat, lng) {
+                    const container = document.getElementById('map');
+                    const options = {
+                        center: new kakao.maps.LatLng(lat, lng),
+                        level: 6
+                    };
+                    map = new kakao.maps.Map(container, options);
+                }
+
+                function getData(){
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    fetch('/tetest/data')
+                    .then(response => response.json())
+                    .then(data =>{
+                        data.forEach(v=> {
+                            const stationlat = v.latitude;
+                            const stationlng = v.longitude;
+                            
+                            
+                            let distancesArray = [];
+                            let distanceInKm = getDistanceFromLatLonInKm( lng,lat, stationlng, stationlat);
+                            
+                            if (distanceInKm <= 2) {
+                                createMarker(stationlat,stationlng);
+                                }
+                            });
+                        }) 
+                            
+                    }
+                    );
+                    }
+                    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+                        var R = 6371; // Radius of the earth in km
+                        var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+                        var dLon = deg2rad(lon2 - lon1);
+                        var a =
+                            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                            Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                            ;
+                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                        var d = R * c; // Distance in km
+                        return d;
+                    }
+                    function deg2rad(deg) {
+                        return deg * (Math.PI / 180)
+                    }
+
+            function createMarker(lat,lng){
+                const markerPosition = new kakao.maps.LatLng(lat,lng);
+                var imageSrc = 'https://cdn-icons-png.flaticon.com/512/7512/7512521.png', // 마커이미지의 주소입니다    
+                imageSize = new kakao.maps.Size(50, 52), // 마커이미지의 크기입니다
+                imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+                // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+                const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+            markers.push(marker);
+            marker.setMap(map);
+            }
+            function createMarker2(lat,lng){
+                
+                const markerPosition = new kakao.maps.LatLng(lat,lng);
+                var imageSrc = "mini.png", // 마커이미지의 주소입니다    
+                imageSize = new kakao.maps.Size(50, 52), // 마커이미지의 크기입니다
+                imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+                // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+                const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+            markers.push(marker);
+            marker.setMap(map);
+            }
+                
+            </script>
+        </div>
+    </div>
+
+</body>
+
+</html>
