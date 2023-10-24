@@ -4,22 +4,55 @@
 <head th:replace="common/head"></head>
 
 <style>
-  
+  @font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  body {
+    font-family: 'TheJamsil5Bold';
+    height: 100vh;
+    /* 화면 높이의 100%로 설정 */
+    background-color: #000;
+    background-size: cover;
+    /* 이미지를 화면에 맞게 조절 */
+    background-repeat: no-repeat;
+    /* 이미지 반복을 중지 */
+  }
+
   .btn-primary {
     background-color: #efc19d;
     border-color: #efc19d;
     color: black;
   }
-  #pwd  i .eyes {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto 2px;
-  height: 30px;
-  font-size: 22px;
-  cursor: pointer;
-}
+
+  #pwd i .eyes {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto 2px;
+    height: 30px;
+    font-size: 22px;
+    cursor: pointer;
+    color: white;
+  }
+
+  label {
+    color: white
+  }
+
+  .fa-eye:before {
+    content: "\f06e";
+    color: white;
+  }
+
+  .fa-eye-slash:before {
+    content: "\f070";
+    color: white;
+  }
 </style>
 
 <body>
@@ -40,8 +73,8 @@
           <label for="pwd">Password:</label>
           <input type="password" class="form-control" id="pwd" name="pwd" pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}"
             title="영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호를 입력하세요" placeholder="영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호" required>
-            <i class="fa fa-eye fa-lg eyes" th:attr="onclick='togglePasswordVisibility()'"></i>
-            
+          <i class="fa fa-eye fa-lg eyes" th:attr="onclick='togglePasswordVisibility()'"></i>
+
         </div>
         <div class="mb-3">
           <label for="name">Name:</label>
@@ -58,12 +91,12 @@
           <select class="form-select" id="company" name="company">
             <option value="">회사를 선택하세요</option>
             <option th:each="type : ${companys}" th:value="${type.Id}" th:text="${type.companyName}"></option>
-        </select>
+          </select>
           <label for="carType">차종 선택:</label>
           <select class="form-select" id="carname" name="carname">
             <option value="">차종을 선택하세요</option>
             <!-- <option th:each="type : ${carTypes}" th:value="${type.name}" th:text="${type.name}"></option> -->
-        </select>
+          </select>
         </div>
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="isAdmin" name="isAdmin">
@@ -100,19 +133,19 @@
       function togglePasswordVisibility() {
         var $passwordInput = $('#pwd'); // ID를 사용하여 비밀번호 입력란을 선택
         if ($passwordInput.attr('type') === 'password') {
-            $('.eyes').removeClass('fa-eye').addClass('fa-eye-slash');
-            $passwordInput.attr('type', 'text');
+          $('.eyes').removeClass('fa-eye').addClass('fa-eye-slash');
+          $passwordInput.attr('type', 'text');
         } else {
-            $('.eyes').removeClass('fa-eye-slash').addClass('fa-eye');
-            $passwordInput.attr('type', 'password');
+          $('.eyes').removeClass('fa-eye-slash').addClass('fa-eye');
+          $passwordInput.attr('type', 'password');
         }
-      
+
       }
 
       //회사 옵션에 따라 해당 차 종류 가져오기
       const company = document.querySelector('#company');
       const carSelect = document.querySelector('#carname');
-      company.addEventListener('change', async(e) => {
+      company.addEventListener('change', async (e) => {
         // console.dir(e.target);
         // console.dir(e.target.selectedIndex);
         const index = e.target.selectedIndex;
@@ -126,7 +159,7 @@
         const data = await fetch(`/getCarType?companyName=${selectedCompany}`);
         const res = await data.json();
         console.log(res);
-       
+
         // 기존 옵션 제거
         carSelect.innerHTML = '';
 
@@ -139,18 +172,18 @@
 
         // 새로운 옵션 추가
         res.forEach(carType => {
-        let optionElement= document.createElement('option');
-        optionElement.value=carType.name;
-        optionElement.text=carType.name;
+          let optionElement = document.createElement('option');
+          optionElement.value = carType.name;
+          optionElement.text = carType.name;
 
-        carSelect.appendChild(optionElement);
+          carSelect.appendChild(optionElement);
         });
       }
 
-</script>
+    </script>
   </div>
 
-  <div th:replace="common/footer">
+  <div th:replace="common/footer" style="margin-top: 1rem;">
   </div>
 
 </body>

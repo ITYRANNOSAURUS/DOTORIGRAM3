@@ -7,7 +7,15 @@
 </head>
 
 <style>
+  @font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+
   body {
+    font-family: 'TheJamsil5Bold';
     height: 100vh;
     /* 화면 높이의 100%로 설정 */
     background-color: #000;
@@ -85,7 +93,6 @@
           <tr th:each="board : ${list}" th:onclick="'window.location = \'/board/view?id=' + ${board.id} + '\''">
             <td th:text="${board.id}"></td>
             <td th:text="${board.title}"></td>
-            <!-- <td th:text="${board.userId}"></td> -->
             <td th:text="${board.user.name}"></td>
           </tr>
         </tbody>

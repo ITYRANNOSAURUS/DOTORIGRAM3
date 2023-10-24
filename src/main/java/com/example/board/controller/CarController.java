@@ -35,40 +35,18 @@ public class CarController {
 
     @PostMapping("/addCar")
     public String addCarTypePost(@ModelAttribute CarQna carqna,Model model) {
-    carQnaRepository.save(carqna);
+      List<CarQna> carQnas = carQnaRepository.findAll();
+		  model.addAttribute("carQnas", carQnas);
+      carQnaRepository.save(carqna);
         return "redirect:/carqnalist";
     }
 
     @GetMapping("/carqnalist")
-	public String carqnalist(Model model) {
+	  public String carqnalist(Model model) {
 		List<CarQna> carQnas = carQnaRepository.findAll();
 		model.addAttribute("carQnas", carQnas);
 		return "admin/carqnalist";
 	}
-    // @GetMapping("/addCar")
-    // public String addCarType(Model model) {
-    //   List<CarType> carTypes = carTypeRepository.findAll();
-    //   model.addAttribute("carTypes", carTypes);
-    //   List<Company> companys = companyRepository.findAll();
-		//   model.addAttribute("companys", companys);
-        
-    //   return "admin/carform";
-    // }
-
-    // @PostMapping("/addCar")
-    // public String addCarTypePost(@RequestParam("companyName") String companyName, @RequestParam("name") String name) {
-    
-    //   CarType carType = new CarType();
-    //   carType.setName(name);
-    //   carTypeRepository.save(carType);
-
-    //   Company company = new Company();
-    //   company.setCompanyName(name);
-    //   companyRepository.save(company);
-      
-
-    //     return "redirect:/addcar";
-    // }
    
 
 }

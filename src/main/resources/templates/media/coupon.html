@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="common/head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+    @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    body {
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+        font-family: 'TheJamsil5Bold';
+    }
+
+    h1 {
+        color: wheat;
+        text-align: center;
+        padding: 20px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 80%;
+        margin: 0 auto;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+        padding: 12px 15px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<body>
+    <div th:replace="common/header">
+
+    </div>
+
+    <nav th:replace="common/nav">
+
+    </nav>
+    <div class="exchange-box">
+        <h1>쿠폰함</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>쿠폰 이름</th>
+                    <th>쿠폰 번호</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="coupon : ${coupons}">
+                    <td th:text="${coupon.name}"></td>
+                    <td th:text="${coupon.code}"></td>
+                  </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="common/footer">
+    </div>
+    
+</body>

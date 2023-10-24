@@ -288,6 +288,16 @@
         margin-left: 5px
     }
 
+    .newCouponInput {
+        display: flex;
+    }
+
+    #usable-coupon,
+    #new-coupon {
+        height: 30px;
+        margin-top: 20px;
+    }
+
     /* 3d 버튼 */
     .btn-3d {
         position: relative;
@@ -352,6 +362,31 @@
 
     .btn-gradient.yellow:active {
         background: #DBC05B;
+    }
+
+    /* 결제완료 modal */
+    .content-select2 {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        margin: 30px auto;
+        flex-direction: column;
+    }
+
+    .payment-info {
+        border: 1px solid tan;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .payment-name {
+        color: red;
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .payment-notice {
+        text-align: center;
     }
 </style>
 
@@ -475,12 +510,14 @@
 
                 <div class="checkout-info">
                     <label>쿠폰 사용 및 추가</label><br />
-                    <select id="usable-coupon" name="coupon" onchange="changeCoupon()">
-                        <option value="">선택 안함</option>
-                        <option value="-1">신규 쿠폰 등록</option>
-                    </select><br />
-                    <input type="text" id="new-coupon" style="display: none;" placeholder='쿠폰 코드 입력'>
-
+                    <div class="newCouponInput">
+                        <select id="usable-coupon" name="coupon" onchange="changeCoupon()">
+                            <option value="">선택 안함</option>
+                            <option value="-1">신규 쿠폰 등록</option>
+                        </select><br />
+                        <input type="text" id="new-coupon" style="display: none;" placeholder='쿠폰 코드 입력'>
+                        <button id="select-coupon">쿠폰 등록</button>
+                    </div>
                 </div>
 
                 <!-- 버튼 -->
@@ -515,17 +552,18 @@
                     <div class="row last">
                         <span>총 결제 금액</span>
                         <div>
-                            <span id="resultPrice" data-org="4900">3,900</span>
+                            <span id="resultPrice" data-org="3900">3,900</span>
                             <span class="won">원</span>
                         </div>
                     </div>
                 </div>
                 <div class="payment-wrapper">
-                    <input class="consent-info" type="radio" required>주문 내용을 확인했으며, 위 내용에 모두 동의합니다.<br>
+                    <input class="consent-info" name="consent-info" type="radio" required>주문 내용을 확인했으며, 위 내용에 모두
+                    동의합니다.<br>
                     <!-- 버튼 -->
                     <div class="payment-btn" style="display: flex; justify-content: center;
                     align-items: center;">
-                        <a href="#" type="submit" class="btn-3d yellow">결제하기</a>
+                        <a href="javascript:;" type="submit" class="btn-3d yellow">결제하기</a>
                     </div>
                 </div>
                 <div class="information-contain">
@@ -537,57 +575,164 @@
                 </div>
             </div>
         </div>
+    </div>
+    <!-- 결제 완료 Modal -->
+    <div id="paymentModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content" style="color: black;">
+            <span class="close">&times;</span>
+            <div class="subscribe-content">
+                <div class="content-info">
+                    결제 성공
+                </div>
+                <hr>
+                <div class="content-select2">
+                    <label for="payment-name" class="payment-name">
+                        <span class="payment-name">[피카패스 멤버십 1개월]</span>
+                    </label>
+                    <div class="payment-notice">
+                        <h2 style="margin: 30px;">결제가 완료되었습니다!</h2>
+                        <p>PIKAPASS 멤버십 가입이 완료되었습니다.</p>
+                        <p>결제하신 카드로 다음 달도 결제됩니다.</p>
+                    </div>
+                    <div class="payment-info">
+                        <p>이용기간 : 2023.10.24 ~ 2023.11.24</p>
+                        <p>다음 결제일 : 2023.11.24</p>
+                        <p>결제 금액 : 3,900원</p>
+                    </div>
+                    <div style="margin: 20px;">
+                        <a th:href="@{/home}" style="color: black; margin-top: 10px;">홈으로 돌아가기</a>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script>
-            function subscribelink(){
-                location = '/subscribe';
-            }
-            // modal
-            var modal = document.getElementById("myModal");
-            var btn = document.getElementsByClassName("custom-btn btn-6")[1];
-            var span = document.getElementsByClassName("close")[0];
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+        function subscribelink() {
+            location = '/subscribe';
+        }
+        // modal
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementsByClassName("custom-btn btn-6")[1];
+        var span = document.getElementsByClassName("close")[0];
 
-            btn.onclick = function () {
-                modal.style.display = "block";
-            }
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
 
-            span.onclick = function () {
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
                 modal.style.display = "none";
             }
+        }
 
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
+        // 결제
+        function changeCoupon() {
+            var couponSelect = document.getElementById('usable-coupon');
+            var newCouponInput = document.getElementById('new-coupon');
+
+            // 만약 '신규 쿠폰 등록'이 선택되었다면, 새로운 쿠폰을 등록할 수 있는 입력 필드를 보여줌
+            if (couponSelect.value == '-1') {
+                newCouponInput.style.display = 'block';
+            } else {
+                newCouponInput.style.display = 'none';
+                newCouponInput.value = '';
+            }
+        }
+
+        function pay(method) {
+
+            // 여기서 각각의 결제 방법에 따른 로직을 구현하면 됩니다.
+            alert(method + "로 결제가 진행됩니다.");
+
+        }
+
+        // JQuery를 사용한 초기화 코드
+        $(document).ready(function () {
+
+        });
+
+        // 가격 정보 업데이트 함수
+        function updatePrice() {
+            var sourcePrice = parseInt($("#sourcePrice").data('org'));
+            var discountedPrice = parseInt($("#discountedPrice").data('org'));
+            $("#resultPrice").text(sourcePrice - discountedPrice);
+        }
+
+        // 쿠폰 사용 함수
+        function useCoupon(couponCode) {
+            // 'FREE3900'이라는 코드가 입력되었을 때만 유효하다고 가정.
+            if (couponCode === 'FREE3900') {
+                $("#discountedPrice").data('org', 3900);
+                $("#discountedPrice").text(3900);
+                updatePrice();
+                alert("쿠폰이 적용되었습니다.");
+            } else {
+                alert("유효하지 않은 쿠폰입니다.");
+            }
+        }
+
+        $(document).ready(function () {
+            $("#select-coupon").click(function (e) {
+                e.preventDefault();
+                var newCouponInput = $('#new-coupon');
+                if (newCouponInput.is(':visible')) { // 만약 신규쿠폰 등록 필드가 보이면,
+                    useCoupon(newCouponInput.val()); // 해당 값으로 useCoupon 함수 호출
                 }
-            }
-
-            // 결제
-            function changeCoupon() {
-                var couponSelect = document.getElementById('usable-coupon');
-                var newCouponInput = document.getElementById('new-coupon');
-
-                // 만약 '신규 쿠폰 등록'이 선택되었다면, 새로운 쿠폰을 등록할 수 있는 입력 필드를 보여줌
-                if (couponSelect.value == '-1') {
-                    newCouponInput.style.display = 'block';
-                } else {
-                    newCouponInput.style.display = 'none';
-                    newCouponInput.value = '';
-                }
-            }
-
-            function pay(method) {
-
-                // 여기서 각각의 결제 방법에 따른 로직을 구현하면 됩니다.
-                alert(method + "로 결제가 진행됩니다.");
-
-            }
-
-            // JQuery를 사용한 초기화 코드
-            $(document).ready(function () {
-
             });
-        </script>
+        });
+
+        // 결제하기 버튼 클릭 이벤트 핸들러
+        $('a.btn-3d.yellow').click(function (e) {
+            e.preventDefault();
+
+            var isAgreed1 = $('input[name="subscription"]').is(':checked');
+            var isAgreed2 = $('input[name="consent-info"]').is(':checked');
+            var totalPayment = parseInt($('#resultPrice').text().replace(',', ''));
+            // 두 개의 radio input 모두 선택되었고
+            if (isAgreed1 && isAgreed2) {
+                //총 결제 금액이 0일 때
+                if (totalPayment === 0) {
+                    $.ajax({
+                        url: '/membership',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                           
+                        }),
+                        success: function () {
+                            alert('결제가 진행됩니다.')
+                            // 기본으로 열려 있던 모달 닫기
+                            $('#myModal').css('display', 'none');
+
+                            // 결제 완료 모달 팝업 표시
+                            $('#paymentModal').css('display', 'block');
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log('HTTP status code:', jqXHR.status);
+                            console.log('textStatus:', textStatus);
+                            console.log('errorThrown:', errorThrown);
+                            alert("Error occurred. Please try again.");
+                        }
+                    });
+                } else {
+                    alert('결제 먼저 진행하십시오.')
+                }
+            } else {
+                alert('결제 정보에 동의해야 결제를 진행할 수 있습니다.');
+            }
+        });
+        // 모달 닫기 버튼 클릭 이벤트 핸들러
+        $('.close').click(function () {
+            $('#paymentModal').css('display', 'none');
+        });
+    </script>
 </body>
 
 </html>

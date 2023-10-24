@@ -6,28 +6,52 @@
 </head>
 
 <style>
+  @font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  body {
+    font-family: 'TheJamsil5Bold';
+    height: 100vh;
+    /* 화면 높이의 100%로 설정 */
+    background-color: #000;
+    background-size: cover;
+    /* 이미지를 화면에 맞게 조절 */
+    background-repeat: no-repeat;
+    /* 이미지 반복을 중지 */
+  }
+
   .change-color {
-    background-color: #f0e3d9;
-    border-color: #f0e3d9;
+    background-color: #ffed91;
+    border-color: #ffed91;
     text-decoration: none;
     color: black;
   }
 
   .change-color:hover {
-    background-color: #be5d12;
-    border-color: #be5d12;
+    color: black;
+    background-color: #fff9cd;
+    border-color: #fff9cd;
   }
-  .exit{
+
+  .exit {
     display: flex;
     justify-content: center;
     color: black;
     text-decoration: none;
     width: 200px;
   }
+
   .exit-link {
-    display: grid!important;
+    display: grid !important;
     justify-content: center;
     margin-top: 50px;
+  }
+  .card {
+    padding: 2rem;
   }
 </style>
 
@@ -42,37 +66,39 @@
   </nav>
 
   <div class="container mt-5">
-    <div class="row">
-      <form method="post" action="/mypage">
-        <div class="mb-3">
-          <input type="hidden" id="id" name="id" th:value="${user.id}">
-          <label for="email">Email:</label>
-          <input type="text" class="form-control" id="email" name="email" th:value="${user.email}" readonly>
+    <div class="card">
+      <div class="row">
+        <form method="post" action="/mypage">
+          <div class="mb-3">
+            <input type="hidden" id="id" name="id" th:value="${user.id}">
+            <label for="email">Email:</label>
+            <input type="text" class="form-control" id="email" name="email" th:value="${user.email}" readonly>
 
+          </div>
+          <div class="mb-3">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" name="pwd" th:value="${user.pwd}" readonly hidden>
+          </div>
+          <div class="mb-3">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" th:value="${user.name}">
+          </div>
+          <div class="mb-3">
+            <label for="phone">Phone:</label>
+            <input type="text" class="form-control" id="phone" name="phone" th:value="${user.phone}">
+          </div>
+          <div class="mb-3">
+            <label for="car">My Car:</label>
+            <input type="text" class="form-control" id="car" name="car" th:value="${user.carname}">
+          </div>
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary change-color" id="update" th:onclick="mypage()">회원정보 수정</button>
+          </div>
+
+        </form>
+        <div class="exit-link">
+          <button class="exit" id="exit" th:onclick="confirmDeletion()">회원탈퇴</button>
         </div>
-        <div class="mb-3">
-          <label for="pwd">Password:</label>
-          <input type="password" class="form-control" id="pwd" name="pwd" th:value="${user.pwd}" readonly hidden>
-        </div>
-        <div class="mb-3">
-          <label for="name">Name:</label>
-          <input type="text" class="form-control" id="name" name="name" th:value="${user.name}">
-        </div>
-        <div class="mb-3">
-          <label for="phone">Phone:</label>
-          <input type="text" class="form-control" id="phone" name="phone" th:value="${user.phone}">
-        </div>
-        <div class="mb-3">
-          <label for="car">My Car:</label>
-          <input type="text" class="form-control" id="car" name="car" th:value="${user.carname}">
-        </div>
-        <div class="d-grid gap-2">
-          <button class="btn btn-primary change-color" id="update" th:onclick="mypage()">회원정보 수정</button>
-        </div>
-       
-      </form>
-      <div class="exit-link">
-        <button class="exit" id="exit" th:onclick="confirmDeletion()">회원탈퇴</button>
       </div>
     </div>
   </div>
@@ -80,9 +106,9 @@
   <div th:replace="common/footer">
   </div>
   <script>
-    function confirmDeletion(){
-    if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
-        location.href = "/exit"; 
+    function confirmDeletion() {
+      if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
+        location.href = "/exit";
       }
     }
   </script>

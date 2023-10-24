@@ -1,8 +1,5 @@
 package com.example.board.controller;
 
-
-
-
 import java.util.List;
 
 
