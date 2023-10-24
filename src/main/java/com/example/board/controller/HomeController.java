@@ -53,6 +53,7 @@ public class HomeController {
 		return "index";
 	}
 
+<<<<<<< HEAD
 	@GetMapping("/getCoins")
 	public String getCoins(Model model) {
 		User user = (User) session.getAttribute("user_info");
@@ -68,6 +69,11 @@ public class HomeController {
 		}
 
 		return "redirect:/home";
+=======
+	@GetMapping("/media/gamepage")
+	public String gamepage() {
+		return "/gamepage";
+>>>>>>> b9bd9d25ac9df3adc1626921188dc07aa6060c51
 	}
 
 	@GetMapping("/media/reels")

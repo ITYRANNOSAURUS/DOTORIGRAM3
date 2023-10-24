@@ -150,7 +150,7 @@
           </div>
           <div class="menubar">
             <a class="word">충전소 찾기</a>
-            <div class="submenu">         
+            <div class="submenu">
               <a class="word" th:href="@{/map}">지도</a>
               <a class="word" th:href="@{/map}">목록 추가</a>
             </div>
@@ -161,23 +161,24 @@
               <a class="word" th:href="@{/board/list}">공지사항</a>
               <a class="word" th:href="@{/qna/list}">Q&A</a>
             </div>
-          </div> 
+          </div>
           <div class="menubar">
             <a class="word">미디어</a>
             <div class="submenu">
               <a class="word" th:href="@{/media/news?searchText=전기차}">전기차 뉴스</a>
               <a class="word" th:href="@{/media/reels}">전기차 영상</a>
-              <a class="word" th:href="@{/media/game}">전기차 게임</a>
+              <a class="word" th:href="@{/media/gamepage}">전기차 게임</a>
             </div>
           </div>
-          </div>
-          <br>
-          <br>
-          <div th:if="${session.user_info == null}" class="menubar">
-            <a th:href="@{/signin}" class="word">로그인</a>
-            <a th:href="@{/signup}" class="word">회원가입</a>
-          </div>
+        </div>
+        <br>
+        <br>
+        <div th:if="${session.user_info == null}" class="menubar">
+          <a th:href="@{/signin}" class="word">로그인</a>
+          <a th:href="@{/signup}" class="word">회원가입</a>
+        </div>
 
+<<<<<<< HEAD
           <div th:unless="${session.user_info == null}" class="menubar">
             <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
             <br>
@@ -192,11 +193,25 @@
             <br>
             <a th:href="@{/signout}" class="word">로그아웃</a>
           </div>
+=======
+        <div th:unless="${session.user_info == null}" class="menubar">
+          <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
+          <br>
+          <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
+          <br>
+          <a th:href="${session.user_info != null and session.user_info.role == 'ADMIN'}"></a>
+          <a th:href="@{/admin}" class="word">
+            Admin
+          </a>
+          <br>
+          <a th:href="@{/signout}" class="word">로그아웃</a>
+>>>>>>> b9bd9d25ac9df3adc1626921188dc07aa6060c51
         </div>
       </div>
-
     </div>
-    </nav>
+
+  </div>
+  </nav>
   </div>
   </div>
   </div>
