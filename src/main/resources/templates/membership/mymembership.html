@@ -88,25 +88,10 @@
           <label for="end-date">멤버십 종료 날짜:</label>
           <input type="text" class="form-control" id="end-date" name="end-date" th:value="${user.endDate}">
         </div>
-        <!-- <div class="d-grid gap-2">
-          <button class="btn btn-primary change-color" id="update" th:onclick="mypage()">회원정보 수정</button>
-        </div>  -->
       </div>
-      <!-- <div class="exit-link">
-        <button class="exit" id="exit" th:onclick="confirmDeletion()">쿠폰함 가기</button>
-      </div> -->
     </div>
   </div>
-
-  <div th:replace="common/footer">
-  </div>
-  <script>
-    function confirmDeletion() {
-      if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
-        location.href = "/exit";
-      }
-    }
-  </script>
+ 
 </body>
 
 </html>
