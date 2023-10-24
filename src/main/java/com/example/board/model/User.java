@@ -21,7 +21,7 @@ import lombok.Data;
 public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	private String email;
 	private String pwd;
 	private String name;
@@ -45,6 +45,9 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
 	List<Board> boards = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user")
+    private List<Membership> memberships;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Coupon> coupons;

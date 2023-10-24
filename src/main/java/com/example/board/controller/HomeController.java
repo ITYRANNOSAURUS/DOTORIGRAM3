@@ -49,7 +49,7 @@ public class HomeController {
 
 		if (user != null) {
 			// 사용자 정보에서 코인 정보를 불러와 모델에 추가
-			int userCoins = user.getCoin();
+			Integer userCoins = user.getCoin();
 			model.addAttribute("userCoin", userCoins);
 
 			return "index";
