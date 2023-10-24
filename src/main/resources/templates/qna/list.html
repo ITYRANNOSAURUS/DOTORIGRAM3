@@ -98,7 +98,7 @@
           <li class="page-item">
             <a class="page-link" th:href="@{/qna/list(P=${prevGroupStart})}">〈</a>
           </li>
-          <th:block ="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+          <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
             <li class="page-item">
               <a class="page-link" th:href="@{/qna/list(P=${pageNumber})}">[[ ${pageNumber} ]]</a>
             </li>

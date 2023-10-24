@@ -31,6 +31,7 @@ import com.example.board.model.User;
 import com.example.board.repository.QnaRepository;
 import com.example.board.repository.CommentRepository;
 import com.example.board.repository.FileAtchRepository;
+
 @Controller
 public class QnaController {
 	@Autowired

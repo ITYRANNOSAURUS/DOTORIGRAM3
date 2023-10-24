@@ -20,7 +20,7 @@
     .gametitle {
         text-align: center;
         padding-top: 4rem;
-        padding-bottom: 5rem;
+        padding-bottom: 7rem;
         font-size: 3.5rem;
         font-family: 'TheJamsil5Bold';
     }
@@ -38,7 +38,7 @@
     }
 
     .small-detail {
-        margin-bottom: 3rem;
+        margin-bottom: 7rem;
     }
 
     .how-to {
@@ -47,7 +47,30 @@
         font-size: 2rem
     }
 
+    .how-to-do {
+        margin-bottom: 7rem;
+    }
 
+    .how-to-start {
+        color: #f9ac07;
+        font-weight: bold;
+        font-size: 1.8rem;
+        animation: blink 4s linear infinite;
+    }
+
+    @keyframes blink {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
 
     @font-face {
         font-family: 'TheJamsil5Bold';
@@ -72,8 +95,9 @@
         <p class="small-detail">장애물을 피해 전기차 주유소까지 도달하면 찌리릿코인⚡ 1개를 드립니다.<br>
             찌리릿코인⚡ 10개는 전기차 50KWh 충전 쿠폰과 바꿀 수 있습니다.</p>
         <p class="how-to">게임 방법</p>
-        <p>스페이스바를 눌러 다가오는 장애물을 점프로 피하세요.<br>
+        <p class="how-to-do">스페이스바를 눌러 다가오는 장애물을 점프로 피하세요.<br>
             주유소까지 도달하면 찌리릿코인⚡ 1개를 받을 수 있어요.</p>
+        <p class="how-to-start">방향키를 움직여 차가 주유소에 닿으면 게임 시작!</p>
     </div>
     </p>
     </div>
@@ -81,7 +105,9 @@
 
 <body onload="loaded()" onkeydown="keydown()" onkeyup="keyup()">
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-        <canvas width="1100" height="587" style="border: 2px solid black; margin: auto;" id="c1"></canvas>
+        <canvas width="1100" height="587"
+            style="border: 2px solid black;  margin-top: 0.3rem; margin-bottom: auto; margin-left: auto; margin-right: auto;"
+            id="c1"></canvas>
     </div>
 
     <script>
