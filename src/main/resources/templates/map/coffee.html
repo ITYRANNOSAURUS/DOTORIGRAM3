@@ -274,6 +274,57 @@
                 infowindow.close();
             }
         }
+            
+        
+    
+function getData(){
+    fetch('/coffee/data')
+    .then(response => response.json())
+    .then(data => {
+        data.forEach(v => {
+            const lat = v.latitude;
+            const lng = v.longitude;
+            const id = v.id;
+           
+            const content = `<div class="info-box"> 상호명: ${v.coffeestore} <br> 주소: ${v.address} <br> </div>`;
+            coffeePositions.push() ;
+            
+            createCoffeeMarkers(lat,lng,content);
+            
+        })
+       
+    })
+}
+function getData2(){
+    fetch('/store/data')
+    .then(response => response.json())
+    .then(data => {
+        data.forEach(v => {
+            const lat = v.latitude;
+            const lng = v.longitude;
+            const content = `<div class="info-box"> 상호명: ${v.store} <br> 주소: ${v.address} <br> </div>`;
+            storePositions.push() ;
+            createStoreMarkers(lat,lng,content);
+            
+            
+        })
+    })
+}
+function getData3(){
+    fetch('/restaurant/data')
+    .then(response => response.json())
+    .then(data => {
+        data.forEach(v => {
+            const lat = v.latitude;
+            const lng = v.longitude;
+            const content = `<div class="info-box"> 상호명: ${v.restaurant} <br> 주소: ${v.address} <br> </div>`;
+            carparkPositions.push() ;
+            createCarparkMarkers(lat,lng,content);
+            
+            
+        })
+    })
+}
 
 
         var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
