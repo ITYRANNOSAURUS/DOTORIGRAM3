@@ -29,6 +29,10 @@
                     <td th:text="${car.id}"></td>
                     <td th:text="${car.qnacompany}"></td>
                     <td th:text="${car.qnacarname}"></td>
+                    <td>
+                        <a class="btn btn-secondary btn-sm" th:href="@{/chargingsDetail/{id}(id=${b.id})}">View
+                            Details</a>
+                    </td>
                 </tr>
             </tbody>
             </table>

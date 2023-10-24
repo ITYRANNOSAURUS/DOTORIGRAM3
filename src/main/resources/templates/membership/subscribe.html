@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/head"></head>
+
+<style>
+  /* Brand img */
+  /* .nav-brand {
+    position: fixed;
+    left: 0;
+    z-index: 600;
+    padding: 10px;
+  } */
+
+  .nav-brand img {
+    width: 100%;
+    height: 500px;
+  }
+
+  .fa-bars {
+    /* display: none !important; */
+    color: #ff6363;
+    float: right;
+    padding: 20px;
+    position: fixed;
+    right: 0;
+    z-index: 500;
+    cursor: pointer;
+  }
+
+  /* 흐릿한 효과 */
+  .displayNone {
+    display: none;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    background: #FFF;
+    color: #666;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 100%;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  fieldset,
+  img {
+    border: 0;
+  }
+
+  .containerContent {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1400px;
+  }
+
+  ul {
+    list-style: none;
+    list-style-position: outside;
+  }
+
+  a {
+    outline: none;
+  }
+
+  header,
+  nav,
+  section,
+  article,
+  aside,
+  footer {
+    display: block;
+  }
+
+  p {
+    line-height: 150%;
+  }
+
+  a:link,
+  a:visited {
+    text-decoration: none;
+  }
+
+  .clear {
+    clear: both;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  /*****************************************************************************************************************/
+  section {
+    width: 100%;
+  }
+
+  #services {
+    padding: 80px 0px 50px 0px;
+    position: relative;
+    display: block;
+    background: rgba(215, 215, 215, 0.52);
+  }
+
+  .set_size_section1 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    display: inline-block;
+  }
+
+  #services .article_center2 article {
+    text-align: center;
+    flex: 0 0 25%;
+    cursor: pointer;
+    box-sizing: border-box;
+    text-transform: none;
+    margin: 25px;
+    z-index: 1;
+    -webkit-transition: opacity 0.4s linear, -webkit-transform 0.4s ease-in-out, -webkit-box-shadow 0.4s ease-in-out;
+    -moz-transition: opacity 0.4s linear, -moz-transform 0.4s ease-in-out, -moz-box-shadow 0.4s ease-in-out;
+    -o-transition: opacity 0.4s linear, -o-transform 0.4s ease-in-out, -o-box-shadow 0.4s ease-in-out;
+    -ms-transition: opacity 0.4s linear, -ms-transform 0.4s ease-in-out, -ms-box-shadow 0.4s ease-in-out;
+    transition: opacity 0.4s linear, transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  #services article img,
+  #services article h3,
+  #services article p {
+    -webkit-transition: opacity 0.2s linear, text-shadow 0.5s ease-in-out, color 0.5s ease-in-out;
+    -moz-transition: opacity 0.2s linear, text-shadow 0.5s ease-in-out, color 0.5s ease-in-out;
+    -o-transition: opacity 0.2s linear, text-shadow 0.5s ease-in-out, color 0.5s ease-in-out;
+    -ms-transition: opacity 0.2s linear, text-shadow 0.5s ease-in-out, color 0.5s ease-in-out;
+    transition: opacity 0.2s linear, text-shadow 0.5s ease-in-out, color 0.5s ease-in-out;
+  }
+
+  #services article.blur {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.9, M12=0, M21=0, M22=0.9, SizingMethod='auto expand')";
+    -webkit-transform: scale(0.9);
+    -moz-transform: scale(0.9);
+    -o-transform: scale(0.9);
+    transform: scale(0.9);
+    opacity: 0.8;
+    /*zoom:0.9;*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+  }
+
+  #services article.active {
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=1.08, M12=0, M21=0, M22=1.08, SizingMethod='auto expand')";
+    -o-transform: scale(1.05);
+    transform: scale(1.05);
+    z-index: 100;
+    /*zoom:1.08;*/
+    opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+  }
+
+  #services article.active img,
+  #services article.active p,
+  #services article.active h3 {
+    opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+  }
+
+  #services article.blur img {
+    text-shadow: 0px 0px 10px rgba(51, 51, 51, 0.9);
+    color: rgba(51, 51, 51, 0);
+    opacity: 0.6;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+    filter: alpha(opacity=60);
+  }
+
+  #services article.blur h3 {
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+    color: rgba(100, 100, 100, 0.3);
+    opacity: 0.6;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+    filter: alpha(opacity=60);
+  }
+
+  #services article.blur p {
+    text-shadow: 0px 0px 10px rgba(51, 51, 51, 0.9);
+    color: rgba(100, 100, 100, 0.3);
+    opacity: 0.6;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+    filter: alpha(opacity=60);
+  }
+
+  .services_h2 {
+    font-family: 'MontserratBold', sans-serif;
+    font-family: 'Roboto Slab', sans-serif;
+    color: black;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    font-size: 50px;
+  }
+
+  .services_p {
+    font-family: 'Roboto Slab';
+    font-style: italic;
+    font-size: 20px;
+  }
+
+  .section1_article {
+    text-align: center;
+  }
+
+  .section1_article h3 {
+    font-family: 'Cookie', sans-serif;
+    color: black;
+    margin-bottom: 3%;
+    font-size: 25px;
+  }
+
+  .section1_article img {
+    margin-bottom: 10px;
+  }
+
+  .section1_article p {
+    font-family: 'RobotoSlab Regular', serif;
+    word-spacing: 1px;
+    /* font-family: 'Roboto Slab', sans-serif; */
+    font-size: 13px;
+    /* line-height: 30px; */
+    font-family: 'Roboto Slab', sans-serif;
+    /* font-family: 'Cookie', sans-serif; */
+    /* font-family: 'Open Sans Condensed', sans-serif; */
+    /* font-family: 'Sancreek', sans-serif; */
+  }
+
+  .article_center2 {
+    margin: 50px auto;
+    /* align-items: flex-start; */
+    width: 90%;
+    flex-direction: row;
+    justify-content: center;
+    display: flex;
+    margin-top: 50px;
+    /* flex-flow: row wrap; */
+    /* justify-content: space-between; */
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  /* SECTION LOADING */
+
+  .is-hidden {
+    visibility: hidden;
+  }
+
+  .bounce-inInverse {
+    -webkit-animation: cd-bounce-2-inverse 1s;
+    -moz-animation: cd-bounce-2-inverse 1s;
+    -ms-animation: cd-bounce-2-inverse 1s;
+    -o-animation: cd-bounce-2-inverse 1s;
+    animation: cd-bounce-2-inverse 1s;
+  }
+
+  @-webkit-keyframes cd-bounce-2-inverse {
+    0% {
+      opacity: 0;
+      -webkit-transform: translateY(200px);
+    }
+
+    60% {
+      opacity: 1;
+      -webkit-transform: translateY(-20px);
+    }
+
+    100% {
+      -webkit-transform: translateY(0);
+    }
+  }
+
+  @-moz-keyframes cd-bounce-2-inverse {
+    0% {
+      opacity: 0;
+      -moz-transform: translateY(200px);
+    }
+
+    60% {
+      opacity: 1;
+      -moz-transform: translateY(-20px);
+    }
+
+    100% {
+      -moz-transform: translateY(0);
+    }
+  }
+
+  @-o-keyframes cd-bounce-2-inverse {
+    0% {
+      opacity: 0;
+      -o-transform: translateY(200px);
+    }
+
+    60% {
+      opacity: 1;
+      -o-transform: translateY(-20px);
+    }
+
+    100% {
+      -o-transform: translateY(0);
+    }
+  }
+
+  @keyframes cd-bounce-2-inverse {
+    0% {
+      opacity: 0;
+      transform: translateY(200px);
+    }
+
+    60% {
+      opacity: 1;
+      transform: translateY(-20px);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @media screen and (max-width: 650px) {
+    #services .article_center2 article {
+      flex: 0 0 100%;
+      margin-bottom: 7%;
+    }
+
+  }
+
+  /* 3d 버튼 */
+  .btn-3d {
+    position: relative;
+    display: inline-block;
+    font-size: 18px;
+    padding: 15px 40px;
+    color: white;
+    margin: 10px 10px 10px;
+    /* margin: 0px auto; */
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    transition: top .01s linear;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-3d.yellow:hover {
+    background-color: #F0D264;
+  }
+
+  .btn-3d:active {
+    top: 9px;
+  }
+
+  .btn-3d.yellow {
+    background-color: #F0D264;
+    box-shadow: 0 0 0 1px #F0D264 inset,
+      0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+      0 8px 0 0 rgba(196, 172, 83, .7),
+      0 8px 0 1px rgba(0, 0, 0, .4),
+      0 8px 8px 1px rgba(0, 0, 0, 0.5);
+  }
+
+  .btn-3d.yellow:active {
+    box-shadow: 0 0 0 1px #F0D264 inset,
+      0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+      0 0 0 1px rgba(0, 0, 0, 0.4);
+  }
+</style>
+
+<body>
+  <div th:replace="common/header">
+
+  </div>
+
+  <nav th:replace="common/nav">
+
+  </nav>
+
+  <div class="nav-brand">
+    <img src="/pika.png">
+  </div>
+  <i class="fa fa-bars fa-3x"></i>
+
+  <div class="wrapperMain">
+    <section id="services" class="bounce-inInverse">
+      <div class="containerContent">
+        <div class="set_size_section1">
+          <h2 class="services_h2 center">
+            <img style="width: 50px; height: 50px;" src="/ticket.png">
+            PIKAPASS
+          </h2>
+          <p class="services_p center">Hello! Use our services. Save time. Enjoy more convenience.</p><br>
+          <p class="services_p center">충전하느라 지친 당신,</p>
+          <p class="services_p center">무엇이 당신의 행복을 만들까요?</p>
+          <p class="services_p center">커피 한잔☕ 할래요?</p>
+          <div class="article_center2">
+            <article class="section1_article">
+              <img alt="Basket" src="/pointing.png" width="78" height="77">
+              <h3>편의점, 카페 위치 정보</h3>
+              <p>멤버십 가입자에게 충전소 주변 <br>편의점, 카페 위치 정보 제공 (월 무제한 제공)</p>
+            </article>
+            <article class="section1_article">
+              <img alt="Laptop" src="venti.png" width="78" height="77">
+              <h3>제휴 카페 10% 할인</h3>
+              <p>
+                멤버십 가입자에게 제휴 카페 <br>10% 할인 쿠폰 제공 (월 3회 제공)
+              </p>
+              <p>
+                더벤티(The Venti Coffee)
+              </p>
+            </article>
+            <article class="section1_article">
+              <img alt="Locked" src="/coins.png" width="78" height="77">
+              <h3>찌리릿 코인 2배</h3>
+              <p>멤버십 가입자에게 게임 성공 시 <br>찌리릿 코인 2배 적립</p>
+            </article>
+          </div>
+          <p class="services_p center"></p>
+          <h2 class="services_h2 center"
+            style="font-size: 30px; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+            커피 한 잔 가격 PIKAPASS
+          </h2>
+          <br>
+          <h1 class="services_h1 center" style="font-size: 60px; color: hsl(37, 100%, 47%);">
+            3,900원
+          </h1>
+          <br>
+          <p class="services_p center">당신의 시간을 효율적으로</p>
+          <p class="services_p center">커피 한잔의 행복으로</p>
+          <p class="services_p center">저희 PIKAPASS와 함께하겠습니까?</p>
+          <!-- 버튼 -->
+          <div class="payment-btn" style="display: flex; justify-content: center;
+                    align-items: center;">
+            <a th:href="@{/membership}" id="openMembershipModal" type="submit" class="btn-3d yellow">결제하기</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+    // 흐릿한 효과
+    var $container = $('.article_center2'),
+      $articles = $container.children('article'),
+      timeout;
+
+    $articles.on('mouseenter', function (event) {
+      var $article = $(this);
+      clearTimeout(timeout);
+      timeout = setTimeout(function () {
+        if ($article.hasClass('active')) return false;
+        $articles.not($article).removeClass('active').addClass('blur');
+        $article.removeClass('blur').addClass('active');
+      }, 75);
+    });
+    $('.article_center2', '#services ').on('mouseleave', function (event) {
+      clearTimeout(timeout);
+      $articles.removeClass('active blur');
+    });
+
+
+    $articles.bind('click', function () {
+      var title = $(this).find('h3').text();
+      alert("Nothing interesting,\nonly the actual title of the article = " + title);
+    });
+
+    /* AUTHOR LINK */
+    $('.about-me-img').hover(function () {
+      $('.authorWindowWrapper').stop().fadeIn('fast').find('p').addClass('trans');
+    }, function () {
+      $('.authorWindowWrapper').stop().fadeOut('fast').find('p').removeClass('trans');
+    });
+
+  </script>
+</body>
+
+</html>
