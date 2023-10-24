@@ -4,12 +4,22 @@
 <head th:replace="common/head"></head>
 
 <style>
+  body {
+    height: 100vh;
+    /* 화면 높이의 100%로 설정 */
+    background-color: #000;
+    background-size: cover;
+    /* 이미지를 화면에 맞게 조절 */
+    background-repeat: no-repeat;
+    /* 이미지 반복을 중지 */
+    color: white;
+  }
+
   .btn-primary {
     background-color: #efc19d;
     border-color: #efc19d;
     color: black;
   }
-
 </style>
 
 <body>
@@ -68,8 +78,8 @@
 
       <script type='text/javascript'>
         var geocoder = new kakao.maps.services.Geocoder();
-        document.getElementById('fetchCoordinates').addEventListener('click', function(event) {
-        event.preventDefault();
+        document.getElementById('fetchCoordinates').addEventListener('click', function (event) {
+          event.preventDefault();
 
           var address = document.getElementById('address').value;
           geocoder.addressSearch(address, function (result, status) {
@@ -85,8 +95,8 @@
         });
       </script>
 
-</div>
-</div>
+    </div>
+  </div>
 </body>
 
 </html>

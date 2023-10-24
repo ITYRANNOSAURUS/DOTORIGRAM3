@@ -79,12 +79,23 @@ public class HomeController {
 	}
 
 	@GetMapping("/media/gamepage")
-	public String gamepage() {
-		return "/media/gamepage";
+	public String gamepage(Model model) {
+		User user = (User) session.getAttribute("user_info");
+		if (user != null) {
+			int userCoins = user.getCoin();
+			model.addAttribute("userCoin", userCoins);
+		}
+		return "/gamepage";
 	}
 
 	@GetMapping("/media/reels")
-	public String reels() {
+	public String reels(Model model) {
+		User user = (User) session.getAttribute("user_info");
+		if (user != null) {
+			int userCoins = user.getCoin();
+			model.addAttribute("userCoin", userCoins);
+		}
+
 		return "/media/reels";
 	}
 
