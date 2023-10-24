@@ -42,10 +42,14 @@
             </a>
             <!-- 파일 삭제 버튼 -->
 <<<<<<< HEAD
+<<<<<<< HEAD
             <button th:if="${session.user_info != null && session.user_info.email == qna.userId&& && fileAtch != null}"
 =======
             <button th:if="${session.user_info != null && session.user_info.email == qna.userId && && fileAtch != null}"
 >>>>>>> 9b7c9e2bb835d55c04e7fc6b6975f9cd3a24a413
+=======
+            <button th:if="${session.user_info != null && session.user_info.email == qna.userId&& && fileAtch != null}"
+>>>>>>> f1fa9d56ed3b84df79b74d0501d93660ffa95b54
               th:onclick="'fileRm(' + ${fileAtch.id} +')'">파일삭제✂️</button>
           </li>
         </ul>

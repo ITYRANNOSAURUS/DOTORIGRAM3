@@ -112,7 +112,14 @@ public class UserController {
 		// 사용자 정보 저장
 		user.setRole(userRole);
 		user.setCarname(carname);
+
+				   // Coin 값 설정 (0으로 초기화)
+				   user.setCoin(0);
+
+
 		userRepository.save(user);
+
+
 
 		// User 수 증가
 		List<User> users = userRepository.findAll();

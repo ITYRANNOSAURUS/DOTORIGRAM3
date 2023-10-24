@@ -1,23 +1,88 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title></title>
-
-    <h1>피카충전소 게임</h1>
-    <p>게임하고 무료로 전기차 충전하기⚡</p>
-    <p>장애물을 피해 전기차 주유소까지 도달하면 도토리🌰 1개를 드립니다.<br>
-        도토리 10개는 전기차 무료 충전 1회 쿠폰과 바꿀 수 있습니다.</p>
-    <p>게임 방법 : 스페이스바를 눌러 다가오는 장애물을 점프로 피하세요.<br>
-        주유소까지 도달하면 도토리 1개를 받을 수 있어요.🐿️</div>
-    </p>
-
+<head th:replace="common/head">
+    <title>Pika</title>
 </head>
 
+<style>
+    body {
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+        color: white;
+    }
+
+    .gametitle {
+        text-align: center;
+        padding-top: 4rem;
+        padding-bottom: 5rem;
+        font-size: 3.5rem;
+        font-family: 'TheJamsil5Bold';
+    }
+
+    .main-detail {
+        font-size: 1.8rem;
+        margin-bottom: 3rem;
+        font-weight: bold;
+    }
+
+    .game-detail {
+        text-align: center;
+        font-size: 1rem;
+        margin-bottom: 4rem;
+    }
+
+    .small-detail {
+        margin-bottom: 3rem;
+    }
+
+    .how-to {
+        margin-bottom: 2rem;
+        font-weight: bold;
+        font-size: 2rem
+    }
+
+
+
+    @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+    }
+</style>
+
+<body>
+    <div th:replace="common/header">
+
+    </div>
+
+    <nav th:replace="common/nav">
+
+    </nav>
+
+    <h1 class="gametitle">피카충전소 게임</h1>
+    <div class="game-detail">
+        <p class="main-detail">⚡게임하고 무료로 전기차 충전하기⚡</p>
+        <p class="small-detail">장애물을 피해 전기차 주유소까지 도달하면 찌리릿코인⚡ 1개를 드립니다.<br>
+            찌리릿코인⚡ 10개는 전기차 50KWh 충전 쿠폰과 바꿀 수 있습니다.</p>
+        <p class="how-to">게임 방법</p>
+        <p>스페이스바를 눌러 다가오는 장애물을 점프로 피하세요.<br>
+            주유소까지 도달하면 찌리릿코인⚡ 1개를 받을 수 있어요.</p>
+    </div>
+    </p>
+    </div>
+</body>
+
 <body onload="loaded()" onkeydown="keydown()" onkeyup="keyup()">
-    <canvas width="1100" height="587" style="border: 2px solid black;" id="c1"></canvas>
-
-
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <canvas width="1100" height="587" style="border: 2px solid black; margin: auto;" id="c1"></canvas>
+    </div>
 
     <script>
 
