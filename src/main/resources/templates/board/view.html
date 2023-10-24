@@ -36,28 +36,14 @@
         첨부된 파일📥
         <!-- 첨부된 파일 목록 -->
         <ul th:each="fileAtch : ${board.fileAtchs}">
-<<<<<<< HEAD
-<<<<<<< HEAD
+
           <li style="list-style-type: none;">
-=======
-          <li  style="list-style-type: none;">
->>>>>>> 9b7c9e2bb835d55c04e7fc6b6975f9cd3a24a413
-=======
-          <li style="list-style-type: none;">
->>>>>>> f1fa9d56ed3b84df79b74d0501d93660ffa95b54
             <a th:href="@{/download(id=${fileAtch.id})}">
               [[${fileAtch.originalName}]]
             </a>
             <!-- 파일 삭제 버튼 -->
-<<<<<<< HEAD
-<<<<<<< HEAD
+
             <button th:if="${session.user_info != null && session.user_info.email == board.user.email&& && fileAtch != null}"
-=======
-              <button th:if="${session.user_info != null && session.user_info.email == board.user.email && && fileAtch != null}"
->>>>>>> 9b7c9e2bb835d55c04e7fc6b6975f9cd3a24a413
-=======
-            <button th:if="${session.user_info != null && session.user_info.email == board.user.email&& && fileAtch != null}"
->>>>>>> f1fa9d56ed3b84df79b74d0501d93660ffa95b54
               th:onclick="'fileRm(' + ${fileAtch.id} +')'">파일삭제✂️</button>
           </li>
         </ul>
