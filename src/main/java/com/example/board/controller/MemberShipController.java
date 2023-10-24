@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -65,9 +66,25 @@ public class MemberShipController {
 
 	@GetMapping("/mymembership")
 	public String mymembership(Model model) {
-		User user = (User) session.getAttribute("user");
+		User user = (User) session.getAttribute("user_info");
+
 		if (user != null) {
+			List<Membership> memberships = membershipRepository.findByUser(user);
 			model.addAttribute("user", user);
+			model.addAttribute("memberships", memberships);
+		}
+		return "membership/mymembership";
+	}
+	
+	@GetMapping("/getcoupon")
+	public String getcoupon(Model model) {
+		User user = (User) session.getAttribute("user_info");
+
+		if (user != null) {
+			List<Membership> memberships = membershipRepository.findByUser(user);
+			// if()
+			model.addAttribute("user", user);
+			model.addAttribute("memberships", memberships);
 		}
 		return "membership/mymembership";
 	}

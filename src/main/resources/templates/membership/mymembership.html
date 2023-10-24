@@ -15,42 +15,20 @@
 
   body {
     font-family: 'TheJamsil5Bold';
-    height: 100vh;
+    height: 110vh;
     /* 화면 높이의 100%로 설정 */
     background-color: #000;
     background-size: cover;
     /* 이미지를 화면에 맞게 조절 */
     background-repeat: no-repeat;
     /* 이미지 반복을 중지 */
+    
   }
 
-  .change-color {
-    background-color: #ffed91;
-    border-color: #ffed91;
-    text-decoration: none;
-    color: black;
+  .mymembership-header{
+    color: white;
   }
-
-  .change-color:hover {
-    color: black;
-    background-color: #fff9cd;
-    border-color: #fff9cd;
-  }
-
-  .exit {
-    display: flex;
-    justify-content: center;
-    color: black;
-    text-decoration: none;
-    width: 200px;
-  }
-
-  .exit-link {
-    display: grid !important;
-    justify-content: center;
-    margin-top: 50px;
-  }
-  label {
+  .mb-3{
     color: white;
   }
 </style>
@@ -80,14 +58,18 @@
           <label for="name">Name:</label>
           <input type="text" class="form-control" id="name" name="name" th:value="${user.name}">
         </div>
-        <div class="mb-3">
+        <div class="mb-3" th:each="membership : ${memberships}">
           <label for="start-date">멤버십 가입 날짜:</label>
-          <input type="text" class="form-control" id="start-date" name="start-date" th:value="${user.startDate}">
+          <input type="text" class="form-control" id="start-date" name="start-date" th:value="${membership.startDate}">
         </div>
-        <div class="mb-3">
+        <div class="mb-3" th:each="membership : ${memberships}">
           <label for="end-date">멤버십 종료 날짜:</label>
-          <input type="text" class="form-control" id="end-date" name="end-date" th:value="${user.endDate}">
+          <input type="text" class="form-control" id="end-date" name="end-date" th:value="${membership.endDate}">
         </div>
+      </div>
+      <div class="mymembership-content2">
+        <a th:href="@{/map}" class="coffee-map">편의점, 카페 위치 정보 가져오기</a><br>
+        <a th:href="@{/map}" class="coffee-coupon">제휴 카페 할인 쿠폰 다운받기</a>
       </div>
     </div>
   </div>
