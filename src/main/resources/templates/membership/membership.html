@@ -363,6 +363,31 @@
     .btn-gradient.yellow:active {
         background: #DBC05B;
     }
+
+    /* 결제완료 modal */
+    .content-select2 {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        margin: 30px auto;
+        flex-direction: column;
+    }
+
+    .payment-info {
+        border: 1px solid tan;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .payment-name {
+        color: red;
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .payment-notice {
+        text-align: center;
+    }
 </style>
 
 <body>
@@ -561,23 +586,24 @@
                     결제 성공
                 </div>
                 <hr>
-                <div class="content-select">
-                    <label for="subscription" class="subscribe-info">
-                        <span class="subscribe-name">피카패스 멤버십 1개월</span>
+                <div class="content-select2">
+                    <label for="payment-name" class="payment-name">
+                        <span class="payment-name">[피카패스 멤버십 1개월]</span>
                     </label>
-                </div>
-                <div class="subscribe-notice">
-                    <h2>결제가 완료되었습니다!</h2>
-                    <p>감사합니다. 결제가 성공적으로 이루어졌습니다.</p>
-                    <span>결제하신 카드로 다음 달도 결제됩니다.</span>
-                </div>
-                <div class="subscribe-info">
-                    <span>이용기간 : 2023.10.24 ~ 2023.11.24</span>
-                    <span>다음 결제일 : 2023.11.24</span>
-                    <span>결제 금액 : 3,900원</span>
-                </div>
-                <div>
-                    <a href="@{/home}" type="submit" class="btn-3d yellow">홈으로 돌아가기</a>
+                    <div class="payment-notice">
+                        <h2 style="margin: 30px;">결제가 완료되었습니다!</h2>
+                        <p>PIKAPASS 멤버십 가입이 완료되었습니다.</p>
+                        <p>결제하신 카드로 다음 달도 결제됩니다.</p>
+                    </div>
+                    <div class="payment-info">
+                        <p>이용기간 : 2023.10.24 ~ 2023.11.24</p>
+                        <p>다음 결제일 : 2023.11.24</p>
+                        <p>결제 금액 : 3,900원</p>
+                    </div>
+                    <div style="margin: 20px;">
+                        <a th:href="@{/home}" style="color: black; margin-top: 10px;">홈으로 돌아가기</a>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -669,32 +695,43 @@
             var isAgreed1 = $('input[name="subscription"]').is(':checked');
             var isAgreed2 = $('input[name="consent-info"]').is(':checked');
             var totalPayment = parseInt($('#resultPrice').text().replace(',', ''));
-                // 두 개의 radio input 모두 선택되었고
+            // 두 개의 radio input 모두 선택되었고
             if (isAgreed1 && isAgreed2) {
                 //총 결제 금액이 0일 때
-                if(totalPayment === 0){
-                alert('결제가 진행됩니다.')
-                // 기본으로 열려 있던 모달 닫기
-                $('#myModal').css('display', 'none');
+                if (totalPayment === 0) {
+                    $.ajax({
+                        url: '/membership',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                           
+                        }),
+                        success: function () {
+                            alert('결제가 진행됩니다.')
+                            // 기본으로 열려 있던 모달 닫기
+                            $('#myModal').css('display', 'none');
 
-                // 결제 완료 모달 팝업 표시
-                $('#paymentModal').css('display', 'block');
-
-                // // 3초 후에 자동으로 닫히도록 설정
-                // setTimeout(function () {
-                //     $('#paymentModal').css('display', 'none');
-                // }, 3000);
+                            // 결제 완료 모달 팝업 표시
+                            $('#paymentModal').css('display', 'block');
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log('HTTP status code:', jqXHR.status);
+                            console.log('textStatus:', textStatus);
+                            console.log('errorThrown:', errorThrown);
+                            alert("Error occurred. Please try again.");
+                        }
+                    });
                 } else {
-                    alert('결제 금액이 맞지 않습니다.')
+                    alert('결제 먼저 진행하십시오.')
                 }
             } else {
                 alert('결제 정보에 동의해야 결제를 진행할 수 있습니다.');
             }
         });
-        // // 모달 닫기 버튼 클릭 이벤트 핸들러
-        // $('.close').click(function() {
-        //     $('#paymentModal').css('display', 'none');
-        // });
+        // 모달 닫기 버튼 클릭 이벤트 핸들러
+        $('.close').click(function () {
+            $('#paymentModal').css('display', 'none');
+        });
     </script>
 </body>
 
