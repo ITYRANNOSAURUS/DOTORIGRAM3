@@ -54,7 +54,9 @@
             </a>
             <!-- 파일 삭제 버튼 -->
             <button th:if="${session.user_info != null && session.user_info.email == board.user.email}"
-              th:onclick="'fileRm(' + ${fileAtch.id} +')'">파일삭제✂️</button>
+              th:style="${fileAtch.originalName == '' ? 'display:none;' : ''}"
+              th:onclick="'fileRm(' + ${fileAtch.id} +')'">파일삭제✂️
+            </button>
           </li>
         </ul>
       </div>
@@ -66,16 +68,14 @@
         <a class="nav-link" th:href="@{/board/list}" id="list">목록</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" th:href="@{'/board/update/' + ${board.id}}" id="update">수정</a>
+        <a class="nav-link" th:href="@{'/board/update/' + ${board.id}}" id="update">수정</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" th:data-num="${board.id}" id="delete">삭제</a>
+        <a class="nav-link" th:data-num="${board.id}" id="delete">삭제</a>
       </li>
     </ul>
   </div>
 
-  <!-- <div th:replace="common/footer">
-  </div> -->
 
   <script>
     var authorUserId = "[[${board.user.email}]]";
