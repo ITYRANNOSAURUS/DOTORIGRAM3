@@ -50,8 +50,8 @@
     justify-content: center;
     margin-top: 50px;
   }
-  label {
-    color: white;
+  .card {
+    padding: 2rem;
   }
 </style>
 
@@ -66,37 +66,39 @@
   </nav>
 
   <div class="container mt-5">
-    <div class="row">
-      <form method="post" action="/mypage">
-        <div class="mb-3">
-          <input type="hidden" id="id" name="id" th:value="${user.id}">
-          <label for="email">Email:</label>
-          <input type="text" class="form-control" id="email" name="email" th:value="${user.email}" readonly>
+    <div class="card">
+      <div class="row">
+        <form method="post" action="/mypage">
+          <div class="mb-3">
+            <input type="hidden" id="id" name="id" th:value="${user.id}">
+            <label for="email">Email:</label>
+            <input type="text" class="form-control" id="email" name="email" th:value="${user.email}" readonly>
 
-        </div>
-        <div class="mb-3">
-          <label for="pwd">Password:</label>
-          <input type="password" class="form-control" id="pwd" name="pwd" th:value="${user.pwd}" readonly hidden>
-        </div>
-        <div class="mb-3">
-          <label for="name">Name:</label>
-          <input type="text" class="form-control" id="name" name="name" th:value="${user.name}">
-        </div>
-        <div class="mb-3">
-          <label for="phone">Phone:</label>
-          <input type="text" class="form-control" id="phone" name="phone" th:value="${user.phone}">
-        </div>
-        <div class="mb-3">
-          <label for="car">My Car:</label>
-          <input type="text" class="form-control" id="car" name="car" th:value="${user.carname}">
-        </div>
-        <div class="d-grid gap-2">
-          <button class="btn btn-primary change-color" id="update" th:onclick="mypage()">회원정보 수정</button>
-        </div>
+          </div>
+          <div class="mb-3">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" name="pwd" th:value="${user.pwd}" readonly hidden>
+          </div>
+          <div class="mb-3">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" th:value="${user.name}">
+          </div>
+          <div class="mb-3">
+            <label for="phone">Phone:</label>
+            <input type="text" class="form-control" id="phone" name="phone" th:value="${user.phone}">
+          </div>
+          <div class="mb-3">
+            <label for="car">My Car:</label>
+            <input type="text" class="form-control" id="car" name="car" th:value="${user.carname}">
+          </div>
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary change-color" id="update" th:onclick="mypage()">회원정보 수정</button>
+          </div>
 
-      </form>
-      <div class="exit-link">
-        <button class="exit" id="exit" th:onclick="confirmDeletion()">회원탈퇴</button>
+        </form>
+        <div class="exit-link">
+          <button class="exit" id="exit" th:onclick="confirmDeletion()">회원탈퇴</button>
+        </div>
       </div>
     </div>
   </div>

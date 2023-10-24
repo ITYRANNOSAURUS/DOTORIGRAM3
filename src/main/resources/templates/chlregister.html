@@ -20,13 +20,15 @@
     /* 이미지를 화면에 맞게 조절 */
     background-repeat: no-repeat;
     /* 이미지 반복을 중지 */
-    color: white;
   }
 
   .btn-primary {
-    background-color: #fffeac;
-    border-color: #fffeac;
+    background-color: #f7ed81;
+    border-color: #f7ed81;
     color: black;
+  }
+  .card{
+    padding: 2rem;
   }
 </style>
 
@@ -35,6 +37,7 @@
   <nav th:replace="common/nav"></nav>
 
   <div class="container mt-5">
+    <div class="card">
     <div class="row">
       <form method="post" action="/save" id="chargingsForm">
         <div class="mb-3">
@@ -103,6 +106,7 @@
         });
       </script>
 
+    </div>
     </div>
   </div>
 </body>
