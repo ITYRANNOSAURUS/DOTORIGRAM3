@@ -279,6 +279,18 @@
                 this.height = 40;
                 this.x = canvas.width - this.width; // 장애물과 동일한 위치에서 시작
                 this.y = 155;
+                // 새로 생성한 도착지와 다른 장애물들과의 충돌 확인
+                let isCollision = manyBoxes.some(existingBox => {
+                    return (
+                        this.x < existingBox.x + existingBox.width &&
+                        this.x + this.width > existingBox.x
+                    );
+                });
+
+                // 충돌이 있으면 다시 생성 시도
+                if (isCollision) {
+                    return new Destination();
+                }
             }
             draw() {
                 ctx.drawImage(destinationImage, this.x, this.y, this.width, this.height);
@@ -306,19 +318,24 @@
         function createBox() {
             let box = new Box();
 
-            // 새로 생성한 장애물과 다른 장애물들과의 충돌 확인
-            let isCollision = manyBoxes.some(existingBox => {
+            // 새로 생성한 장애물과 다른 장애물들 및 도착지와의 충돌 확인
+            let isCollisionWithOtherBoxes = manyBoxes.some(existingBox => {
                 return (
                     box.x < existingBox.x + existingBox.width &&
                     box.x + box.width > existingBox.x
                 );
             });
 
-            // 충돌이 없으면 배열에 추가, 있으면 다시 생성
-            if (!isCollision) {
+            let isCollisionWithDestination =
+                destination &&
+                box.x < destination.x + destination.width &&
+                box.x + box.width > destination.x;
+
+            // 충돌이 없으면 배열에 추가, 있으면 다시 생성 시도.
+            if (!isCollisionWithOtherBoxes && !isCollisionWithDestination) {
                 manyBoxes.push(box);
             } else {
-                createBox();  // 다시 생성 시도
+                createBox();  // 다시 생성 시도.
             }
         }
 
