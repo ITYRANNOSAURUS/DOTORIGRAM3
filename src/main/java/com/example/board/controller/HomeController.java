@@ -69,6 +69,11 @@ public class HomeController {
 
 		return "redirect:/home";
 	}
+	
+	@GetMapping("/media/gamepage")
+	public String gamepage() {
+		return "/gamepage";
+	}
 
 	@GetMapping("/media/reels")
 	public String reels() {
