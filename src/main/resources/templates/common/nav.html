@@ -5,6 +5,9 @@
 </head>
 
 <style>
+  body {
+    z-index: 100;
+  }
   .menubar a {
     text-decoration: none;
   }
@@ -181,7 +184,7 @@
           <div th:unless="${session.user_info == null}" class="menubar">
             <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
             <br>
-              <a class="word" th:href="@{/coupon}">나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
+              <a class="word" th:href="@{/exchange}">나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
             <br>
             <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
             <br>

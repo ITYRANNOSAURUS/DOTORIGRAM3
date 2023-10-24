@@ -12,10 +12,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
 
 import com.example.board.model.Board;
+import com.example.board.model.Coupon;
 import com.example.board.model.User;
+
 import com.example.board.repository.BoardRepository;
+import com.example.board.repository.CouponRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -26,6 +31,9 @@ public class HomeController {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	CouponRepository couponRepository;
 
 	@Autowired
 	HttpSession session;
@@ -69,10 +77,10 @@ public class HomeController {
 
 		return "redirect:/home";
 	}
-	
+
 	@GetMapping("/media/gamepage")
 	public String gamepage() {
-		return "/gamepage";
+		return "/media/gamepage";
 	}
 
 	@GetMapping("/media/reels")
@@ -85,28 +93,20 @@ public class HomeController {
 		return "/media/game";
 	}
 
-	@GetMapping("/coupon")
-	public String coupon(Model model) {
+	@GetMapping("/exchange")
+	public String exchange(Model model) {
 		User user = (User) session.getAttribute("user_info");
 		int userCoins = user.getCoin();
 		model.addAttribute("userCoin", userCoins);
-		return "coupon";
+		return "/media/exchange";
 	}
 
-	@PostMapping("/exchangeCoins")
-	public ResponseEntity<String> exchangeCoinsForCoupons(@RequestBody Map<String, Integer> request) {
-		int numberOfCoinsToExchange = request.get("numberOfCoupons");
+	@GetMapping("/coupon")
+	public String couponbox(Model model) {
 		User user = (User) session.getAttribute("user_info");
+		List<Coupon> couponInfo = couponRepository.findAll();
+		model.addAttribute("coupons", couponInfo);
 
-		if (user != null && user.getCoin() >= numberOfCoinsToExchange * 10) {
-			// 코인 차감 및 쿠폰 발급 로직
-			int remainingCoins = user.getCoin() - numberOfCoinsToExchange * 10;
-			user.setCoin(remainingCoins);
-			userRepository.save(user);
-
-			return ResponseEntity.ok("코인 교환 및 쿠폰 발급이 완료되었습니다.");
-		}
-
-		return ResponseEntity.badRequest("코인 부족 또는 사용자 인증되지 않음");
+		return "/media/coupon";
 	}
 }

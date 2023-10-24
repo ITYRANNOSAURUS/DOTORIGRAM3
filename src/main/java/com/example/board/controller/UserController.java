@@ -17,9 +17,11 @@ import javax.servlet.http.HttpSession;
 
 import com.example.board.model.CarType;
 import com.example.board.model.Company;
+import com.example.board.model.Coupon;
 import com.example.board.model.User;
 import com.example.board.repository.CarTypeRepository;
 import com.example.board.repository.CompanyRepository;
+import com.example.board.repository.CouponRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -38,6 +40,9 @@ public class UserController {
 
 	@Autowired
 	CompanyRepository companyRepository;
+
+	@Autowired
+	CouponRepository couponRepository;
 
 	@GetMapping("/email-check")
 	@ResponseBody
@@ -112,14 +117,10 @@ public class UserController {
 		// 사용자 정보 저장
 		user.setRole(userRole);
 		user.setCarname(carname);
-
-				   // Coin 값 설정 (0으로 초기화)
-				   user.setCoin(0);
-
+		user.setCoin(0);
+		// user.setCoupons(0);
 
 		userRepository.save(user);
-
-
 
 		// User 수 증가
 		List<User> users = userRepository.findAll();

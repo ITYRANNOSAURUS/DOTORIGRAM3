@@ -5,7 +5,14 @@
 
 </head>
 <style>
+     @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
     body {
+        font-family: 'TheJamsil5Bold';
         height: 100vh;
         /* 화면 높이의 100%로 설정 */
         background-color: #000;
@@ -47,6 +54,37 @@
 .exchange-box:hover {
      transform : scale(1.05);
 }
+
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
+.w-btn-yellow-outline {
+    border: 3px solid #fce205;
+    color: #6e6e6e;
+}
+
+.w-btn-yellow-outline:hover {
+    background-color: #fce205;
+    color: #6e6e6e;
+}
+
+.w-btn-outline {
+    margin-top: 1rem;
+    position: relative;
+    padding: 10px 25px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.w-btn-outline:hover {
+    letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
 </style>
 
 <body>
@@ -61,44 +99,15 @@
         <h2>찌리릿코인 교환하기</h2>
         <a>나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
         <a>보유한 쿠폰:</a>
-        <button id="exchangeButton">교환하기</button>
+        <button class="w-btn-outline w-btn-yellow-outline" type="button" id="exchangeButton">
+            교환하기
+        </button>
+        <button class="w-btn-outline w-btn-yellow-outline" type="button">
+            쿠폰함
+        </button>
     </div>
 
     <div th:replace="common/footer">
     </div>
-    <script>
-        const exchangeButton = document.getElementById("exchangeButton");
-        exchangeButton.addEventListener("click", function () {
-
-            const userCoin = parseInt(document.querySelector("a span").textContent);
-
-            if (userCoin >= 10) {
-                // 코인 교환 로직
-                const numberOfCoupons = Math.floor(userCoin / 10);
-                exchangeCoinsForCoupons(numberOfCoupons);
-            } else {
-                alert("코인이 부족하여 교환할 수 없습니다.");
-            }
-        });
-
-        function exchangeCoinsForCoupons(numberOfCoupons) {
-            fetch("/exchangeCoins", {
-                method: "POST",
-                body: JSON.stringify({ numberOfCoupons }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    alert(`코인 ${numberOfCoupons * 10}개를 사용하여 ${numberOfCoupons}개 쿠폰을 교환했습니다.`);
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error("코인 교환 중 오류가 발생했습니다: " + error);
-                });
-        }
-
-     
-    </script>
+</script>
 </body>
