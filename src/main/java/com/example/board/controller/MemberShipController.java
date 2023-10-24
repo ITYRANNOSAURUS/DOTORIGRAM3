@@ -63,4 +63,9 @@ public class MemberShipController {
 		return "membership/subscribe";
 	}
   
+	@GetMapping("/mymembership")
+	public String mymembership() {
+		
+		return "membership/mymembership";
+	}
 }
