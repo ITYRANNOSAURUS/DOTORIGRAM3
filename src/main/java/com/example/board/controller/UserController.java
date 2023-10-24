@@ -172,6 +172,8 @@ public class UserController {
 		User user = (User) session.getAttribute("user_info");
 		userRepository.delete(user);
 		session.invalidate();
+		
 		return "redirect:/";
 	}
+
 }

@@ -36,25 +36,21 @@
   .container {
     display: flex;
     flex-direction: column;
-    margin: 0;
+    margin: auto;
     padding: 0;
   }
-
 
   #wrapper {
     flex: 1;
     /* 메인 패널이 남는 공간을 모두 차지하도록 설정 */
   }
 
-
- 
-
-  
   /* panel */
   .admintitle {
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;
     padding: 10px;
+    margin-top: 20px;
   }
 
   .box1,
@@ -177,6 +173,9 @@
                   </tr>
                 </tbody>
               </table>
+              <div class="plus-charging">
+                <button type="button" class="btn btn-block" id="charging-btn"> 충전소 정보 등록하기</button>
+              </div>
             </div>
           </div>
         </div>
@@ -194,6 +193,7 @@
                     <th scope="col">Id</th>
                     <th scope="col">회사</th>
                     <th scope="col">차 이름</th>
+                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -201,29 +201,47 @@
                     <td th:text="${car.id}"></td>
                     <td th:text="${car.qnacompany}"></td>
                     <td th:text="${car.qnacarname}"></td>
+                    <td><button th:onclick="'approve(' + ${car.id} + ')'">승인</button>&nbsp;
+                        <button th:onclick="'carqnaRm(' + ${car.id} +')'">삭제</button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
+              <div class="plus-car">
+                <button type="button" class="btn btn-block" id="plus-btn"> 차 정보 등록하기</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="plus-button">
-        <div class="plus-car">
-          <button type="button" class="btn btn-block" id="plus-btn"> 차 정보 등록하기</button>
-        </div>
-        <div class="plus-charging">
-          <button type="button" class="btn btn-block" id="charging-btn"> 충전소 정보 등록하기</button>
-        </div>
-      </div>
+      
     </div>
     <!-- Sidebar -->
 
   </div>
   <script>
+    //충전소등록버튼
+    document.querySelector('#charging-btn').addEventListener('click', () => {
+      location = '/chlregister';
+    });
+    //차 등록 버튼
     document.querySelector('#plus-btn').addEventListener('click', () => {
       location = '/addCar';
     });
+    //삭제 버튼
+    function carqnaRm(id) {
+      const isOk = confirm('삭제하시겠습니까?');
+      if (isOk) {
+        location = `/admin/carQna/remove?id=${id}`;
+      }
+    }
+    //승인 버튼
+    function approve(id) {
+      const isOk = confirm('승인하시겠습니까?');
+      if (isOk) {
+        location = `/admin/carQna/approve?id=${id}`;
+      }
+    }
   </script>
 </body>
 

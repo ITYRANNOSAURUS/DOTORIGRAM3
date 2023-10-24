@@ -185,8 +185,8 @@
             <br>
             <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
             <br>
-            <a th:href="${session.user_info != null and session.user_info.role == 'ADMIN'}"></a>
-            <a th:href="@{/admin}" class="word">
+            <!-- <a th:href="${session.user_info != null and session.user_info.role == 'ADMIN'}"></a> -->
+            <a th:if="${session != null and session.user_info != null and session.user_info.role == 'ADMIN'}" th:href="@{/admin}" class="word">
               Admin
             </a>
             <br>
