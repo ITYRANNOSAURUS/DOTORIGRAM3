@@ -12,7 +12,7 @@ public class Coffee {
     @Id
     @Column(name="ID")
     int id;
-    String coffestore;
+    String coffeestore;
     String address;
     String latitude;
     String longitude;

@@ -66,7 +66,7 @@ public class MapController {
    public String map(Model model) {
       List<Station> excel14s = stationRepository.findAll();
       model.addAttribute("excel14s", excel14s);
-      return "map";
+      return "/map/map";
    }
 
    @PostMapping("/map")
@@ -100,7 +100,7 @@ public class MapController {
       model.addAttribute("storeshop", storeshop);
       List<Restaurant> restaurant = restaurantRepository.findAll();
       model.addAttribute("restaurant", restaurant);
-      return"/coffee";
+      return"/map/coffee";
    }
    
    @GetMapping("/where")
