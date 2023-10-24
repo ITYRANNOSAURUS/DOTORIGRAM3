@@ -178,17 +178,20 @@
           <a th:href="@{/signup}" class="word">회원가입</a>
         </div>
 
-        <div th:unless="${session.user_info == null}" class="menubar">
-          <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
-          <br>
-          <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
-          <br>
-          <a th:href="${session.user_info != null and session.user_info.role == 'ADMIN'}"></a>
-          <a th:href="@{/admin}" class="word">
-            Admin
-          </a>
-          <br>
-          <a th:href="@{/signout}" class="word">로그아웃</a>
+          <div th:unless="${session.user_info == null}" class="menubar">
+            <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
+            <br>
+              <a class="word" th:href="@{/coupon}">나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
+            <br>
+            <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
+            <br>
+            <a th:href="${session.user_info != null and session.user_info.role == 'ADMIN'}"></a>
+            <a th:href="@{/admin}" class="word">
+              Admin
+            </a>
+            <br>
+            <a th:href="@{/signout}" class="word">로그아웃</a>
+          </div>
         </div>
       </div>
     </div>
