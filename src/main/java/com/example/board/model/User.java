@@ -46,10 +46,11 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
 	List<Board> boards = new ArrayList<>();
 
-	public List<Qna> getQnas() {
-		return null;
-	}
+	
 
 	@OneToMany(mappedBy = "user")
     private List<Membership> memberships;
+		
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Coupon> coupons;
 }

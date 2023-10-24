@@ -6,6 +6,24 @@
 </head>
 
 <style>
+    @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    body {
+        font-family: 'TheJamsil5Bold';
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+    }
+
     /* 영상 컨테이너 스타일 */
     .video-container {
         flex: 0 0 calc(33.33% - 2%);
@@ -143,40 +161,40 @@
             return textArea.value;
         }
 
-       // 동영상을 HTML에 표시
-function displayVideos(videos) {
-    var videosDiv = document.getElementById('videos');
+        // 동영상을 HTML에 표시
+        function displayVideos(videos) {
+            var videosDiv = document.getElementById('videos');
 
-    // Remove all existing videos
-    while (videosDiv.firstChild) {
-        videosDiv.removeChild(videosDiv.firstChild);
-    }
+            // Remove all existing videos
+            while (videosDiv.firstChild) {
+                videosDiv.removeChild(videosDiv.firstChild);
+            }
 
-    videos.forEach(function (video) {
-        var videoId = video.id.videoId;
-        var title = decodeHTMLEntities(video.snippet.title);
+            videos.forEach(function (video) {
+                var videoId = video.id.videoId;
+                var title = decodeHTMLEntities(video.snippet.title);
 
-        // 영상 컨테이너 생성
-        var videoContainer = document.createElement('div');
-        videoContainer.className = 'video-container';
+                // 영상 컨테이너 생성
+                var videoContainer = document.createElement('div');
+                videoContainer.className = 'video-container';
 
-        // iframe 생성
-        var videoFrame = document.createElement('iframe');
-        videoFrame.src = 'https://www.youtube.com/embed/' + videoId;
+                // iframe 생성
+                var videoFrame = document.createElement('iframe');
+                videoFrame.src = 'https://www.youtube.com/embed/' + videoId;
 
-        // 제목 생성
-        var videoTitle = document.createElement('h2');
-        videoTitle.textContent = title;
-        videoTitle.className = 'video-title';
+                // 제목 생성
+                var videoTitle = document.createElement('h2');
+                videoTitle.textContent = title;
+                videoTitle.className = 'video-title';
 
-         // 영상, 제목을 컨테이너에 추가
-         videoContainer.appendChild(videoFrame);
-         videoContainer.appendChild(videoTitle);
+                // 영상, 제목을 컨테이너에 추가
+                videoContainer.appendChild(videoFrame);
+                videoContainer.appendChild(videoTitle);
 
-         // 컨테이너를 videosDiv에 추가
-         videosDiv.appendChild(videoContainer);
-     });
-}
+                // 컨테이너를 videosDiv에 추가
+                videosDiv.appendChild(videoContainer);
+            });
+        }
 
     </script>
 </body>

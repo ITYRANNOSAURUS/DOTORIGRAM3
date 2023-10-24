@@ -1,21 +1,22 @@
 package com.example.board.controller;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.board.model.Board;
+import com.example.board.model.Coupon;
 import com.example.board.model.User;
+
 import com.example.board.repository.BoardRepository;
+import com.example.board.repository.CouponRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -26,6 +27,9 @@ public class HomeController {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	CouponRepository couponRepository;
 
 	@Autowired
 	HttpSession session;
@@ -96,28 +100,29 @@ public class HomeController {
 		return "/media/game";
 	}
 
-	@GetMapping("/coupon")
-	public String coupon(Model model) {
+	@GetMapping("/exchange")
+	public String exchange(Model model) {
 		User user = (User) session.getAttribute("user_info");
-		int userCoins = user.getCoin();
-		model.addAttribute("userCoin", userCoins);
-		return "coupon";
-	}
-
-	@PostMapping("/exchangeCoins")
-	public ResponseEntity<String> exchangeCoinsForCoupons(@RequestBody Map<String, Integer> request) {
-		int numberOfCoinsToExchange = request.get("numberOfCoupons");
-		User user = (User) session.getAttribute("user_info");
-
-		if (user != null && user.getCoin() >= numberOfCoinsToExchange * 10) {
-			// 코인 차감 및 쿠폰 발급 로직
-			int remainingCoins = user.getCoin() - numberOfCoinsToExchange * 10;
-			user.setCoin(remainingCoins);
-			userRepository.save(user);
-
-			return ResponseEntity.ok("코인 교환 및 쿠폰 발급이 완료되었습니다.");
+		if (user != null) {
+			int userCoins = user.getCoin();
+			model.addAttribute("userCoin", userCoins);
 		}
 
-		return ResponseEntity.badRequest("코인 부족 또는 사용자 인증되지 않음");
+		return "/media/exchange";
+	}
+
+	@GetMapping("/coupon")
+	public String couponbox(Model model) {
+		User user = (User) session.getAttribute("user_info");
+
+		if (user != null) {
+			int userCoins = user.getCoin();
+			model.addAttribute("userCoin", userCoins);
+			
+			List<Coupon> couponInfo = couponRepository.findByUser(user);
+			model.addAttribute("coupons", couponInfo);
+		}
+
+		return "/media/coupon";
 	}
 }
