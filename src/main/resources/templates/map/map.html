@@ -169,7 +169,7 @@
                         navigator.geolocation.getCurrentPosition(function (position) {
                             const lat = position.coords.latitude;
                             const lng = position.coords.longitude;
-                            fetch('/tetetest/data')
+                            fetch('/tetest/data')
                                 .then(response => response.json())
                                 .then(data => {
                                     data.forEach(v => {
@@ -223,7 +223,7 @@
 
 
                     function getData1(city) {
-                        fetch('/tetetest/data')
+                        fetch('/tetest/data')
                             .then(response => response.json())
                             .then(data => {
                                 data.forEach(v => {
@@ -251,7 +251,7 @@
                     }
 
                     function getData2(company) {
-                        fetch('/tetetest/data')
+                        fetch('/tetest/data')
                             .then(response => response.json())
                             .then(data => {
                                 data.forEach(v => {
@@ -279,7 +279,7 @@
                     }
 
                     function getData3(spottype) {
-                        fetch('/tetetest/data')
+                        fetch('/tetest/data')
                             .then(response => response.json())
                             .then(data => {
                                 data.forEach(v => {
@@ -305,7 +305,7 @@
                     }
 
                     function getData4(big) {
-                        fetch('/tetetest/data')
+                        fetch('/tetest/data')
                             .then(response => response.json())
                             .then(data => {
                                 data.forEach(v => {
@@ -574,3 +574,4 @@
 </body>
 
 </html>
+ 
