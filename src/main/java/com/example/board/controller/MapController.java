@@ -4,18 +4,15 @@ package com.example.board.controller;
 
 
 import java.util.List;
-import java.util.Optional;
 
-import org.hibernate.criterion.Order;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.board.model.Station;
@@ -28,7 +25,6 @@ import com.example.board.repository.CoffeeRepository;
 import com.example.board.repository.RestaurantRepository;
 
 @Controller
-
 public class MapController {
     
     @Autowired
@@ -66,13 +62,13 @@ public class MapController {
    public String map(Model model) {
       List<Station> excel14s = stationRepository.findAll();
       model.addAttribute("excel14s", excel14s);
-      return "map";
+      return "map/map";
    }
 
    @PostMapping("/map")
    public String mapPost(@ModelAttribute Station excel14) {
       stationRepository.save(excel14);
-      return "redirect:/map";
+      return "redirect:map/map";
    }
     @GetMapping("/coffee/data")
     @ResponseBody
@@ -100,7 +96,7 @@ public class MapController {
       model.addAttribute("storeshop", storeshop);
       List<Restaurant> restaurant = restaurantRepository.findAll();
       model.addAttribute("restaurant", restaurant);
-      return"/coffee";
+      return"map/coffee";
    }
    
    @GetMapping("/where")
@@ -108,8 +104,8 @@ public class MapController {
       return"where";
    }
    @GetMapping("/chargingSearch")
-	public String chargingSearch() {
-		return "/chargingSearch";
-	}
+   public String chargingSearch() {
+      return "map/chargingSearch";
+   }
 
 }
