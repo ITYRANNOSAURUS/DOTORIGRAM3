@@ -46,6 +46,6 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
 	List<Board> boards = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user")
-	List<Coupon> coupons;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Coupon> coupons;
 }

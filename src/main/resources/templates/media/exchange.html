@@ -98,13 +98,10 @@
     <div class="exchange-box">
         <h2>찌리릿코인 교환하기</h2>
         <a>나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
-        <a>보유한 쿠폰:</a>
         <button class="w-btn-outline w-btn-yellow-outline" type="button" id="exchangeButton">
             교환하기
         </button>
-        <button class="w-btn-outline w-btn-yellow-outline" type="button">
-            쿠폰함
-        </button>
+        <a th:href="@{/coupon}"><button class="w-btn-outline w-btn-yellow-outline" type="button">쿠폰함</button></a>
     </div>
 
     <div th:replace="common/footer">
