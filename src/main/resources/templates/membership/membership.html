@@ -596,8 +596,8 @@
                         <p>결제하신 카드로 다음 달도 결제됩니다.</p>
                     </div>
                     <div class="payment-info">
-                        <p>이용기간 : 2023.10.24 ~ 2023.11.24</p>
-                        <p>다음 결제일 : 2023.11.24</p>
+                        <p>이용기간 : <span id="todayDate"></span> ~ <span id="nextMonthDate"></span></p>
+                        <p>다음 결제일 : <span id="nextPaymentDate"></span></p>
                         <p>결제 금액 : 3,900원</p>
                     </div>
                     <div style="margin: 20px;">
@@ -704,7 +704,7 @@
                         type: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({
-                           
+
                         }),
                         success: function () {
                             alert('결제가 진행됩니다.')
@@ -718,7 +718,11 @@
                             console.log('HTTP status code:', jqXHR.status);
                             console.log('textStatus:', textStatus);
                             console.log('errorThrown:', errorThrown);
-                            alert("로그인 하십시오.");
+                            if (jqXHR.status === 400) {
+                                alert("이미 멤버십 회원입니다.");
+                            } else {
+                                alert("로그인 하십시오.");
+                            }
                         }
                     });
                 } else {
@@ -732,6 +736,24 @@
         $('.close').click(function () {
             $('#paymentModal').css('display', 'none');
         });
+
+        //가입날짜~종료날짜 불러오기
+        var today = new Date();
+        var nextMonth = new Date(today);
+        nextMonth.setMonth(today.getMonth() + 1);
+
+        // HTML 요소를 가져와서 내용을 업데이트합니다.
+        document.getElementById("todayDate").textContent = formatDate(today);
+        document.getElementById("nextMonthDate").textContent = formatDate(nextMonth);
+        document.getElementById("nextPaymentDate").textContent = formatDate(nextMonth);
+        
+        function formatDate(date) {
+        var dd = String(date.getDate()).padStart(2, '0');
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var yyyy = date.getFullYear();
+        return yyyy + '.' + mm + '.' + dd;
+        }
+
     </script>
 </body>
 
