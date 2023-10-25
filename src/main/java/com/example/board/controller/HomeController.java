@@ -1,8 +1,12 @@
 package com.example.board.controller;
 
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+=======
+import java.time.LocalDate;
+>>>>>>> 9eb3e9ad81832244e437f3d190694f9e93b97aea
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -18,9 +22,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.ResponseBody;
+=======
+import org.springframework.web.bind.annotation.RequestParam;
+>>>>>>> 9eb3e9ad81832244e437f3d190694f9e93b97aea
 
 import com.example.board.model.Board;
+import com.example.board.model.CarQna;
 import com.example.board.model.Coupon;
 import com.example.board.model.User;
 
@@ -143,7 +152,6 @@ public class HomeController {
 			List<Coupon> couponInfo = couponRepository.findByUser(user);
 			model.addAttribute("coupons", couponInfo);
 		}
-
 		return "/media/coupon";
 	}
 
@@ -167,28 +175,43 @@ public class HomeController {
 			int updatedCoins = user.getCoin() - 10;
 			user.setCoin(updatedCoins);
 
-			// 무료충전 쿠폰 생성 및 연결
-			Coupon newCoupon = new Coupon();
-			newCoupon.setName("무료충전");
+        // 무료충전 쿠폰 생성 및 연결
+        Coupon newCoupon = new Coupon();
+        newCoupon.setName("무료충전");
+				newCoupon.setStartDate(LocalDate.now());
+				newCoupon.setEndDate(LocalDate.now().plusMonths(1));
+        
+        // 12자리의 고유 코드 생성
+        String uniqueCode = Long.toString(Math.abs(new Random().nextLong()), 36).substring(0, 12);
+        newCoupon.setCode(uniqueCode);
+        
+        newCoupon.setUser(user);
 
-			// 12자리의 고유 코드 생성
-			String uniqueCode = Long.toString(Math.abs(new Random().nextLong()), 36).substring(0, 12);
-			newCoupon.setCode(uniqueCode);
 
-			newCoupon.setUser(user);
+        // 데이터베이스에 저장
+        userRepository.save(user);
+        couponRepository.save(newCoupon);
 
-			// 데이터베이스에 저장
-			userRepository.save(user);
-			couponRepository.save(newCoupon);
-
-			List<Coupon> couponInfo = user.getCoupons();
-			model.addAttribute("coupons", couponInfo);
-			model.addAttribute("userCoin", updatedCoins);
-			model.addAttribute("exchangeSuccess", true);
-
-			return "redirect:/coupon";
-		} else {
-			return "redirect:/exchange";
+        List<Coupon> couponInfo = user.getCoupons();
+        model.addAttribute("coupons", couponInfo);
+        model.addAttribute("userCoin", updatedCoins);
+				
+        model.addAttribute("exchangeSuccess", true); 
+				
+        return "redirect:/coupon";
+			} else {
+				return "redirect:/exchange"; 
+			}
 		}
-	}
+		//쿠폰 사용하기
+		@GetMapping("/coupon/remove")
+		public String couponRemove(@RequestParam Long id) {
+			Optional<Coupon> couponOptional = couponRepository.findById(id);
+			if (couponOptional.isPresent()) {
+				couponRepository.delete(couponOptional.get());
+			}
+		
+			return "redirect:/coupon";
+		}
+
 }

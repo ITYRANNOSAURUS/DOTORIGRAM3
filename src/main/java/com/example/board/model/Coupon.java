@@ -1,5 +1,7 @@
 package com.example.board.model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +19,8 @@ public class Coupon {
     private Long id;
     private String name;
     private String code;
+    private LocalDate startDate;
+  	private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

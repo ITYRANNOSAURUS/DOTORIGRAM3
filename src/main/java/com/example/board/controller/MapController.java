@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
@@ -119,7 +120,9 @@ public class MapController {
       newCoupon.setCode(uniqueCode);
       //coupon 이름 가져오기
       newCoupon.setName(coupon.getName());
-      
+      newCoupon.setStartDate(LocalDate.now());
+      newCoupon.setEndDate(LocalDate.now().plusMonths(1));
+
       couponRepository.save(newCoupon);
       return "저장완료";
    }
