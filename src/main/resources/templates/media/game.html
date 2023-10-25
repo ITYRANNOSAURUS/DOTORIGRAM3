@@ -332,14 +332,7 @@
     }
 </style>
 
-<body> <!-- <div th:replace="common/header">
-</div> -->
-
-    <!-- <nav th:replace="common/nav">
-
-</nav> -->
-
-    <!-- 게임 -->
+<body> 
     <div class="game-wrap">
         <div class="bakcground">
             <div class="ground"></div>
@@ -525,7 +518,7 @@
             } else if (score >= 200 && !isDestinationVisible && score % 200 === 0) {
                 isDestinationVisible = true;
                 destination = new Destination();
-            } else if (score >= 150 && !isDestinationVisible && score % 150 === 0) {
+            } else if (score >= 10 && !isDestinationVisible && score % 10 === 0) {
                 isDestinationVisible = true;
                 destination = new Destination();
             }
@@ -664,17 +657,16 @@
             const getCoinsButton = document.querySelector(".get-coins");
             getCoinsButton.style.display = "block"; // 버튼 표시
 
-            getCoinsButton.addEventListener("click", function () {
-                fetch("/getCoins", {
+            getCoinsButton.addEventListener("click", async function () {
+                const data = await fetch("/getCoins", {
                     method: "GET",
-                })
-                    .then(data => {
-                        alert("찌리릿 코인 1개를 획득했습니다.");
-                        window.location.href = "/home";
-                    })
-                    .catch(error => {
-                        console.error("찌리릿 코인을 받는 중 오류가 발생했습니다: " + error);
-                    });
+                });
+
+                const res = await data.text();
+
+                alert(res);
+
+                window.location.href = "/home";
             });
 
             // "다시하기" 버튼을 숨깁니다.
