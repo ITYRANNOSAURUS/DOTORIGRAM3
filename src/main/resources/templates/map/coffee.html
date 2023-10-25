@@ -88,11 +88,16 @@
     }
 
     .info-box {
+        padding: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding: 10px;
         margin: 5px;
         width: 250px;
-        height: 150px;
-        font-size: 16px;
+        height: 170px;
+        font-family: 'TheJamsil5Bold';
+        font-size: 15px;
     }
 
     .asidebar {
@@ -128,6 +133,7 @@
     .info-btn{
         display: inline-block;
         position: relative;
+        background-color: #DBC05B;
     }
     /* modal */
     .modal {
@@ -372,7 +378,7 @@ function getData(){
             const id = v.id;
            
             const content = `<div class="info-box"> 상호명: ${v.coffeestore} <br> 주소: ${v.address} <br> 이용시간 : ${v.tim} <br> <a href="${v.link}" target="_blank">주소 보기</a>
-                <button class = "info-btn" onclick="run('${v.coffeestore}')" >쿠폰 받기</buttton> </div>`;
+                <br><button class = "info-btn" onclick="run('${v.coffeestore}')" >쿠폰 받기</buttton> </div>`;
             coffeePositions.push() ;
             
             createCoffeeMarkers(lat,lng,content);

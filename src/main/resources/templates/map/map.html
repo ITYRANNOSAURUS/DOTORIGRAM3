@@ -86,6 +86,12 @@
 
         <div class="asidebar" style="width: 300px; height: 500px; overflow: scroll;">
             <div>
+                <div class ="distancebox" style="text-align: center; padding: 5px;background-color: white;">
+                반경 <input type="text" class = "distance" style="width: 44px; "> km 내의 충전소
+                <br>
+                <button onclick="getData()" >찾기</button>
+                <button onclick="removeMarkers()" >숨기기</button>
+                </div>
                 <ul class="list-group">
                     <li class="list-group-item">
                         <h5>구</h5>
@@ -165,7 +171,7 @@
                         const lng = position.coords.longitude;
                         createMap(lat, lng);
                         createMarker5(lat,lng);
-                        getData();
+                        
                     });
                     function createMap(lat, lng) {
                         const container = document.getElementById('map');
@@ -190,8 +196,8 @@
 
                                         let distancesArray = [];
                                         let distanceInKm = getDistanceFromLatLonInKm(lng, lat, stationlng, stationlat);
-                                        console.log(distanceInKm);
-                                        if (distanceInKm <= 1) {
+                                        const distance = document.querySelector('.distance').value;
+                                        if (distanceInKm <= distance) {
                                             createMarker(stationlat, stationlng);
                                         }
                                     });
@@ -228,7 +234,13 @@
                             position: markerPosition,
                             image: markerImage
                         });
-                        markers.push(marker);
+                        const mark = {
+                            marker: marker,
+                            add : 1
+                        }
+                        console.log(mark);
+
+                        markers.push(mark);
                         marker.setMap(map);
                     }
                     function createMarker5(lat, lng) {
@@ -242,6 +254,7 @@
                             position: markerPosition,
                             image: markerImage
                         });
+                        
                         markers.push(marker);
                         marker.setMap(map);
                     }
@@ -255,9 +268,7 @@
                                     const lat = v.latitude;
                                     const lng = v.longitude;
                                     const cityData = v.city;
-                                    // console.log(city);
-                                    // console.log(cityData);
-
+                                    
                                     if (cityData === city) {
                                         var address = `${v.address}`;
                                         var kakaoMapLink = "https://map.kakao.com/link/map/" + encodeURIComponent(address);
@@ -283,9 +294,7 @@
                                     const lat = v.latitude;
                                     const lng = v.longitude;
                                     const companyData = v.company;
-                                    console.log(company);
-                                    // console.log(companyData);
-
+                                    
                                     if (companyData === company) {
                                         var address = `${v.address}`;
                                         var kakaoMapLink = "https://map.kakao.com/link/map/" + encodeURIComponent(address);
@@ -294,7 +303,6 @@
                                             `<div class="ininfo"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim} <br>
                                                 <a href="${kakaoMapLink}" target="_blank">카카오맵에서 보기</a> </div>`;
                                         companyaddress = company;
-                                        console.log(company);
                                         createMarker2(lat, lng, content);
                                     }
 
@@ -320,7 +328,6 @@
                                             `<div class="ininfo"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim} <br>
                                                 <a href="${kakaoMapLink}" target="_blank">카카오맵에서 보기</a> </div>`;
                                         spottypeaddress = spottype;
-                                        console.log(spottype);
                                         createMarker3(lat, lng, content);
                                     }
 
@@ -346,7 +353,6 @@
                                             `<div class="ininfo"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim} <br>
                                                 <a href="${kakaoMapLink}" target="_blank">카카오맵에서 보기</a> </div>`;
                                         bigaddress = big;
-                                        console.log(big);
                                         createMarker4(lat, lng, content);
                                     }
 
@@ -504,6 +510,19 @@
                         infowindow.close();
                     }
 
+                    function removeMarkers() {
+
+                        markers.forEach(mark =>{
+                            const marker = mark.marker;
+                            if(mark.add==1){
+                                console.log(mark.add);
+                                marker.setMap(null); // 지도에서 제거
+                            }
+                            
+
+                        });
+                         
+                    }
                     function removeMarkers1(city) {
                         markers.forEach(mark => {
                             const marker = mark.marker;
