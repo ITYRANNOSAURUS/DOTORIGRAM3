@@ -46,6 +46,11 @@ public class User implements Serializable {
 
     private Date coinDate;
 
+	// public boolean hasMembership() {
+	// 	List<Membership> memberships = membershipRepository.findByUser(this);
+	// 	return memberships != null && !memberships.isEmpty();
+	// }
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
 	List<Board> boards = new ArrayList<>();
 

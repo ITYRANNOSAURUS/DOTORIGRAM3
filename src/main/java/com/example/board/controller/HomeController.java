@@ -1,12 +1,9 @@
 package com.example.board.controller;
 
-<<<<<<< HEAD
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
-=======
-import java.time.LocalDate;
->>>>>>> 9eb3e9ad81832244e437f3d190694f9e93b97aea
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -22,11 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.ResponseBody;
-=======
 import org.springframework.web.bind.annotation.RequestParam;
->>>>>>> 9eb3e9ad81832244e437f3d190694f9e93b97aea
 
 import com.example.board.model.Board;
 import com.example.board.model.CarQna;

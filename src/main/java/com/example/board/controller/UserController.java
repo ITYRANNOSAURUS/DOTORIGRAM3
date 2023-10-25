@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import com.example.board.model.CarType;
 import com.example.board.model.Company;
 import com.example.board.model.Coupon;
+import com.example.board.model.Membership;
 import com.example.board.model.User;
 import com.example.board.repository.CarTypeRepository;
 import com.example.board.repository.CompanyRepository;
@@ -78,7 +79,14 @@ public class UserController {
 		boolean isMatch = passwordEncoder.matches(userPwd, encodedPwd);
 
 		if (isMatch) {
+			// 로그인 성공한 경우
 			session.setAttribute("user_info", dbUser);
+			
+			// 멤버십 정보 가져와서 세션에 저장
+			List<Membership> memberships = dbUser.getMemberships();
+			if(memberships != null){
+				session.setAttribute("membership_info", memberships);
+			}
 
 			return "redirect:/";
 		} else {
