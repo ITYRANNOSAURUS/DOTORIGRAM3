@@ -1,5 +1,8 @@
 package com.example.board.controller;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -8,11 +11,14 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.board.model.Board;
 import com.example.board.model.Coupon;
@@ -60,23 +66,44 @@ public class HomeController {
 		return "index";
 	}
 
-
-
 	@GetMapping("/getCoins")
-	public String getCoins(Model model) {
+	@ResponseBody
+	public ResponseEntity<String> getCoins(Model model) {
 		User user = (User) session.getAttribute("user_info");
+
 		if (user != null) {
+			// 사용자가 마지막으로 코인을 받은 날짜를 가져옵니다.
+			Date lastCoinDate = user.getCoinDate();
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
 
-			int userCoins = user.getCoin();
-			userCoins += 1;
-			user.setCoin(userCoins);
+			// 오늘 날짜
+			int todayYear = calendar.get(Calendar.YEAR);
+			int todayMonth = calendar.get(Calendar.MONTH);
+			int todayDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-			userRepository.save(user);
+			calendar.setTime(lastCoinDate);
 
-			model.addAttribute("userCoin", userCoins);
+			// 마지막으로 코인을 받은 날짜
+			int lastCoinYear = calendar.get(Calendar.YEAR);
+			int lastCoinMonth = calendar.get(Calendar.MONTH);
+			int lastCoinDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+			// 사용자가 오늘 이미 코인을 받았는지 확인합니다.
+			if (todayYear == lastCoinYear && todayMonth == lastCoinMonth && todayDay == lastCoinDay) {
+				return new ResponseEntity<>("오늘은 이미 코인을 받으셨습니다.", HttpStatus.OK);
+			} else {
+				int userCoins = user.getCoin();
+				userCoins += 1;
+				user.setCoin(userCoins);
+				user.setCoinDate(new Date());
+
+				userRepository.save(user);
+
+				model.addAttribute("userCoin", userCoins);
+			}
 		}
-
-		return "redirect:/home";
+		return new ResponseEntity<>("찌리릿 코인 1개를 획득하셨습니다.", HttpStatus.OK);
 	}
 
 	@GetMapping("/media/gamepage")
@@ -132,37 +159,36 @@ public class HomeController {
 	}
 
 	@PostMapping("/exchange")
-public String exchangeCoin(Model model) {
-    User user = (User) session.getAttribute("user_info");
+	public String exchangeCoin(Model model) {
+		User user = (User) session.getAttribute("user_info");
 
-    if (user != null && user.getCoin() >= 10) {
-        // 찌리릿코인 10개 차감
-        int updatedCoins = user.getCoin() - 10;
-        user.setCoin(updatedCoins);
+		if (user != null && user.getCoin() >= 10) {
+			// 찌리릿코인 10개 차감
+			int updatedCoins = user.getCoin() - 10;
+			user.setCoin(updatedCoins);
 
-        // 무료충전 쿠폰 생성 및 연결
-        Coupon newCoupon = new Coupon();
-        newCoupon.setName("무료충전");
-        
-        // 12자리의 고유 코드 생성
-        String uniqueCode = Long.toString(Math.abs(new Random().nextLong()), 36).substring(0, 12);
-        newCoupon.setCode(uniqueCode);
-        
-        newCoupon.setUser(user);
+			// 무료충전 쿠폰 생성 및 연결
+			Coupon newCoupon = new Coupon();
+			newCoupon.setName("무료충전");
 
-        // 데이터베이스에 저장
-        userRepository.save(user);
-        couponRepository.save(newCoupon);
+			// 12자리의 고유 코드 생성
+			String uniqueCode = Long.toString(Math.abs(new Random().nextLong()), 36).substring(0, 12);
+			newCoupon.setCode(uniqueCode);
 
-        List<Coupon> couponInfo = user.getCoupons();
-        model.addAttribute("coupons", couponInfo);
-        model.addAttribute("userCoin", updatedCoins);
+			newCoupon.setUser(user);
 
-        model.addAttribute("exchangeSuccess", true); 
+			// 데이터베이스에 저장
+			userRepository.save(user);
+			couponRepository.save(newCoupon);
 
-        return "redirect:/coupon";
-    } else {
-        return "redirect:/exchange"; 
-    }
-}
+			List<Coupon> couponInfo = user.getCoupons();
+			model.addAttribute("coupons", couponInfo);
+			model.addAttribute("userCoin", updatedCoins);
+			model.addAttribute("exchangeSuccess", true);
+
+			return "redirect:/coupon";
+		} else {
+			return "redirect:/exchange";
+		}
+	}
 }

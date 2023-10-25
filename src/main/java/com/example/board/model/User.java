@@ -1,6 +1,7 @@
 package com.example.board.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,8 @@ public class User implements Serializable {
 	}
 
 	private Integer coin;
+
+    private Date coinDate;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
 	List<Board> boards = new ArrayList<>();
