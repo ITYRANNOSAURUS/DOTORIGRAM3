@@ -174,7 +174,6 @@
     <script>
         document.getElementById('exchangeButton').addEventListener('click', function () {
             var userCoin = parseInt(document.querySelector('span').textContent);
-
             if (userCoin >= 10) {
                 fetch('/exchange', { method: 'POST' })
                     .then(function (response) {

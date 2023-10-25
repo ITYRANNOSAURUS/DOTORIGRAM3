@@ -21,6 +21,7 @@ import com.example.board.repository.CarQnaRepository;
 import com.example.board.repository.CarTypeRepository;
 import com.example.board.repository.ChargingsRepository;
 import com.example.board.repository.CompanyRepository;
+import com.example.board.repository.MembershipRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -45,14 +46,24 @@ public class AdminController {
 	@Autowired
 	CarTypeRepository carTypeRepository;
 
+	@Autowired
+	MembershipRepository membershipRepository;
+
   @GetMapping("")
 	public String admin(Model model) {
 		//유저수 
 		long userCount = userRepository.count();  // JPA count() 메소드 활용하여 DB에서 직접 카운트
 		model.addAttribute("userCount", userCount);
-		// List<User> users= userRepository.findAll();
-    // int userCount = users.size();
-    // model.addAttribute("userCount", userCount);
+		
+		//구독자수
+		long membershipCount = membershipRepository.count();
+		model.addAttribute("membershipCount", membershipCount);
+
+		//고객문의 수
+		long chargingCount = chargingsRepository.count();
+		long carQnaCount = carQnaRepository.count();
+		long totalQnaCount = chargingCount+carQnaCount;
+		model.addAttribute("totalQnaCount", totalQnaCount);
 
 		// 사용자 정보 가져오기
     User user = (User) session.getAttribute("user_info");
