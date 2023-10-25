@@ -144,7 +144,7 @@
 
     <div class="exchange-box">
         <h2>찌리릿코인 교환하기</h2>
-        <a>나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
+        <a>나의 찌리릿: <span th:text="${userCoin}" id="userCoin"></span>개</a>
         <button class="w-btn-outline w-btn-yellow-outline" type="button" id="exchangeButton">
             교환하기
         </button>
@@ -173,8 +173,7 @@
 
     <script>
         document.getElementById('exchangeButton').addEventListener('click', function () {
-            var userCoin = parseInt(document.querySelector('span').textContent);
-
+            var userCoin = parseInt(document.getElementById('userCoin').textContent);
             if (userCoin >= 10) {
                 fetch('/exchange', { method: 'POST' })
                     .then(function (response) {

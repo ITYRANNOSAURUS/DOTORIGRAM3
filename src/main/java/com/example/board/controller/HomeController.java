@@ -130,37 +130,37 @@ public class HomeController {
 	}
 
 	@PostMapping("/exchange")
-	public String exchangeCoin(Model model) {
-		User user = (User) session.getAttribute("user_info");
+public String exchangeCoin(Model model) {
+    User user = (User) session.getAttribute("user_info");
 
-		if (user != null && user.getCoin() >= 10) {
-			// 찌리릿코인 10개 차감
-			int updatedCoins = user.getCoin() - 10;
-			user.setCoin(updatedCoins);
+    if (user != null && user.getCoin() >= 10) {
+        // 찌리릿코인 10개 차감
+        int updatedCoins = user.getCoin() - 10;
+        user.setCoin(updatedCoins);
 
-			// 무료충전 쿠폰 생성 및 연결
-			Coupon newCoupon = new Coupon();
-			newCoupon.setName("무료충전");
+        // 무료충전 쿠폰 생성 및 연결
+        Coupon newCoupon = new Coupon();
+        newCoupon.setName("무료충전");
+        
+        // 12자리의 고유 코드 생성
+        String uniqueCode = Long.toString(Math.abs(new Random().nextLong()), 36).substring(0, 12);
+        newCoupon.setCode(uniqueCode);
+        
+        newCoupon.setUser(user);
 
-			// 12자리의 고유 코드 생성
-			String uniqueCode = Long.toString(Math.abs(new Random().nextLong()), 36).substring(0, 12);
-			newCoupon.setCode(uniqueCode);
+        // 데이터베이스에 저장
+        userRepository.save(user);
+        couponRepository.save(newCoupon);
 
-			newCoupon.setUser(user);
+        List<Coupon> couponInfo = user.getCoupons();
+        model.addAttribute("coupons", couponInfo);
+        model.addAttribute("userCoin", updatedCoins);
 
-			// 데이터베이스에 저장
-			userRepository.save(user);
-			couponRepository.save(newCoupon);
+        model.addAttribute("exchangeSuccess", true); 
 
-			List<Coupon> couponInfo = user.getCoupons();
-			model.addAttribute("coupons", couponInfo);
-			model.addAttribute("userCoin", updatedCoins);
-
-			model.addAttribute("exchangeSuccess", true);
-
-			return "redirect:/coupon";
-		} else {
-			return "redirect:/exchange";
-		}
-	}
+        return "redirect:/coupon";
+    } else {
+        return "redirect:/exchange"; 
+    }
+}
 }
