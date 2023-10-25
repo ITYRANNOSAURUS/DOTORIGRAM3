@@ -3,6 +3,8 @@ package com.example.board.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.board.model.Board;
 import com.example.board.model.Coupon;
@@ -131,4 +134,39 @@ public class HomeController {
 
 		return "/media/exchange";
 	}
+
+	@PostMapping("/exchange")
+public String exchangeCoin(Model model) {
+    User user = (User) session.getAttribute("user_info");
+
+    if (user != null && user.getCoin() >= 10) {
+        // 찌리릿코인 10개 차감
+        int updatedCoins = user.getCoin() - 10;
+        user.setCoin(updatedCoins);
+
+        // 무료충전 쿠폰 생성 및 연결
+        Coupon newCoupon = new Coupon();
+        newCoupon.setName("무료충전");
+        
+        // 12자리의 고유 코드 생성
+        String uniqueCode = Long.toString(Math.abs(new Random().nextLong()), 36).substring(0, 12);
+        newCoupon.setCode(uniqueCode);
+        
+        newCoupon.setUser(user);
+
+        // 데이터베이스에 저장
+        userRepository.save(user);
+        couponRepository.save(newCoupon);
+
+        List<Coupon> couponInfo = user.getCoupons();
+        model.addAttribute("coupons", couponInfo);
+        model.addAttribute("userCoin", updatedCoins);
+
+        model.addAttribute("exchangeSuccess", true); 
+
+        return "redirect:/coupon";
+    } else {
+        return "redirect:/exchange"; 
+    }
+}
 }

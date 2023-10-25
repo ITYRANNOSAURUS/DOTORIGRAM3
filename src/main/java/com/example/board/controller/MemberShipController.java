@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -29,7 +30,14 @@ public class MemberShipController {
 	HttpSession session;
 
 	@GetMapping("/membership")
-	public String membership() {
+	public String membership(Model model) {
+		User user = (User) session.getAttribute("user_info");
+
+		if (user != null) {
+			List<Membership> memberships = membershipRepository.findByUser(user);
+			model.addAttribute("user", user);
+			model.addAttribute("memberships", memberships);
+		}
 
 		return "membership/membership";
 	}
@@ -43,6 +51,12 @@ public class MemberShipController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
 		}
 
+		// 이미 멤버십 회원인 사람은 가입금지
+		List<Membership> memberships = membershipRepository.findByUser(user);
+    if (!memberships.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already has a membership");
+    }
+
 		// 2. Create a new membership
 		Membership newMembership = new Membership();
 		newMembership.setStartDate(LocalDate.now());
@@ -53,7 +67,8 @@ public class MemberShipController {
 
 		// 4. newmembership정보 membershipRepository저장
 		membershipRepository.save(newMembership);
-
+		
+		
 		return ResponseEntity.ok().build();
 	}
 
@@ -65,9 +80,25 @@ public class MemberShipController {
 
 	@GetMapping("/mymembership")
 	public String mymembership(Model model) {
-		User user = (User) session.getAttribute("user");
+		User user = (User) session.getAttribute("user_info");
+
 		if (user != null) {
+			List<Membership> memberships = membershipRepository.findByUser(user);
 			model.addAttribute("user", user);
+			model.addAttribute("memberships", memberships);
+		}
+		return "membership/mymembership";
+	}
+	
+	@GetMapping("/getcoupon")
+	public String getcoupon(Model model) {
+		User user = (User) session.getAttribute("user_info");
+
+		if (user != null) {
+			List<Membership> memberships = membershipRepository.findByUser(user);
+			// if()
+			model.addAttribute("user", user);
+			model.addAttribute("memberships", memberships);
 		}
 		return "membership/mymembership";
 	}
