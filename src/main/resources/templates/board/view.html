@@ -56,6 +56,7 @@
         첨부된 파일📥
         <!-- 첨부된 파일 목록 -->
         <ul th:each="fileAtch : ${board.fileAtchs}">
+
           <li style="list-style-type: none;">
             <a th:href="@{/download(id=${fileAtch.id})}">
               [[${fileAtch.originalName}]]

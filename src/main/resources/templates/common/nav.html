@@ -190,7 +190,6 @@
           <a th:href="@{/signin}" class="word">로그인</a>
           <a th:href="@{/signup}" class="word">회원가입</a>
         </div>
-
           <div th:unless="${session.user_info == null}" class="menubar">
             <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
             <br>
