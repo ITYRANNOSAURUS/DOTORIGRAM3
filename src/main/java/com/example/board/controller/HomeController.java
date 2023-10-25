@@ -57,10 +57,7 @@ public class HomeController {
 		return "index";
 	}
 
-	@GetMapping("/media/gamepage")
-	public String gamepage() {
-		return "/gamepage";
-	}
+
 
 	@GetMapping("/getCoins")
 	public String getCoins(Model model) {
@@ -83,7 +80,7 @@ public class HomeController {
 	public String gamepage(Model model) {
 		User user = (User) session.getAttribute("user_info");
 		if (user != null) {
-			int userCoins = user.getCoin();
+			Integer userCoins = user.getCoin();
 			model.addAttribute("userCoin", userCoins);
 		}
 		return "/gamepage";
