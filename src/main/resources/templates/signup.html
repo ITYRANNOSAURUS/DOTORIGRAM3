@@ -53,6 +53,40 @@
     content: "\f070";
     color: white;
   }
+  /* modal */
+  .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        font-family: 'TheJamsil5Bold' ;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        width: 600px;
+        padding: 30px;
+        color: black;
+        overflow-y: scroll;
+    }
+
+    .close {
+        color: #aaaaaa;
+    }
+
+    .subscribe-title {
+        text-align: center;
+        font-size: 30px;
+        margin-bottom: 50px;
+    }
+
+    .content-info {
+        text-align: center;
+        margin-top: 2px;
+        font-weight: bold;
+        font-size: large;
+    }
 </style>
 
 <body>
@@ -67,6 +101,7 @@
           <input type="email" class="form-control" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,}$"
             title=" 정확한 이메일 주소를 입력해주세요" placeholder="ex.daram@dotori.com" required>
           <button class="btn btn-primary" type="button" onclick="checkEmail()">중복확인</button>
+          <button class="btn btn-primary" type="button" onclick="run()">이메일 인증</button>
           <span id="duplicateResult"></span>
         </div>
         <div class="mb-3">
@@ -107,8 +142,33 @@
           <button class="btn btn-primary" id="signup">가입하기</button>
         </div>
       </form>
+      <!-- Modal -->
+    <div id="myModal" class="modal">
+      <div class="modal-dailog">
+      <div class="modal-content" style="color:black;">
+          <span class="close">&times;</span>
+          <div class ="subscribe-title">이메일 인증 코드 입력</div>
+          <div class="subscribe-content">
+              <div class="content-info"> 
+                    <input type="text" class ="codetext">
+                  </div>
+              <div class ="coupon-btn" style="display: flex; justify-content: space-evenly;align-items: center; margin-top: 20px;">
+                  <a href="#" class ="btn-gradient yellow large" onclick="checkEmailcode()" >확인</a>
+
+          </div>
+      </div>
+      </div>
+  </div>
     </div>
     <script>
+      
+      const signupButton = document.getElementById('signup');
+if (duplicateResultElement.textContent === "사용 가능한 Email입니다." && contentInfo.innerHTML === "<h1>성공</h1>") {
+    signupButton.disabled = false;
+} else {
+    signupButton.disabled = true;
+}
+
       // id중복체크
       async function checkEmail() {
         const email = document.querySelector("[name=email]").value;
@@ -126,8 +186,45 @@
         } else if (result == "가입가능") {
           duplicateResultElement.textContent = "사용 가능한 Email입니다.";
           duplicateResultElement.style.color = "green";
+          
           // 다른 스타일링 등의 추가적인 처리 가능
         }
+      }
+      //이메일 인증 모달창
+      async function run(code){
+        
+        const options = {backdrop:false};
+        var myModal = new bootstrap.Modal(document.getElementById('myModal'), options);
+        myModal.show();
+
+        const email = document.querySelector("[name=email]").value;
+        const response = await fetch(`/emailcode?email=${email}`);
+        
+
+        $('.close').click(function(){
+          $('#myModal').css('display','none');
+          $('.subscribe-title').empty();
+    });
+      }
+      
+      // 이메일 인증
+      async function checkEmailcode(){
+        
+        const emailcode = document.querySelector('.codetext').value;
+        const response = await fetch(`/emailcode-check?emailcode=${emailcode}`);
+        const result = await response.text();
+        console.log(response);
+        console.log(result);
+        if (result === "코드불일치") {
+          var contentInfo = document.querySelector('.content-info');
+          contentInfo.innerHTML = '<h1>코드불일치</h1>';
+        } else if (result === "코드일치") {
+          var contentInfo = document.querySelector('.content-info');
+          contentInfo.innerHTML = '<h1>성공</h1>';
+          
+          
+        }
+
       }
       // 비밀번호 보이기표시
       function togglePasswordVisibility() {
