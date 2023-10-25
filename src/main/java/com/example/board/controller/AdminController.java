@@ -81,14 +81,6 @@ public class AdminController {
 		return "admin/index";
 	}
 
-	// @GetMapping("/carQna/remove")
-	// public String carQnaRemove(@ModelAttribute CarQna carQna, @RequestParam int carqnaId) {
-	
-	// 	carQnaRepository.delete(carQna);
-	
-	// 	return "redirect:/admin/index?id=" + carqnaId;
-	// }
-
 	//차 등록 삭제
 	@GetMapping("/carQna/remove")
 	public String carQnaRemove(@RequestParam Long id) {
@@ -99,6 +91,7 @@ public class AdminController {
 	
 		return "redirect:/admin/";
 	}
+	
 	//차 등록 승인
 	@GetMapping("/carQna/approve")
 	public String carQnaApprove(@RequestParam Long id) {
