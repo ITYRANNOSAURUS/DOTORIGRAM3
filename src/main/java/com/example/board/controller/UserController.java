@@ -118,7 +118,7 @@ public class UserController {
 		user.setRole(userRole);
 		user.setCarname(carname);
 		user.setCoin(0);
-		// user.setCoupons(0);
+		user.setCoinDate(new Date(0));
 
 		userRepository.save(user);
 
