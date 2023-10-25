@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="common/head">
+
+</head>
+
+<style>
+  @font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  body {
+    font-family: 'TheJamsil5Bold';
+    height: 100vh;
+    /* 화면 높이의 100%로 설정 */
+    background-color: #000;
+    background-size: cover;
+    /* 이미지를 화면에 맞게 조절 */
+    background-repeat: no-repeat;
+    /* 이미지 반복을 중지 */
+  }
+
+  .change-color {
+    background-color: #ffed91;
+    border-color: #ffed91;
+    text-decoration: none;
+    color: black;
+  }
+
+  .change-color:hover {
+    color: black;
+    background-color: #fff9cd;
+    border-color: #fff9cd;
+  }
+
+  .exit {
+    display: flex;
+    justify-content: center;
+    color: black;
+    text-decoration: none;
+    width: 200px;
+  }
+
+  .exit-link {
+    display: grid !important;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  label {
+    color: white;
+  }
+</style>
+
+<body>
+
+  <div th:replace="common/header">
+
+  </div>
+
+  <nav th:replace="common/nav">
+
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="mymembership-header">
+        <h1>나의 멤버십</h1>
+      </div>
+      <div class="mymembership-content">
+       <div class="mb-3">
+          <input type="hidden" id="id" name="id" th:value="${user.id}">
+          <label for="email">Email:</label>
+          <input type="text" class="form-control" id="email" name="email" th:value="${user.email}" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" name="name" th:value="${user.name}">
+        </div>
+        <div class="mb-3">
+          <label for="start-date">멤버십 가입 날짜:</label>
+          <input type="text" class="form-control" id="start-date" name="start-date" th:value="${user.startDate}">
+        </div>
+        <div class="mb-3">
+          <label for="end-date">멤버십 종료 날짜:</label>
+          <input type="text" class="form-control" id="end-date" name="end-date" th:value="${user.endDate}">
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</body>
+
+</html>

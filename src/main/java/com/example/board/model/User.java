@@ -21,7 +21,7 @@ import lombok.Data;
 public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	private String email;
 	private String pwd;
 	private String name;
@@ -47,5 +47,8 @@ public class User implements Serializable {
 	List<Board> boards = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user")
-	List<Coupon> coupons;
+    private List<Membership> memberships;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Coupon> coupons;
 }

@@ -105,7 +105,7 @@
         <div class="dropdown-menu" aria-labelledby="infoDropdown">
           <a class='dropdown-item' href='/map'>지도</a>
           <div class="dropdown">
-            <a class='dropdown-item' href='/post/a'>목록</a>
+            <a class='dropdown-item' href='/map/coffee'>제휴업체 찾기</a>
           </div>
         </div>
       </li>
@@ -119,6 +119,8 @@
             <a class='dropdown-item' href='/qna/list'>Q&A</a>
             <div class="dropdown">
               <a class='dropdown-item' th:href='@{/chlregister}'>충전소 추가 요청</a>
+              <div class="dropdown">
+                <a class='dropdown-item' th:href='@{/addCar}'>Car 정보 추가 요청</a>
             </div>
           </div>
         </div>
@@ -150,6 +152,9 @@
             <a class='dropdown-item' th:href='@{/coupon}'>쿠폰함</a>
             <div class="dropdown">
               <a class='dropdown-item' th:href='@{/membership}'>구독하기</a>
+                <div class="dropdown">
+                  <a class='dropdown-item' th:href='@{/membership}'>나의 멤버십</a>
+                </div>
             </div>
           </div>
         </div>

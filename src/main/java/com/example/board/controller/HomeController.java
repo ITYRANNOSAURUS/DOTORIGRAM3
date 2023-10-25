@@ -2,12 +2,11 @@ package com.example.board.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.board.model.Board;
 import com.example.board.model.Coupon;
@@ -55,7 +55,7 @@ public class HomeController {
 
 		if (user != null) {
 			// 사용자 정보에서 코인 정보를 불러와 모델에 추가
-			int userCoins = user.getCoin();
+			Integer userCoins = user.getCoin();
 			model.addAttribute("userCoin", userCoins);
 
 			return "index";
@@ -84,7 +84,7 @@ public class HomeController {
 	public String gamepage(Model model) {
 		User user = (User) session.getAttribute("user_info");
 		if (user != null) {
-			int userCoins = user.getCoin();
+			Integer userCoins = user.getCoin();
 			model.addAttribute("userCoin", userCoins);
 		}
 		return "media/gamepage";
@@ -106,21 +106,29 @@ public class HomeController {
 		return "/media/game";
 	}
 
-	@GetMapping("/exchange")
-	public String exchange(Model model) {
-		User user = (User) session.getAttribute("user_info");
-		int userCoins = user.getCoin();
-		model.addAttribute("userCoin", userCoins);
-		return "/media/exchange";
-	}
-
 	@GetMapping("/coupon")
 	public String couponbox(Model model) {
 		User user = (User) session.getAttribute("user_info");
-		List<Coupon> couponInfo = couponRepository.findAll();
-		model.addAttribute("coupons", couponInfo);
+
+		if (user != null) {
+			int userCoins = user.getCoin();
+			model.addAttribute("userCoin", userCoins);
+
+			List<Coupon> couponInfo = couponRepository.findByUser(user);
+			model.addAttribute("coupons", couponInfo);
+		}
 
 		return "/media/coupon";
 	}
 
+	@GetMapping("/exchange")
+	public String exchange(Model model) {
+		User user = (User) session.getAttribute("user_info");
+		if (user != null) {
+			int userCoins = user.getCoin();
+			model.addAttribute("userCoin", userCoins);
+		}
+
+		return "/media/exchange";
+	}
 }
