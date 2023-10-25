@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,6 +21,7 @@ import com.example.board.repository.CarQnaRepository;
 import com.example.board.repository.CarTypeRepository;
 import com.example.board.repository.ChargingsRepository;
 import com.example.board.repository.CompanyRepository;
+import com.example.board.repository.MembershipRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -46,14 +46,24 @@ public class AdminController {
 	@Autowired
 	CarTypeRepository carTypeRepository;
 
+	@Autowired
+	MembershipRepository membershipRepository;
+
   @GetMapping("")
 	public String admin(Model model) {
 		//유저수 
 		long userCount = userRepository.count();  // JPA count() 메소드 활용하여 DB에서 직접 카운트
 		model.addAttribute("userCount", userCount);
-		// List<User> users= userRepository.findAll();
-    // int userCount = users.size();
-    // model.addAttribute("userCount", userCount);
+		
+		//구독자수
+		long membershipCount = membershipRepository.count();
+		model.addAttribute("membershipCount", membershipCount);
+
+		//고객문의 수
+		long chargingCount = chargingsRepository.count();
+		long carQnaCount = carQnaRepository.count();
+		long totalQnaCount = chargingCount+carQnaCount;
+		model.addAttribute("totalQnaCount", totalQnaCount);
 
 		// 사용자 정보 가져오기
     User user = (User) session.getAttribute("user_info");
@@ -71,14 +81,6 @@ public class AdminController {
 		return "admin/index";
 	}
 
-	// @GetMapping("/carQna/remove")
-	// public String carQnaRemove(@ModelAttribute CarQna carQna, @RequestParam int carqnaId) {
-	
-	// 	carQnaRepository.delete(carQna);
-	
-	// 	return "redirect:/admin/index?id=" + carqnaId;
-	// }
-
 	//차 등록 삭제
 	@GetMapping("/carQna/remove")
 	public String carQnaRemove(@RequestParam Long id) {
@@ -89,6 +91,7 @@ public class AdminController {
 	
 		return "redirect:/admin/";
 	}
+	
 	//차 등록 승인
 	@GetMapping("/carQna/approve")
 	public String carQnaApprove(@RequestParam Long id) {

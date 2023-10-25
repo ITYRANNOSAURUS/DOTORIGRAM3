@@ -12,18 +12,31 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.board.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class NewsController {
+
+    @Autowired
+    HttpSession session;
+
     @GetMapping("media/news")
     public String news(String searchText, Model model) {
+        User user = (User) session.getAttribute("user_info");
+        if (user != null) {
+            int userCoins = user.getCoin();
+            model.addAttribute("userCoin", userCoins);
+        }
 
         String clientId = "OEFNplKpH997Tcm_VSaI"; // 애플리케이션 클라이언트 아이디
         String clientSecret = "crxNyXDFng"; // 애플리케이션 클라이언트 시크릿

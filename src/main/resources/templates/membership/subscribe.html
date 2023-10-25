@@ -4,14 +4,13 @@
 <head th:replace="common/head"></head>
 
 <style>
-  /* Brand img */
-  /* .nav-brand {
-    position: fixed;
-    left: 0;
-    z-index: 600;
-    padding: 10px;
-  } */
-
+ @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
+ 
   .nav-brand img {
     width: 100%;
     height: 500px;
@@ -403,8 +402,12 @@
     <section id="services" class="bounce-inInverse">
       <div class="containerContent">
         <div class="set_size_section1">
-          <h2 class="services_h2 center">
-            <img style="width: 50px; height: 50px;" src="/ticket.png">
+          <h2 class="services_h2 center" 
+          style="display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: flex-end;">
+            <img style="width: 80px; height: 50px;" src="/ticket.png">
             PIKAPASS
           </h2>
           <p class="services_p center">Hello! Use our services. Save time. Enjoy more convenience.</p><br>
@@ -414,17 +417,14 @@
           <div class="article_center2">
             <article class="section1_article">
               <img alt="Basket" src="/pointing.png" width="78" height="77">
-              <h3>편의점, 카페 위치 정보</h3>
-              <p>멤버십 가입자에게 충전소 주변 <br>편의점, 카페 위치 정보 제공 (월 무제한 제공)</p>
+              <h3>다양한 위치 정보</h3>
+              <p>멤버십 가입자에게 충전소 주변 <br>편의점, 카페, 음식점 위치 정보 제공<br>(월 무제한 제공)</p>
             </article>
             <article class="section1_article">
-              <img alt="Laptop" src="venti.png" width="78" height="77">
-              <h3>제휴 카페 10% 할인</h3>
+              <img alt="Laptop" src="couponicon.png" width="78" height="77">
+              <h3>제휴 업체 10% 할인</h3>
               <p>
-                멤버십 가입자에게 제휴 카페 <br>10% 할인 쿠폰 제공 (월 3회 제공)
-              </p>
-              <p>
-                더벤티(The Venti Coffee)
+                멤버십 가입자에게 제휴 업체 <br>10% 할인 쿠폰 제공 (월 3회 제공)
               </p>
             </article>
             <article class="section1_article">

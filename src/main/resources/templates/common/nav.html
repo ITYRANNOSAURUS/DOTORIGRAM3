@@ -5,6 +5,9 @@
 </head>
 
 <style>
+  body {
+    z-index: 100;
+  }
   .menubar a {
     text-decoration: none;
   }
@@ -149,11 +152,11 @@
             <a class="word" th:href="@{/}">홈</a>
           </div>
           <div class="menubar">
-            <a class="word">충전소 찾기</a>
-            <div class="submenu">
+            <a class="word" href="/map">충전소 찾기</a>
+            <!-- <div class="submenu">
               <a class="word" th:href="@{/map}">지도</a>
               <a class="word" th:href="@{/map}">목록 추가</a>
-            </div>
+            </div> -->
           </div>
           <div class="menubar">
             <a class="word">게시판</a>
@@ -170,6 +173,16 @@
               <a class="word" th:href="@{/media/gamepage}">전기차 게임</a>
             </div>
           </div>
+          <div class="menubar">
+            <a class="word">멤버십</a>
+            <div class="submenu">
+              <a class="word" th:href="@{/exchange}">코인교환</a>
+              <a class="word" th:href="@{/coupon}">쿠폰함</a>
+              <br>
+              <a class="word" th:href="@{/membership}">구독하기</a>
+              <a class="word" th:href="@{/mymembership}">나의 멤버십</a>
+            </div>
+          </div>
         </div>
         <br>
         <br>
@@ -180,7 +193,7 @@
           <div th:unless="${session.user_info == null}" class="menubar">
             <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
             <br>
-              <a class="word" th:href="@{/coupon}">나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
+              <a class="word" th:href="@{/exchange}">나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
             <br>
             <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
             <br>
