@@ -22,7 +22,8 @@ public class Coupon implements Serializable {
     private String code;
     private LocalDate startDate;
   	private LocalDate endDate;
-
+    private Integer count = 0;
+    private boolean used = false;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

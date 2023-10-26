@@ -8,13 +8,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.board.model.Board;
-import com.example.board.model.CarQna;
 import com.example.board.model.Coupon;
 import com.example.board.model.User;
 
@@ -150,8 +144,8 @@ public class HomeController {
 			int userCoins = user.getCoin();
 			model.addAttribute("userCoin", userCoins);
 
-			List<Coupon> couponInfo = couponRepository.findByUser(user);
-			model.addAttribute("coupons", couponInfo);
+			List<Coupon> coupons = couponRepository.findByUserAndUsed(user, false);
+			model.addAttribute("coupons", coupons);
 		}
 		return "/media/coupon";
 	}
@@ -205,6 +199,18 @@ public class HomeController {
 	}
 
 	// 쿠폰 사용하기
+	@GetMapping("/coupon/used")
+	public String couponUsed(@RequestParam Long id) {
+		Optional<Coupon> couponOptional = couponRepository.findById(id);
+		if (couponOptional.isPresent()) {
+			Coupon coupon = couponOptional.get();
+			coupon.setUsed(true);
+			couponRepository.save(coupon);
+
+		}
+		return "redirect:/coupon";
+	}
+	// 쿠폰 삭제하기
 	@GetMapping("/coupon/remove")
 	public String couponRemove(@RequestParam Long id) {
 		Optional<Coupon> couponOptional = couponRepository.findById(id);
@@ -212,7 +218,7 @@ public class HomeController {
 			couponRepository.delete(couponOptional.get());
 		}
 
-		return "redirect:/coupon";
+		return "redirect:/admin/";
 	}
 
 }

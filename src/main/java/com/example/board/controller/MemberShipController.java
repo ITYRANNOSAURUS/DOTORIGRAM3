@@ -1,7 +1,6 @@
 package com.example.board.controller;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -9,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,7 +61,10 @@ public class MemberShipController {
 		// 2. Create a new membership
 		Membership newMembership = new Membership();
 		newMembership.setStartDate(LocalDate.now());
+		//membership =>1달
 		newMembership.setEndDate(LocalDate.now().plusMonths(1));
+		//membership =>하루
+		// newMembership.setEndDate(LocalDate.now().plusDays(1));
 		
 		//찌리릿코인 2개지급
 		int membershipCoins = user.getCoin();
@@ -112,4 +115,12 @@ public class MemberShipController {
 		}
 		return "membership/mymembership";
 	}
+
+	//멤버십기간 끝나면 자동으로 데이터 삭제 (BoardApplication에서 @EnableScheduling 설정 필요)
+	@Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+    public void removeExpiredMemberships() {
+        LocalDate now = LocalDate.now();
+        List<Membership> expiredMemberships = membershipRepository.findByEndDateBefore(now);
+        membershipRepository.deleteAll(expiredMemberships);
+    }
 }
