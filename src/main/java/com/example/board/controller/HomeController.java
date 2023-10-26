@@ -54,6 +54,11 @@ public class HomeController {
 	@Autowired
 	HttpSession session;
 
+	@GetMapping("/popupmembership")
+	public String pop() {
+		return "membership/popupmembership";
+	}
+
 	@GetMapping({ "/" })
 	public String open() {
 		return "open";
