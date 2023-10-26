@@ -16,6 +16,7 @@
   
 	body {
 	  font-family: 'TheJamsil5Bold';
+	  
 	  height: 100vh;
 	  /* 화면 높이의 100%로 설정 */
 	  background-color: #000;
@@ -27,8 +28,13 @@
   
 	.table {
 	  color: white;
+	  
 	}
-  
+
+	.table-striped>tbody>tr:nth-of-type(odd)>* {
+    color: white;
+}
+
 	#write-btn {
 	  background-color: #f0e3d9;
 	  width: 150px;
@@ -84,7 +90,7 @@
                     <th scope="col">완속충전기 (대)</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="color: white;">
                 <tr th:each="b:${chargings}">
 
                     <td th:text="${b.id}"></td>
