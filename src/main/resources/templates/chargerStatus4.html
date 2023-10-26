@@ -33,7 +33,7 @@
 	  font-family: 'TheJamsil5Bold';
 	  height: 100vh;
 	  /* 화면 높이의 100%로 설정 */
-	  background-color: #f8f2f2;
+	  background-color: #f5f2f2;
 	  background-size: cover;
 	  /* 이미지를 화면에 맞게 조절 */
 	  background-repeat: no-repeat;
@@ -84,15 +84,19 @@
   </style>
 <body>
 
-    <div th:replace="common/header"> </div>
+    <div th:replace="common/header2"> </div>
   <nav th:replace="common/nav"></nav>
+
+    
+ 
+
 
     
 
     <div id="wrap">
-        <h1>통계정보
+        <!-- <h1>통계정보
             <span><a href="#">HOME</a> > 통계정보 > <strong>전기차 현황</strong></span>
-        </h1>
+        </h1> -->
         <div class="tab_wrap">
             <div class="tab01">
                 <ul>
@@ -133,7 +137,19 @@
         </div>
     </div>
 
-    
+    <!-- <thead>
+        <tr>
+          <th>City</th>
+          <th>Year</th>
+          <th>Quantity</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+          <th>City</th>
+          <th>Year</th>
+          <th>Quantity</th>
+        </tr> -->
 
         <div class="data-container">
             <h2 align="center" style="margin-top: 50px; margin-bottom: 50px; text-align: center; font-size: 30px; font-weight: bolder;">Data Graph</h2>
