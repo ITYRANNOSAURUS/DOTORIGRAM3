@@ -5,6 +5,43 @@
 
 </head>
 
+<style>
+
+@font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  body {
+    font-family: 'TheJamsil5Bold';
+    height: 100vh;
+    /* 화면 높이의 100%로 설정 */
+    background-color: #000;
+    background-size: cover;
+    /* 이미지를 화면에 맞게 조절 */
+    background-repeat: no-repeat;
+    /* 이미지 반복을 중지 */
+    color: white;
+  }
+
+
+  .btn {
+    background-color: #eee788;
+    border-color: #eee788;
+    text-decoration: none;
+    color: black;
+  }
+
+  .btn:hover {
+    background-color: #9c9b83;
+    border-color: #9c9b83;
+   
+  }
+
+</style>
+
 <body>
 
   <div th:replace="common/header">
@@ -27,6 +64,8 @@
           <textarea class="form-control" rows="5" name="content" id="content">[[ ${board.content} ]]</textarea>
         </div>
         <input type="file" name="file" id="" multiple>
+        <br>
+        <br>
         <div class="d-grid gap-2">
           <button class="btn btn-primary" type="submit" id="complete">수정완료</button>
         </div>
