@@ -298,10 +298,13 @@
             var contentInfo = document.querySelector('.content-info');
             var subscribecontent = document.querySelector('.subscribe-content');
             var couponbtn = document.querySelector('.coupon-btn');
+            var closebtn = document.querySelector('.close');
             subscribecontent.innerHTML = '<div class="modal2">본인 인증에 실패했습니다.</div>';
             contentInfo.innerHTML = '<div class="modal2">다시 시도해주세요.</div>';
             couponbtn.innerHTML = '<h1></h1>';
+            closebtn.innerHTML = '<a href ="/signup">돌아가기</a>';
             isEmailCodeValid = false;
+            
           } else if (result === "코드일치") {
             var contentInfo = document.querySelector('.content-info');
             var subscribecontent = document.querySelector('.subscribe-content');
