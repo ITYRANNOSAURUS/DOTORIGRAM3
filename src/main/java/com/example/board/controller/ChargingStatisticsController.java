@@ -118,7 +118,8 @@ public class ChargingStatisticsController {
     }
 
     
-    return "chargerStatus3";
+    // return "chargerStatus3";
+     return "chargerStatus4";
     
   }
 
