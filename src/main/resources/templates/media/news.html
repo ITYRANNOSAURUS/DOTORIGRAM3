@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/head"></head>
+
+<style>
+     @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+    }
+    body {
+        font-family: 'TheJamsil5Bold';
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+        color: white;
+    }
+
+    .news-content {
+        margin-right: 17rem;
+        max-width: 100%;
+        font-family: 'Nanum Myeongjo', serif;
+    }
+
+    .news-link {
+        font-size: 1.2rem;
+    }
+
+
+    .newstitle {
+        text-align: center;
+        padding-top: 4rem;
+        padding-bottom: 7rem;
+        font-size: 3.5rem;
+        font-family: 'TheJamsil5Bold';
+    }
+
+    .news-title {
+        font-weight: bold;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        text-decoration: none !important;
+    }
+
+    .news-item a:hover,
+    .news-item a:focus {
+        color: #ffbf00;
+        text-decoration: none;
+    }
+
+    .news-item p {
+        text-decoration: none !important;
+    }
+
+    .news-item {
+        display: flex;
+        align-items: start;
+        gap: 10rem;
+        margin-bottom: 5rem;
+    }
+
+    .news-image {
+        max-width: 100px;
+        margin-left: 10rem;
+    }
+
+    .news-content {
+        flex: 1;
+        margin-left: 2rem;
+    }
+
+    .news-detail {
+        font-size: 1rem;
+        margin-top: 2rem;
+    }
+
+   
+
+    @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+
+    .nanummyeongjo * {
+        font-family: 'Nanum Myeongjo', serif;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+        color: #ffbf00;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <div th:replace="common/header">
+
+    </div>
+
+    <nav th:replace="common/nav">
+
+    </nav>
+
+
+    <h2 class="newstitle">전기차 뉴스</h2>
+
+    <div th:each="item : ${news}" class="news-item">
+        <!-- 뉴스 이미지 -->
+        <div class="news-image">
+            <a th:href="${item.link}" target="_blank">
+                <img th:src="@{/electriccar.jpg}" alt="News image" width="250" height="auto">
+            </a>
+        </div>
+
+        <div class="news-content">
+            <!-- 뉴스 기사의 제목 -->
+            <a th:href="${item.link}" target="_blank">
+                <h3 class="news-title" th:utext="${item.title}"></h3>
+            </a>
+
+            <!-- 뉴스 기사의 내용을 요약한 패시지 정보 -->
+            <a th:href="${item.link}" target="_blank">
+                <h4 h3 class="news-link" th:utext="${item.description}"></h4>
+            </a>
+
+
+            <div class="news-detail">
+                <!-- 뉴스 기사 원문의 URL -->
+                <p><strong>원문 링크:</strong>
+                    <a th:href="${item.originallink}" target="_blank">원문 보기</a>
+                </p>
+
+                <!-- 뉴스 기사의 네이버 뉴스 URL -->
+                <p><strong>네이버 뉴스 링크:</strong>
+                    <a th:href="${item.link}" target="_blank">네이버에서 보기</a>
+                </p>
+
+                <!-- 뉴스 기사가 네이버에 제공된 시간 -->
+                <p><strong>기사 작성 시간:</strong>
+                    <span th:text="${item.pubDate}"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

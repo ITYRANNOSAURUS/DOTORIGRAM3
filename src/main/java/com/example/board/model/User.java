@@ -1,6 +1,7 @@
 package com.example.board.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,29 +19,39 @@ import lombok.Data;
 
 @Entity
 @Data
-public class User implements Serializable{
+public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	private String email;
 	private String pwd;
 	private String name;
 	private Integer phone;
 	private Date creDate;
 	private String carname;
-	@Column(nullable=true)
+	@Column(nullable = true)
 	private Integer count;
 	private UserRole role;
+
 	public enum UserRole {
 		CUSTOMER, // 일반 고객0
 		ADMIN // 관리자1
 	}
+
 	public String getRole() {
 		return role.name(); // 열거형 값의 이름을 문자열로 반환
 	}
-	@OneToMany(mappedBy = "user",
-						cascade = CascadeType.REMOVE,
-						orphanRemoval = true,
-						fetch = FetchType.EAGER)
-	List <Board> boards = new ArrayList<>();
+
+	private Integer coin;
+
+    private Date coinDate;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+	List<Board> boards = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user")
+    private List<Membership> memberships;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Coupon> coupons;
 }

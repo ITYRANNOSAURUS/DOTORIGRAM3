@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/head"></head>
+
+<style>
+    body {
+        height: 150vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+        color: white;
+        font-family: 'TheJamsil5Bold';
+    }
+
+    .newstitle {
+        text-align: center;
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+        font-size: 4rem;
+        font-family: 'TheJamsil5Bold';
+    }
+
+    .subtitle {
+        text-align: center;
+        font-size: 2rem;
+        font-family: 'TheJamsil5Bold';
+    }
+
+    @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    /* overlay */
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .orb-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .overlay {
+        width: 100%;
+        max-width: 1140px;
+        max-height: 500px;
+        margin: 50px auto;
+        padding: 8rem 6rem;
+        display: flex;
+        align-items: center;
+        background: #212529eb;
+        box-shadow: 0 0.75rem 2rem 0 wheat;
+        border-radius: 2rem;
+        border: 10px solid white;
+    }
+
+    .overlay__inner {
+        max-width: 36rem;
+        margin-right: 70px
+    }
+
+    .overlay__title {
+        font-size: 40px;
+        line-height: 2.75rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin-bottom: 2rem;
+    }
+
+    .overlay__title {
+        font-size: 35px;
+        line-height: 2.75rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin-bottom: 2rem;
+    }
+
+    .text-gradient {
+        font-size: 30px;
+    }
+
+    .overlay__description {
+        font-size: 1rem;
+        line-height: 1.75rem;
+        margin-bottom: 3rem;
+    }
+
+    .price {
+        color: rgb(251, 255, 4);
+        font-weight: 100px;
+    }
+
+    /* button */
+    .overlay__btns {
+        margin-top: 70px;
+    }
+
+    button {
+        margin: 20px;
+        outline: none;
+    }
+
+    .custom-btn {
+        width: 160px;
+        height: 40px;
+        padding: 10px 25px;
+        border: 2px solid rgb(255, 179, 0);
+        border-radius: 5px;
+        font-family: 'TheJamsil5Bold';
+        font-weight: 500;
+        background: rgb(255, 179, 0);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+    }
+
+    .btn-6 {
+        background: rgb(255, 179, 0);
+        color: #fff;
+        line-height: 42px;
+        padding: 0;
+        border: none;
+    }
+
+    .btn-6 span {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .btn-6:before,
+    .btn-6:after {
+        position: absolute;
+        content: "";
+        height: 0%;
+        width: 2px;
+        background: rgb(255, 179, 0);
+    }
+
+    .btn-6:before {
+        right: 0;
+        top: 0;
+        transition: all 500ms ease;
+    }
+
+    .btn-6:after {
+        left: 0;
+        bottom: 0;
+        transition: all 500ms ease;
+    }
+
+    .btn-6:hover {
+        color: white;
+        background: transparent;
+    }
+
+    .btn-6:hover:before {
+        transition: all 500ms ease;
+        height: 100%;
+    }
+
+    .btn-6:hover:after {
+        transition: all 500ms ease;
+        height: 100%;
+    }
+
+    .btn-6 span:before,
+    .btn-6 span:after {
+        position: absolute;
+        content: "";
+        background: rgb(255, 179, 0);
+    }
+
+    .btn-6 span:before {
+        left: 0;
+        top: 0;
+        width: 0%;
+        height: 2px;
+        transition: all 500ms ease;
+    }
+
+    .btn-6 span:after {
+        right: 0;
+        bottom: 0;
+        width: 0%;
+        height: 2px;
+        transition: all 500ms ease;
+    }
+
+    .btn-6 span:hover:before {
+        width: 100%;
+    }
+
+    .btn-6 span:hover:after {
+        width: 100%;
+    }
+
+    /* modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        width: 600px;
+        padding: 30px;
+        color: black;
+        overflow-y: scroll;
+    }
+
+    .close {
+        color: #aaaaaa;
+    }
+
+    .subscribe-title {
+        text-align: center;
+        font-size: 30px;
+        margin-bottom: 50px;
+    }
+
+    .content-info {
+        margin-top: 30px;
+        font-weight: bold;
+        font-size: large;
+    }
+
+    .content-select {
+        display: flex;
+        align-items: center;
+        /* 중앙 정렬 */
+    }
+
+    .subscribe-info {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .subscribe-notice {
+        margin: 30px auto;
+    }
+
+    .subscribe-notice-red {
+        color: red;
+    }
+
+    .checkout-info {
+        width: 100%;
+        margin: 10px auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .row.last {
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+    }
+
+    span.won {
+        color: #888;
+        margin-left: 5px
+    }
+
+    .newCouponInput {
+        display: flex;
+    }
+
+    #usable-coupon,
+    #new-coupon {
+        height: 30px;
+        margin-top: 20px;
+    }
+
+    /* 3d 버튼 */
+    .btn-3d {
+        position: relative;
+        display: inline-block;
+        font-size: 18px;
+        padding: 15px 40px;
+        color: white;
+        margin: 10px 10px 10px;
+        /* margin: 0px auto; */
+        border-radius: 6px;
+        text-decoration: none;
+        text-align: center;
+        transition: top .01s linear;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-3d.yellow:hover {
+        background-color: #F0D264;
+    }
+
+    .btn-3d:active {
+        top: 9px;
+    }
+
+    .btn-3d.yellow {
+        background-color: #F0D264;
+        box-shadow: 0 0 0 1px #F0D264 inset,
+            0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+            0 8px 0 0 rgba(196, 172, 83, .7),
+            0 8px 0 1px rgba(0, 0, 0, .4),
+            0 8px 8px 1px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-3d.yellow:active {
+        box-shadow: 0 0 0 1px #F0D264 inset,
+            0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+            0 0 0 1px rgba(0, 0, 0, 0.4);
+    }
+
+    /* 페이버튼 */
+    .btn-gradient {
+        text-decoration: none;
+        color: white;
+        padding: 10px 30px;
+        display: inline-block;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.21);
+        border-bottom: 4px solid rgba(0, 0, 0, 0.21);
+        border-radius: 4px;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-gradient.yellow {
+        background: rgba(240, 210, 100, 1);
+        background: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(240, 210, 100, 1)), to(rgba(229, 201, 96, 1)));
+        background: -webkit-linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        background: -moz-linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        background: -o-linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        background: linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f0d264', endColorstr='#e5c960', GradientType=0);
+    }
+
+    .btn-gradient.yellow:active {
+        background: #DBC05B;
+    }
+
+    /* 결제완료 modal */
+    .content-select2 {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        margin: 30px auto;
+        flex-direction: column;
+    }
+
+    .payment-info {
+        border: 1px solid tan;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .payment-name {
+        color: red;
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .payment-notice {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div th:replace="common/header">
+
+    </div>
+
+    <nav th:replace="common/nav">
+
+    </nav>
+
+
+    <h2 class="newstitle">PIKAPASS</h2>
+    <h5 class="subtitle">충전과 함께 다양한 혜택을 누리세요.</h5>
+
+    <div class="container">
+        <!-- Canvas -->
+        <canvas class="orb-canvas"></canvas>
+        <!-- Overlay -->
+        <div class="overlay">
+            <!-- Overlay inner wrapper -->
+            <div class="overlay__inner">
+                <!-- Title -->
+                <h1 class="overlay__title">
+                    피카패스
+                    <span class="text-gradient"> 다양한 할인과 함께!</span>
+                </h1>
+                <!-- Description -->
+                <p class="overlay__description">
+                <h3 class="price">월 3,900원</h3>
+                충전하는 동안 충전소 주변 맛집과 카페 정보들을 알아보고,<br>
+                근처 제휴 업체 할인 쿠폰 혜택을 받을 수 있습니다.<br>
+                <strong>카페 할인 쿠폰을 받으세요!</strong>
+                </p>
+                <!-- Buttons -->
+                <div class="overlay__btns">
+                    <button class="custom-btn btn-6" onclick="subscribelink()">
+                        <span>혜택 자세히 알아보기</span>
+                    </button>
+
+                    <button class="custom-btn btn-6">
+                        <span>가입하기🎁</span>
+                    </button>
+                </div>
+            </div>
+            <div class="overlay__side">
+                <div class="overlay__sidetitle" style="padding: 20px 5px;">
+                    <span style="
+                    padding: 3px;
+                    font-size: larger;
+                    border-radius: 50px;
+                    border: 2px solid rgb(255, 179, 0);
+                    display: inline-block;
+                     ">혜택1
+                    </span>
+                    <div class="text-gradient" style="display: inline-block; font-size: 20px;"> 충전소 주변 편의점, 카페 위치 정보
+                    </div>
+                </div>
+                <div class="overlay__sidetitle" style="padding: 20px 5px;">
+                    <span style="
+                    padding: 3px;
+                    font-size: larger;
+                    border-radius: 50px;
+                    border: 2px solid rgb(255, 179, 0);
+                    display: inline-block;
+                     ">혜택2
+                    </span>
+                    <div class="text-gradient" style="display: inline-block; font-size: 20px;"> 제휴 업체 할인 쿠폰 </div>
+                </div>
+                <div class="overlay__sidetitle" style="padding: 20px 5px;">
+                    <span style="
+                    padding: 3px;
+                    font-size: larger;
+                    border-radius: 50px;
+                    border: 2px solid rgb(255, 179, 0);
+                    display: inline-block;
+                     ">혜택3
+                    </span>
+                    <div class="text-gradient" style="display: inline-block; font-size: 20px;"> 찌리릿 코인 2배 지급 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content" style="color: black;">
+            <span class="close">&times;</span>
+            <div class="subscribe-title">
+                더 이상 충전시간 낭비 NO!<br>
+                효율적인 시간 사용 OK!<br>
+            </div>
+            <div class="subscribe-content">
+                <div class="content-info">
+                    상품정보
+                </div>
+                <hr>
+                <div class="content-select">
+                    <input id="subscription" class="subscription" required="required" type="radio" name="subscription">
+                    <label for="subscription" class="subscribe-info">
+                        <span class="subscribe-name">피카패스 월간 멤버십</span>
+                        <span class="subscribe-price">3,900원</span>
+                    </label>
+                </div>
+                <div class="subscribe-notice">
+                    <span>
+                        * 월 3900원 멤버십은 <span class="subscribe-notice-red"> 결제일부터 30일 간 </span> 발행되는 이용권 입니다.<br>
+                        * 카페 쿠폰 발급은 <span class="subscribe-notice-red">총 3회</span>로 제한 됩니다.<br>
+                    </span>
+                    &nbsp;&nbsp;<a th:href="@{/subscribe}" style="color: black;">→ 더 자세한 멤버십 소개가 궁금하다면?</a>
+                </div>
+            </div>
+
+            <div class="subscribe-content2">
+                <div class="content-info">
+                    결제 방법
+                </div>
+                <hr>
+
+                <div class="checkout-info">
+                    <label>쿠폰 사용 및 추가</label><br />
+                    <div class="newCouponInput">
+                        <select id="usable-coupon" name="coupon" onchange="changeCoupon()">
+                            <option value="">선택 안함</option>
+                            <option value="-1">신규 쿠폰 등록</option>
+                        </select><br />
+                        <input type="text" id="new-coupon" style="display: none;" placeholder='쿠폰 코드 입력'>
+                        <button id="select-coupon">쿠폰 등록</button>
+                    </div>
+                </div>
+
+                <!-- 버튼 -->
+                <div class="payment-btn" style="display: flex; justify-content: space-evenly;
+                    align-items: center;">
+                    <a href="#" class="btn-gradient yellow large" onclick='pay("kakaopay")'>카카오페이</a>
+                    <a href="#" class="btn-gradient yellow large" onclick='pay("payco")'>페이코</a>
+                    <a href="#" class="btn-gradient yellow large" onclick='pay("card")'>신용/체크카드</a>
+                </div>
+            </div>
+            <div class="subscribe-content3">
+                <div class="content-info">
+                    결제 정보
+                </div>
+                <hr>
+                <div class="checkout-info">
+                    <div class="row">
+                        <span>결제 금액</span>
+                        <div>
+                            <span id="sourcePrice" data-org="3900">3,900</span>
+                            <span class="won">원</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <span>쿠폰 사용</span>
+                        <div>
+                            <span class="discounted">-</span>
+                            <span id="discountedPrice" data-org="0"> 0 </span>
+                            <span class="won">원</span>
+                        </div>
+                    </div>
+                    <div class="row last">
+                        <span>총 결제 금액</span>
+                        <div>
+                            <span id="resultPrice" data-org="3900">3,900</span>
+                            <span class="won">원</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="payment-wrapper">
+                    <input class="consent-info" name="consent-info" type="radio" required>주문 내용을 확인했으며, 위 내용에 모두
+                    동의합니다.<br>
+                    <!-- 버튼 -->
+                    <div class="payment-btn" style="display: flex; justify-content: center;
+                    align-items: center;">
+                        <a href="javascript:;" type="submit" class="btn-3d yellow">결제하기</a>
+                    </div>
+                </div>
+                <div class="information-contain">
+                    <div class="payment-information">
+                        ※ 멤버십은 결제일을 기준으로 정기적으로 자동결제되는 상품입니다.<br>
+                        ※ 결제 후 7일 이내 서비스를 이용하지 않았을 경우 환불이 가능합니다.<br>
+                        ※ 멤버십 정기결제 해지 예약은 마이페이지에서 가능합니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 결제 완료 Modal -->
+    <div id="paymentModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content" style="color: black;">
+            <span class="close">&times;</span>
+            <div class="subscribe-content">
+                <div class="content-info">
+                    결제 성공
+                </div>
+                <hr>
+                <div class="content-select2">
+                    <label for="payment-name" class="payment-name">
+                        <span class="payment-name">[피카패스 멤버십 1개월]</span>
+                    </label>
+                    <div class="payment-notice">
+                        <h2 style="margin: 30px;">결제가 완료되었습니다!</h2>
+                        <p>PIKAPASS 멤버십 가입이 완료되었습니다.</p>
+                        <p>결제하신 카드로 다음 달도 결제됩니다.</p>
+                    </div>
+                    <div class="payment-info">
+                        <p>이용기간 : <span id="todayDate"></span> ~ <span id="nextMonthDate"></span></p>
+                        <p>다음 결제일 : <span id="nextPaymentDate"></span></p>
+                        <p>결제 금액 : 3,900원</p>
+                    </div>
+                    <div style="margin: 20px;">
+                        <a th:href="@{/home}" style="color: black; margin-top: 10px;">홈으로 돌아가기</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+        function subscribelink() {
+            location = '/subscribe';
+        }
+        // modal
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementsByClassName("custom-btn btn-6")[1];
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // 결제
+        function changeCoupon() {
+            var couponSelect = document.getElementById('usable-coupon');
+            var newCouponInput = document.getElementById('new-coupon');
+
+            // 만약 '신규 쿠폰 등록'이 선택되었다면, 새로운 쿠폰을 등록할 수 있는 입력 필드를 보여줌
+            if (couponSelect.value == '-1') {
+                newCouponInput.style.display = 'block';
+            } else {
+                newCouponInput.style.display = 'none';
+                newCouponInput.value = '';
+            }
+        }
+
+        function pay(method) {
+
+            // 여기서 각각의 결제 방법에 따른 로직을 구현하면 됩니다.
+            alert(method + "로 결제가 진행됩니다.");
+
+        }
+
+        // JQuery를 사용한 초기화 코드
+        $(document).ready(function () {
+
+        });
+
+        // 가격 정보 업데이트 함수
+        function updatePrice() {
+            var sourcePrice = parseInt($("#sourcePrice").data('org'));
+            var discountedPrice = parseInt($("#discountedPrice").data('org'));
+            $("#resultPrice").text(sourcePrice - discountedPrice);
+        }
+
+        // 쿠폰 사용 함수
+        function useCoupon(couponCode) {
+            // 'FREE3900'이라는 코드가 입력되었을 때만 유효하다고 가정.
+            if (couponCode === 'FREE3900') {
+                $("#discountedPrice").data('org', 3900);
+                $("#discountedPrice").text(3900);
+                updatePrice();
+                alert("쿠폰이 적용되었습니다.");
+            } else {
+                alert("유효하지 않은 쿠폰입니다.");
+            }
+        }
+
+        $(document).ready(function () {
+            $("#select-coupon").click(function (e) {
+                e.preventDefault();
+                var newCouponInput = $('#new-coupon');
+                if (newCouponInput.is(':visible')) { // 만약 신규쿠폰 등록 필드가 보이면,
+                    useCoupon(newCouponInput.val()); // 해당 값으로 useCoupon 함수 호출
+                }
+            });
+        });
+
+        // 결제하기 버튼 클릭 이벤트 핸들러
+        $('a.btn-3d.yellow').click(function (e) {
+            e.preventDefault();
+
+            var isAgreed1 = $('input[name="subscription"]').is(':checked');
+            var isAgreed2 = $('input[name="consent-info"]').is(':checked');
+            var totalPayment = parseInt($('#resultPrice').text().replace(',', ''));
+            // 두 개의 radio input 모두 선택되었고
+            if (isAgreed1 && isAgreed2) {
+                //총 결제 금액이 0일 때
+                if (totalPayment === 0) {
+                    $.ajax({
+                        url: '/membership',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+
+                        }),
+                        success: function () {
+                            alert('결제가 진행됩니다.')
+                            // 기본으로 열려 있던 모달 닫기
+                            $('#myModal').css('display', 'none');
+
+                            // 결제 완료 모달 팝업 표시
+                            $('#paymentModal').css('display', 'block');
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log('HTTP status code:', jqXHR.status);
+                            console.log('textStatus:', textStatus);
+                            console.log('errorThrown:', errorThrown);
+                            if (jqXHR.status === 400) {
+                                alert("이미 멤버십 회원입니다.");
+                            } else {
+                                alert("로그인 하십시오.");
+                            }
+                        }
+                    });
+                } else {
+                    alert('결제 먼저 진행하십시오.')
+                }
+            } else {
+                alert('결제 정보에 동의해야 결제를 진행할 수 있습니다.');
+            }
+        });
+        // 모달 닫기 버튼 클릭 이벤트 핸들러
+        $('.close').click(function () {
+            $('#paymentModal').css('display', 'none');
+        });
+
+        //가입날짜~종료날짜 불러오기
+        var today = new Date();
+        var nextMonth = new Date(today);
+        nextMonth.setMonth(today.getMonth() + 1);
+
+        // HTML 요소를 가져와서 내용을 업데이트합니다.
+        document.getElementById("todayDate").textContent = formatDate(today);
+        document.getElementById("nextMonthDate").textContent = formatDate(nextMonth);
+        document.getElementById("nextPaymentDate").textContent = formatDate(nextMonth);
+        
+        function formatDate(date) {
+        var dd = String(date.getDate()).padStart(2, '0');
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var yyyy = date.getFullYear();
+        return yyyy + '.' + mm + '.' + dd;
+        }
+
+    </script>
+</body>
+
+</html>

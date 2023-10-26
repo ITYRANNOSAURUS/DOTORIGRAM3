@@ -1,53 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
 <style>
-  .nav-color {
-    background-color: #c67d24;
+  body {
+    z-index: 100;
+  }
+  .menubar a {
+    text-decoration: none;
   }
 
-  .link-dark {
-    text-decoration: none;
+  .container {
+    background: none;
+  }
+
+  .button {
+    font-size: 50px;
+    position: relative;
+    right: 80px;
+    top: 0px;
+    width: 40px;
+    height: 40px;
+    z-index: 99;
+    transition: 0.8s ease;
+    background: none;
+    border: none;
+  }
+
+  /* .x {
+    align-items: center;
+    color: black;
+    margin: auto;
+  } */
+
+  .content {
+    padding: 100px 20px 0 40px;
+    position: relative;
+    width: 200%;
+  }
+
+  .nav-1 {
+    display: flex;
+  }
+
+  .nav-2 {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .home {
+    display: flex;
+    align-items: center;
+    height: 22px;
+  }
+
+  .my_account {
+    margin-top: -15px;
+    display: flex;
+    align-items: center;
+    height: 32px;
+    border-radius: 100%;
+  }
+
+  @font-face {
+    font-family: 'Cafe24Ssurround';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  .word {
+    margin-left: 15px;
+    margin-top: -12px;
+    font-size: 25px;
+    font-family: 'Cafe24Ssurround';
+    color: black;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      right: -300px;
+      /* Move sidebar to the right */
+    }
+
+    .button {
+      right: 10px;
+      /* Move button to the right */
+    }
+
+    .content {
+      padding-right: 20px;
+      /* Adjust padding */
+    }
+  }
+
+  .menubar .submenu {
+    display: none;
+  }
+
+  .menubar {
+    position: relative;
+  }
+
+  .submenu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 300px;
+    width: 300px;
+    height: 100%;
+    background-color: rgb(249, 227, 128);
+    padding-top: 11rem;
+  }
+
+  .sidebar {
+    background-color: rgb(237, 208, 77);
+    border-left: 2px solid rgb(237, 208, 77);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    transition: 0.4s ease;
+    color: #202020;
+    height: 100%;
+    z-index: 99;
   }
 </style>
 
-<nav class="navbar navbar-expand-sm nav-color navbar-dark">
-  <div class="container-fluid">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link active" href="/board/list">게시글</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="/map">지도</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="/weather">날씨</a>
-      </li>
-    </ul>
+<body>
+  <div class="container">
+    <div class="sidebar" style="width: 300px; height: 100%;">
+      <button class="button">⚡
+      </button>
+      <div class="content">
+        <!-- <nav class="nav">
+          <div class="nav-1">
+            <div class="head_logo">
+              <a href="/">
+                <img class="logo_text" src="car.png" alt="로고" />
+              </a>
+            </div>
+          </div> -->
+        <div class="nav-2">
+          <div class="menubar">
+            <a class="word" th:href="@{/}">홈</a>
+          </div>
+          <div class="menubar">
+            <a class="word" href="/map">충전소 찾기</a>
+            <!-- <div class="submenu">
+              <a class="word" th:href="@{/map}">지도</a>
+              <a class="word" th:href="@{/map}">목록 추가</a>
+            </div> -->
+          </div>
+          <div class="menubar">
+            <a class="word">게시판</a>
+            <div class="submenu">
+              <a class="word" th:href="@{/board/list}">공지사항</a>
+              <a class="word" th:href="@{/qna/list}">Q&A</a>
+            </div>
+          </div>
+          <div class="menubar">
+            <a class="word">미디어</a>
+            <div class="submenu">
+              <a class="word" th:href="@{/media/news?searchText=전기차}">전기차 뉴스</a>
+              <a class="word" th:href="@{/media/reels}">전기차 영상</a>
+              <a class="word" th:href="@{/media/gamepage}">전기차 게임</a>
+            </div>
+          </div>
+          <div class="menubar">
+            <a class="word">멤버십</a>
+            <div class="submenu">
+              <a class="word" th:href="@{/exchange}">코인교환</a>
+              <a class="word" th:href="@{/coupon}">쿠폰함</a>
+              <br>
+              <a class="word" th:href="@{/membership}">구독하기</a>
+              <a class="word" th:href="@{/mymembership}">나의 멤버십</a>
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div th:if="${session.user_info == null}" class="menubar">
+          <a th:href="@{/signin}" class="word">로그인</a>
+          <a th:href="@{/signup}" class="word">회원가입</a>
+        </div>
+          <div th:unless="${session.user_info == null}" class="menubar">
+            <span class="word">[[ ${session.user_info.name} + '님 반갑습니다.' ]]</span>
+            <br>
+              <a class="word" th:href="@{/exchange}">나의 찌리릿: <span th:text="${userCoin}"></span>개</a>
+            <br>
+            <a th:href="@{/mypage(email=${session.user_info.email})}" class="word">Mypage</a>
+            <br>
+            <!-- <a th:href="${session.user_info != null and session.user_info.role == 'ADMIN'}"></a> -->
+            <a th:if="${session != null and session.user_info != null and session.user_info.role == 'ADMIN'}" th:href="@{/admin}" class="word">
+              Admin
+            </a>
+            <br>
+            <a th:href="@{/signout}" class="word">로그아웃</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <ul class="navbar-nav">
-      <li th:if="${session.user_info == null}" style='font-size: 20px;'>
-        <a th:href="@{/signin}" class="link-dark">
-          로그인🌰
-        </a>
-        <a th:href="@{/signup}" class="link-dark">
-          회원가입🐿️
-        </a>
-      </li>
-      <li th:unless="${session.user_info == null}" style='font-size: 20px;'>
-        <a class="link-dark">
-          [[ ${session.user_info.name} + '님 반갑습니다.😎' ]]
-        </a>
-        <a th:href="@{/signout}" class="link-dark">
-          로그아웃👋
-        </a>
-        <a th:href="@{/mypage(email=${session.user_info.email})}" class="link-dark">
-          Mypage🐿️
-        </a>
-        </li>
-        <li th:if="${session.user_info != null and session.user_info.role == 'ADMIN'}" style='font-size: 20px;'>
-          <a th:href="@{/admin}" class="link-dark">
-          Admin
-          </a> 
-        </li>
-      </li>
-    </ul>
   </div>
-</nav>
+  </nav>
+  </div>
+  </div>
+  </div>
+
+  <script>
+    const button = document.querySelector(".button");
+    const sidebar = document.querySelector(".sidebar");
+    let isSidebarOpen = false;
+    let timeoutId;
+
+    sidebar.style.width = "0";
+
+    button.addEventListener("click", () => {
+      if (!isSidebarOpen) {
+        sidebar.style.width = "300px";
+        isSidebarOpen = true;
+      } else {
+        sidebar.style.width = "0";
+        button.style.right = "80px";
+        closeSubmenus();
+        isSidebarOpen = false;
+      }
+    });
+
+    function closeSubmenus() {
+      const submenus = document.querySelectorAll(".submenu");
+      submenus.forEach((submenu) => {
+        submenu.style.display = "none";
+      });
+
+      // If there's no submenu open, move the button back to right.
+      if (!document.querySelector('.submenu[style*="block"]')) {
+        button.style.right = "80px";
+      }
+    }
+
+    const menuItems = document.querySelectorAll(".menubar");
+
+    menuItems.forEach((menuItem) => {
+
+      menuItem.addEventListener("mouseover", () => {
+
+        if (isSidebarOpen) {
+          closeSubmenus();
+          const submenu = menuItem.querySelector(".submenu");
+
+          if (submenu) {
+            submenu.style.display = "block";
+            button.style.right = "310px"; // If a submenu opens, move the button right.
+          }
+        }
+      });
+
+      menuItem.addEventListener("mouseout", () => {
+
+        if (isSidebarOpen) {
+          const submenu = menuItem.querySelector(".submenu");
+
+          if (submenu && submenu.style.display === "block") {
+            timeoutId = setTimeout(() => {
+              submenu.style.display = "none";
+              if (!document.querySelector('.submenu[style*="block"]')) { // check if there's no other opened sub-menu
+                button.style.right = "80px"; // If a submenu closes, move the button back to right.
+              }
+            }, 1000); // wait for one second before closing the submenu
+          }
+        }
+      });
+
+      menuItem.addEventListener("mouseover", () => clearTimeout(timeoutId)); // if mouse comes back on item before timeout ends, clear the timeout
+
+    });
+  </script>
+</body>
+
+</html>

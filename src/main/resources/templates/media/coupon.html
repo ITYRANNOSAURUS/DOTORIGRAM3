@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="common/head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+    @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    body {
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+        font-family: 'TheJamsil5Bold';
+    }
+
+    h1 {
+        color: wheat;
+        text-align: center;
+        padding: 20px;
+    }
+
+    /* 테이블 전체 스타일 */
+    table {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        border-collapse: collapse;
+        border-radius: 5rem;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 테이블 헤더 스타일 */
+    th {
+        background-color: #676142;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px;
+        border-radius: 8px 8px 0 0;
+    }
+
+    /* 테이블 셀 스타일 */
+    td {
+        background-color: #fff;
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #e0e0e0;
+    }
+
+    /* 짝수 행 배경색 변경 */
+    tr:nth-child(even) {
+        background-color: #f0f0f0;
+    }
+
+    /* 홀수 행 배경색 변경 */
+    tr:nth-child(odd) {
+        background-color: #fff;
+    }
+</style>
+
+<body>
+    <div th:replace="common/header">
+
+    </div>
+
+    <nav th:replace="common/nav">
+
+    </nav>
+    <div class="exchange-box">
+        <h1>쿠폰함</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>쿠폰 이름</th>
+                    <th>쿠폰 유효기간</th>
+                    <th hidden>쿠폰 번호</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="coupon : ${coupons}">
+                    <td th:text="${coupon.name}"></td>
+                    <td>
+                        <span th:text="${coupon.startDate}"></span>
+                        ~
+                        <span th:text="${coupon.endDate}"></span>
+                    </td>
+                    <td th:text="${coupon.code}" hidden></td>
+                    <td>
+                        <button class="use-coupon-btn" data-toggle="modal" data-target="#couponModal"
+                            th:data-id="${coupon.id}" th:data-name="${coupon.name}" th:data-code="${coupon.code}"
+                            th:data-start-date="${coupon.startDate}" th:data-end-date="${coupon.endDate}">
+                            <!-- th:onclick="'usebtn(' + ${coupon.id} + ')'" -->
+                            사용하기
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 쿠폰 사용하기 Modal -->
+    <div class="modal fade" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">쿠폰 사용하기</h5>
+                </div>
+                <div class="modal-body">
+                    <img src="barcode.png" alt="barcode" style="margin-top: -3rem; width: 460px; height: 300px;">
+                    <p style="font-size: 30px; text-align: center; margin-top: -3rem;
+                    margin-bottom: 50px">쿠폰을 사용하시겠습니까?</p>
+                    쿠폰 이름 : <span id="modal-coupon-name"></span><br>
+                    쿠폰 코드 : <span id="modal-coupon-code"></span><br>
+                    쿠폰 유효기간 : <span id="modal-coupon-start-date"></span> ~ <span id="modal-coupon-end-date"></span>
+                    <input type="hidden" id="modal-coupon-id">
+                    <p style="color: red; font-size: smaller;">※직원확인 버튼을 누르면 해당 쿠폰이 사용된 것으로 처리되오니 주의 부탁드립니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" onclick="usebtn()">
+                        직원확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 쿠폰사용하기 modal
+        $(document).ready(function () {
+            $('.use-coupon-btn').on('click', function () {
+                var id = $(this).data('id');
+                console.log(id);
+                var name = $(this).data('name');
+                var code = $(this).data('code');
+                var startDate = $(this).data('start-date');
+                var endDate = $(this).data('end-date');
+
+                $('#modal-coupon-id').val(id);
+                $('#modal-coupon-name').text(name);
+                $('#modal-coupon-code').text(code);
+                $('#modal-coupon-start-date').text(startDate);
+                $('#modal-coupon-end-date').text(endDate);
+            });
+        });
+
+        function usebtn() {
+            var id = document.getElementById('modal-coupon-id').value;
+            console.log(id);
+            const isOk = confirm('사용하시겠습니까?');
+            if (isOk) {
+                location = `/coupon/remove?id=${id}`;
+            }
+        }
+    </script>
+</body>

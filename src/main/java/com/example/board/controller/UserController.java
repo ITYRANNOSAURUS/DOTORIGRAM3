@@ -17,9 +17,11 @@ import javax.servlet.http.HttpSession;
 
 import com.example.board.model.CarType;
 import com.example.board.model.Company;
+import com.example.board.model.Coupon;
 import com.example.board.model.User;
 import com.example.board.repository.CarTypeRepository;
 import com.example.board.repository.CompanyRepository;
+import com.example.board.repository.CouponRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -39,6 +41,9 @@ public class UserController {
 	@Autowired
 	CompanyRepository companyRepository;
 
+	@Autowired
+	CouponRepository couponRepository;
+
 	@GetMapping("/email-check")
 	@ResponseBody
 	public String emailCheck(@ModelAttribute User user) {
@@ -55,15 +60,15 @@ public class UserController {
 
 	@GetMapping("/signin")
 	public String signin() {
-		
+
 		return "signin";
 	}
 
 	@PostMapping("/signin")
 	public String signinPost(@ModelAttribute User user, Model model) {
 		User dbUser = userRepository.findByEmail(user.getEmail());
-		
-		//오류
+
+		// 오류
 		if (dbUser == null) {
 			model.addAttribute("error", "이메일 또는 비밀번호가 일치하지 않습니다.");
 			return "signin";
@@ -99,7 +104,8 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public String signupPost(@ModelAttribute User user,
-			@RequestParam(value = "isAdmin", required = false) boolean isAdmin, @RequestParam("carname") String carname) {
+			@RequestParam(value = "isAdmin", required = false) boolean isAdmin,
+			@RequestParam("carname") String carname) {
 		String userPwd = user.getPwd();
 		String encodePwd = passwordEncoder.encode(userPwd);
 		user.setPwd(encodePwd);
@@ -111,6 +117,9 @@ public class UserController {
 		// 사용자 정보 저장
 		user.setRole(userRole);
 		user.setCarname(carname);
+		user.setCoin(0);
+		user.setCoinDate(new Date(0));
+
 		userRepository.save(user);
 
 		// User 수 증가
@@ -129,6 +138,12 @@ public class UserController {
 	public String mypage(Model model, @RequestParam String email) {
 		User opt = userRepository.findByEmail(email);
 		model.addAttribute("user", opt);
+		User user = (User) session.getAttribute("user_info");
+		if (user != null) {
+			int userCoins = user.getCoin();
+			model.addAttribute("userCoin", userCoins);
+		}
+
 		return "mypage";
 	}
 
@@ -171,6 +186,8 @@ public class UserController {
 		User user = (User) session.getAttribute("user_info");
 		userRepository.delete(user);
 		session.invalidate();
+		
 		return "redirect:/";
 	}
+
 }

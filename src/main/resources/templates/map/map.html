@@ -2,129 +2,663 @@
 <html lang="en">
 
 <head th:replace="common/head">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <meta charset="utf-8">
+    <title>Pika</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<style>
-  .btn {
-    background-color: rgb(228, 179, 93);
-    border-color: rgb(228, 179, 93);
-  }
 
-  .btn:hover {
-    background-color: rgb(228, 179, 93);
-    border-color: rgb(228, 179, 93);
-  }
+<style>
+    @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    body {
+        font-family: 'TheJamsil5Bold';
+        height: 100vh;
+        background-color: #000;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .container {
+        display: block;
+        margin: 0;
+    }
+
+    .map-design {
+        flex-grow: 1;
+        height: 37.3rem;
+        width: 94.2rem;
+    }
+
+    .info-box {
+        padding: 10px;
+        margin: 5px;
+        width: 250px;
+        height: 150px;
+        font-size: 12px;
+    }
+
+    .asidebar {
+        width: 18rem;
+        height: 32rem;
+        color: #202020;
+        transition: 0.4s ease;
+        z-index: 99;
+        position: absolute;
+        left: 0;
+    }
+
+    .ininfo {
+        background-color: white;
+        padding: 10px;
+        margin: 5px;
+        width: 250px;
+        height: 150px;
+        font-size: 12px;
+    }
+
+    .toggle-btn {
+        position: absolute;
+        left: 18rem;
+        top: 0;
+        height: 37.3rem;
+        width: 2rem;
+        background-color: #faf5d7;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .list-group-item {
+        padding: 0.565rem 1rem;
+    }
 </style>
 
 <body>
+    <div th:replace="common/header"></div>
 
-  <div th:replace="common/header">
+    <nav th:replace="common/nav"></nav>
 
-  </div>
+    <div class="container">
 
-  <nav th:replace="common/nav">
+        <div class="asidebar" id="mySidebar">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div>반경 <input type="text" class="distance" style="width: 44px;"> km 내의 충전소</div>
+                    <button onclick="getData()">찾기</button>
+                    <button onclick="removeMarkers(),removeInfo()">숨기기</button>
+                </li>
 
-  </nav>
+                <li class="list-group-item">
+                    <h5>구</h5>
+                </li>
+                <li class="list-group-item">
+                    <label style="color: black;"><input type="checkbox" id="areacheck1"
+                            onchange="handleCheckboxChange('북구', this.checked)">북구</label>
+                    <label style="color: black;"><input type="checkbox" id="areacheck2"
+                            onchange="handleCheckboxChange('광산구', this.checked)">광산구</label>
+                    <label style="color: black;"><input type="checkbox" id="areacheck3"
+                            onchange="handleCheckboxChange('서구', this.checked)">서구</label>
+                    <label style="color: black;"><input type="checkbox" id="areacheck4"
+                            onchange="handleCheckboxChange('동구', this.checked)">동구</label>
+                    <label style="color: black;"><input type="checkbox" id="areacheck5"
+                            onchange="handleCheckboxChange('남구', this.checked)">남구</label>
+                    <label style="color: black;"><input type="checkbox" id="areacheck6"
+                            onchange="handleCheckboxChange2('전체', this.checked)">전체</label><br>
+                </li>
 
-  <div class="container mt-5">
-    <form method="post" action="/map">
-      <div class="row">
-        <div id="map" style="width:500px; height:400px; margin:0 auto;"></div>
-      </div>
+                <li class="list-group-item">
+                    <h5>운영기관</h5>
+                </li>
+                <li class="list-group-item">
+                    <label style="color: black;"><input type="checkbox" id="companycheck1"
+                            onchange="handleCompanyCheckboxChange('한국전력', this.checked)">한국전력</label>
+                    <label style="color: black;"><input type="checkbox" id="companycheck2"
+                            onchange="handleCompanyCheckboxChange('환경부(한국자동차환경협회)', this.checked)">환경부(한국자동차환경협회)</label>
+                    <label style="color: black;"><input type="checkbox" id="companycheck3"
+                            onchange="handleCompanyCheckboxChange('GS칼텍스', this.checked)">GS칼텍스</label>
+                    <label style="color: black;"><input type="checkbox" id="companycheck4"
+                            onchange="handleCompanyCheckboxChange('SG생활안전', this.checked)">SG생활안전</label>
+                    <label style="color: black;"><input type="checkbox" id="companycheck5"
+                            onchange="handleCompanyCheckboxChange('파킹클라우드', this.checked)">파킹클라우드</label>
+                    <label style="color: black;"><input type="checkbox" id="companycheck6"
+                            onchange="handleCompanyCheckboxChange('LG유플러스', this.checked)">LG유플러스</label><br>
+                </li>
 
-      <br>
-      장소 :
-      <input type="text" name="title" placeholder="장소명">
-      lat :
-      <input type="text" name="latitude" placeholder="위도">
-      lng :
-      <input type="text" name='longitude' placeholder="경도">
-      <button class="btn btn-primary btn-block">등록</button>
+                <li class="list-group-item">
+                    <h5>충전기타입</h5>
+                </li>
+                <li class="list-group-item">
+                    <label style="color: black;"><input type="checkbox" id="typecheck1"
+                            onchange="handleTypeCheckboxChange('AC3상', this.checked)">AC3상</label>
+                    <label style="color: black;"><input type="checkbox" id="typecheck2"
+                            onchange="handleTypeCheckboxChange('AC완속', this.checked)">AC완속</label>
+                    <label style="color: black;"><input type="checkbox" id="typecheck3"
+                            onchange="handleTypeCheckboxChange('DC콤보', this.checked)">DC콤보</label>
+                    <label style="color: black;"><input type="checkbox" id="typecheck4"
+                            onchange="handleTypeCheckboxChange('DC차데모', this.checked)">DC차데모</label>
+                </li>
 
-    </form>
-    <hr>
-    <button onclick="move()" class="btn btn-primary btn-block" id="write-btn">광주 맛집 검색창으로 이동</button>
-    <button onclick="move2()" class="btn btn-primary btn-block" id="write-btn">위도 경도 검색창으로 이동</button>
+                <li class="list-group-item">
+                    <h5>시설구분</h5>
+                </li>
+                <li class="list-group-item">
+                    <label style="color: black;"><input type="checkbox" id="bigcheck1"
+                            onchange="handleBigCheckboxChange('공공시설', this.checked)">공공시설</label>
+                    <label style="color: black;"><input type="checkbox" id="bigcheck2"
+                            onchange="handleBigCheckboxChange('관광시설', this.checked)">관광시설</label>
+                    <label style="color: black;"><input type="checkbox" id="bigcheck3"
+                            onchange="handleBigCheckboxChange('교육문화시설', this.checked)">교육문화시설</label>
+                    <label style="color: black;"><input type="checkbox" id="bigcheck4"
+                            onchange="handleBigCheckboxChange('상업시설', this.checked)">상업시설</label>
+                    <label style="color: black;"><input type="checkbox" id="bigcheck5"
+                            onchange="handleBigCheckboxChange('주차시설', this.checked)">주차시설</label>
+                </li>
+            </ul>
+            <!-- 버튼 추가 -->
+            <div class="toggle-btn" onclick="toggleSidebar()">
+                <span id="toggleBtnText">📂</span>
+            </div>
+        </div>
 
+        <div id="map" class="map-design"></div>
 
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>번호</th>
-          <th>장소명</th>
-          <th>위도</th>
-          <th>경도</th>
-          <th>이동</th>
-          <th>삭제</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="point : ${points}" th:attr="id=${point.id}">
-          <br>
-          <td th:text="${point.id}"></td>
-          <td th:text="${point.title}"></td>
-          <td th:text="${point.latitude}"></td>
-          <td th:text="${point.longitude}"></td>
-          <td><button th:onclick="'setCenter('+${point.latitude} + ',' + ${point.longitude}+')'"
-              class="btn btn-primary btn-block">이동</button></td>
-          <td><a th:href="@{/map/delete/{id}(id=${point.id})}"><button class="btn btn-primary btn-block">삭제</button></a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <script src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=da146a2a6ff6a54903c1d2a7caecd1c7"></script>
+    </div>
 
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f6654953f7f2de9be8090793a3c14e09&libraries=services">
 
-  <script th:inline="javascript">
-    const lat2 = /*[[${points.![latitude]}]]*/[];
-    const lng2 = /*[[${points.![longitude]}]]*/[];
-    let map;
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      createMap(lat, lng);
-    });
-    function setCenter(lat2, lng2) {
-      const moveLatLon = new kakao.maps.LatLng(lat2, lng2);
-      map.setCenter(moveLatLon);
-      markerPosition = new kakao.maps.LatLng(lat2, lng2);
-      marker = new kakao.maps.Marker({
-        position: markerPosition
-      });
-      marker.setMap(map);
-    }
+    </script>
 
-    function createMap(lat, lng) {
-      const container = document.getElementById('map');
-      const options = {
-        center: new kakao.maps.LatLng(lat, lng),
-        level: 4
-      };
-      map = new kakao.maps.Map(container, options);
-      markerPosition = new kakao.maps.LatLng(lat, lng);
-      marker = new kakao.maps.Marker({
-        position: markerPosition
-      });
-      marker.setMap(map);
-    }
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('mySidebar');
+            var btnText = document.getElementById('toggleBtnText');
+            var sidebarOpen = sidebar.style.left === '0px';
 
+            if (sidebarOpen) {
+                sidebar.style.left = '-18rem';
+            } else {
+                sidebar.style.left = '0px';
+            }
+        }
+    </script>
 
+    <script>
+        let map;
+        let markers = [];
+        var content;
+        var infowindow;
 
-  </script>
-  <script>
-    function move() {
-      location = '/map/search';
-    }
-    function move2() {
-      location = '/map/where';
-    }
-  </script>
+        //현재위치 불러내는 api?
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            createMap(lat, lng);
+            createMarker5(lat, lng);
+        });
 
-  <div th:replace="common/footer">
-  </div>
+        function createMap(lat, lng) {
+            const container = document.getElementById('map');
+            const options = {
+                center: new kakao.maps.LatLng(lat, lng),
+                level: 6
+            };
+            map = new kakao.maps.Map(container, options);
+        }
+
+        function getData() {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                fetch('/tetest/data')
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(v => {
+                            const stationlat = v.latitude;
+                            const stationlng = v.longitude;
+
+                            let distancesArray = [];
+                                        let distanceInKm = getDistanceFromLatLonInKm(lng, lat, stationlng, stationlat);
+                                        const distance = document.querySelector('.distance').value;
+                                        if (distanceInKm <= distance) {
+                                            var address = `${v.address}`;
+                                             var kakaoMapLink = "https://map.kakao.com/link/map/" + encodeURIComponent(address);
+
+                                            var content =
+                                `<div class="ininfo"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim} <br>
+                                                <a href="${kakaoMapLink}" target="_blank">카카오맵에서 보기</a> </div>`;
+                                                
+                                            createMarker(stationlat, stationlng,content);
+
+                                        }
+                                    });
+                                })
+                                .catch(error => console.log(error));
+
+            }
+            );
+        }
+
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            var R = 6371; // Radius of the earth in km
+            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+            var dLon = deg2rad(lon2 - lon1);
+            var a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                ;
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c; // Distance in km
+            return d;
+        }
+
+        function deg2rad(deg) {
+            return deg * (Math.PI / 180)
+        }
+
+        function createMarker(lat, lng, content) {
+            const markerPosition = new kakao.maps.LatLng(lat, lng);
+            var imageSrc = 'https://cdn-icons-png.flaticon.com/512/7512/7512521.png', // 마커이미지의 주소입니다    
+                imageSize = new kakao.maps.Size(50, 52), // 마커이미지의 크기입니다
+                imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+            infowindow = new kakao.maps.InfoWindow({
+                content: content,
+                removable: true
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                map.panTo(markerPosition);
+
+            });
+            const mark = {
+                marker: marker,
+                add: 1
+            }
+            markers.push(mark);
+            marker.setMap(map);
+        }
+
+        function createMarker5(lat, lng) {
+            const markerPosition = new kakao.maps.LatLng(lat, lng);
+            var imageSrc = 'mini.png', // 마커이미지의 주소입니다    
+                imageSize = new kakao.maps.Size(50, 52), // 마커이미지의 크기입니다
+                imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+            markers.push(marker);
+            marker.setMap(map);
+        }
+
+        function getData1(city) {
+            fetch('/tetest/data')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(v => {
+                        const lat = v.latitude;
+                        const lng = v.longitude;
+                        const cityData = v.city;
+
+                        if (cityData === city) {
+                            var address = `${v.address}`;
+                            var kakaoMapLink = "https://map.kakao.com/link/map/" + encodeURIComponent(address);
+
+                            var content =
+                                `<div class="ininfo"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim} <br>
+                                                <a href="${kakaoMapLink}" target="_blank">카카오맵에서 보기</a> </div>`;
+                            cityaddress = city;
+                            createMarker1(lat, lng, content);
+                        }
+
+                    });
+                })
+                .catch(error => console.log(error));
+        }
+
+        function getData2(company) {
+            fetch('/tetest/data')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(v => {
+                        const lat = v.latitude;
+                        const lng = v.longitude;
+                        const companyData = v.company;
+
+                        if (companyData === company) {
+                            var address = `${v.address}`;
+                            var kakaoMapLink = "https://map.kakao.com/link/map/" + encodeURIComponent(address);
+
+                            var content =
+                                `<div class="ininfo"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim} <br>
+                                                <a href="${kakaoMapLink}" target="_blank">카카오맵에서 보기</a> </div>`;
+                            companyaddress = company;
+                            createMarker2(lat, lng, content);
+                        }
+
+                    });
+                })
+                .catch(error => console.log(error));
+        }
+
+        function getData3(spottype) {
+            fetch('/tetest/data')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(v => {
+                        const lat = v.latitude;
+                        const lng = v.longitude;
+                        const spottypeData = v.spottype
+
+                        if (spottypeData === spottype) {
+                            var address = `${v.address}`;
+                            var kakaoMapLink = "https://map.kakao.com/link/map/" + encodeURIComponent(address);
+
+                            var content =
+                                `<div class="ininfo"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim} <br>
+                                                <a href="${kakaoMapLink}" target="_blank">카카오맵에서 보기</a> </div>`;
+                            spottypeaddress = spottype;
+                            createMarker3(lat, lng, content);
+                        }
+
+                    });
+                })
+                .catch(error => console.log(error));
+        }
+
+        function getData4(big) {
+            fetch('/tetest/data')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(v => {
+                        const lat = v.latitude;
+                        const lng = v.longitude;
+                        const bigData = v.big
+
+                        if (bigData === big) {
+                            var address = `${v.address}`;
+                            var kakaoMapLink = "https://map.kakao.com/link/map/" + encodeURIComponent(address);
+
+                            var content =
+                                `<div class="ininfo"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim} <br>
+                                                <a href="${kakaoMapLink}" target="_blank">카카오맵에서 보기</a> </div>`;
+                            bigaddress = big;
+                            createMarker4(lat, lng, content);
+                        }
+
+                    });
+                })
+                .catch(error => console.log(error));
+        }
+
+        function createMarker1(lat, lng, content, city) {
+            const markerPosition = new kakao.maps.LatLng(lat, lng);
+            var imageSrc = 'https://cdn-icons-png.flaticon.com/512/7512/7512521.png', // 마커이미지의 주소입니다    
+                imageSize = new kakao.maps.Size(50, 52), // 마커이미지의 크기입니다
+                imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+
+            infowindow = new kakao.maps.InfoWindow({
+                content: content,
+                removable: true
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                map.panTo(markerPosition);
+
+            });
+
+            const mark = {
+                marker: marker,
+                add: cityaddress
+            }
+
+            markers.push(mark);
+            marker.setMap(map);
+        }
+
+        function createMarker2(lat, lng, content, company) {
+            const markerPosition = new kakao.maps.LatLng(lat, lng);
+            var imageSrc = 'maker1.png', // 마커이미지의 주소입니다    
+                imageSize = new kakao.maps.Size(40, 42), // 마커이미지의 크기입니다
+                imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+
+            infowindow = new kakao.maps.InfoWindow({
+                content: content,
+                removable: true
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                map.panTo(markerPosition);
+                updateInfoBox(company);
+            });
+
+            const mark = {
+                marker: marker,
+                add: companyaddress
+            }
+
+            markers.push(mark);
+            marker.setMap(map);
+        }
+
+        function createMarker3(lat, lng, content, spottype) {
+            const markerPosition = new kakao.maps.LatLng(lat, lng);
+            var imageSrc = 'maker2.png', // 마커이미지의 주소입니다    
+                imageSize = new kakao.maps.Size(50, 52), // 마커이미지의 크기입니다
+                imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+
+            infowindow = new kakao.maps.InfoWindow({
+                content: content,
+                removable: true
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                map.panTo(markerPosition);
+                updateInfoBox(spottype);
+            });
+
+            const mark = {
+                marker: marker,
+                add: spottypeaddress
+            }
+
+            markers.push(mark);
+            marker.setMap(map);
+        }
+
+        function createMarker4(lat, lng, content, spottype) {
+            const markerPosition = new kakao.maps.LatLng(lat, lng);
+            var imageSrc = 'maker3.png', // 마커이미지의 주소입니다    
+                imageSize = new kakao.maps.Size(50, 52), // 마커이미지의 크기입니다
+                imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+            // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage
+            });
+
+            infowindow = new kakao.maps.InfoWindow({
+                content: content,
+                removable: true
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                map.panTo(markerPosition);
+                updateInfoBox(spottype);
+            });
+
+            const mark = {
+                marker: marker,
+                add: bigaddress
+            }
+
+            markers.push(mark);
+            marker.setMap(map);
+        }
+
+        function removeInfo() {
+            infowindow.close();
+        }
+        function removeInfo1() {
+            infowindow.close();
+        }
+
+        function removeInfo2() {
+            infowindow.close();
+        }
+
+        function removeInfo3() {
+            infowindow.close();
+        }
+
+        function removeInfo4() {
+            infowindow.close();
+        }
+
+        function removeMarkers() {
+            markers.forEach(mark => {
+                const marker = mark.marker;
+                if (mark.add == 1) {
+                    marker.setMap(null); // 지도에서 제거
+                }
+            });
+        }
+
+        function removeMarkers1(city) {
+            markers.forEach(mark => {
+                const marker = mark.marker;
+                if (mark.add === city) {
+                    marker.setMap(null); // 지도에서 제거
+                }
+            });
+        }
+
+        function removeMarkers2(company) {
+            markers.forEach(mark => {
+                const marker = mark.marker;
+                if (mark.add === company) {
+                    marker.setMap(null); // 지도에서 제거
+                }
+            });
+        }
+
+        function removeMarkers3(spottype) {
+            markers.forEach(mark => {
+                const marker = mark.marker;
+                if (mark.add === spottype) {
+                    marker.setMap(null); // 지도에서 제거
+                }
+            });
+        }
+
+        function removeMarkers4(big) {
+            markers.forEach(mark => {
+                const marker = mark.marker;
+                if (mark.add === big) {
+                    marker.setMap(null); // 지도에서 제거
+                }
+            });
+        }
+
+        function handleCheckboxChange(city, checked) {
+            if (checked) {
+
+                getData1(city);
+            } else {
+                removeInfo1();
+                removeMarkers1(city);
+            }
+        }
+
+        function handleCheckboxChange2(city, checked) {
+            if (checked) {
+                getData1('북구');
+                getData1('광산구');
+                getData1('동구');
+                getData1('남구');
+                getData1('서구');
+            } else {
+                removeMarkers1('북구');
+                removeMarkers1('광산구');
+                removeMarkers1('동구');
+                removeMarkers1('남구');
+                removeMarkers1('서구');
+            }
+        }
+
+        function handleCompanyCheckboxChange(company, checked) {
+            if (checked) {
+                getData2(company);
+            } else {
+                removeInfo1();
+                removeMarkers2(company);
+            }
+        }
+
+        function handleTypeCheckboxChange(spottype, checked) {
+            if (checked) {
+                getData3(spottype);
+            } else {
+                removeInfo1();
+                removeMarkers3(spottype);
+            }
+        }
+
+        function handleBigCheckboxChange(big, checked) {
+            if (checked) {
+                getData4(big);
+            } else {
+                removeInfo1();
+                removeMarkers4(big);
+            }
+        }
+
+    </script>
 
 </body>
 

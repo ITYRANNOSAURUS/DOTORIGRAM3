@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="kor">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" , initial-scale="1.0">
+    <title>Pika</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon.ico">
+    <script type="text/javascript">
+        // <![CDATA[
+        var bits = 80; // how many bits
+        var speed = 33; // how fast - smaller is faster
+        var bangs = 5; // how many can be launched simultaneously (note that using too many can slow the script down)
+        var colours = new Array("#03f", "#f03", "#0e0", "#93f", "#0cf", "#f93", "#f0c");
+        //                     blue    red     green   purple  cyan    orange  pink
+
+        /****************************
+        *      Fireworks Effect     *
+        *(c)2004-14 mf2fm web-design*
+        *  http://www.mf2fm.com/rv  *
+        * DON'T EDIT BELOW THIS BOX *
+        ****************************/
+        var bangheight = new Array();
+        var intensity = new Array();
+        var colour = new Array();
+        var Xpos = new Array();
+        var Ypos = new Array();
+        var dX = new Array();
+        var dY = new Array();
+        var stars = new Array();
+        var decay = new Array();
+        var swide = 800;
+        var shigh = 600;
+        var boddie;
+
+        if (typeof ('addRVLoadEvent') != 'function') function addRVLoadEvent(funky) {
+            var oldonload = window.onload;
+            if (typeof (oldonload) != 'function') window.onload = funky;
+            else window.onload = function () {
+                if (oldonload) oldonload();
+                funky();
+            }
+        }
+
+        addRVLoadEvent(light_blue_touchpaper);
+
+        function light_blue_touchpaper() {
+            if (document.getElementById) {
+                var i;
+                boddie = document.createElement("div");
+                boddie.style.position = "fixed";
+                boddie.style.top = "0px";
+                boddie.style.left = "0px";
+                boddie.style.overflow = "visible";
+                boddie.style.width = "1px";
+                boddie.style.height = "1px";
+                boddie.style.backgroundColor = "transparent";
+                document.body.appendChild(boddie);
+                set_width();
+                for (i = 0; i < bangs; i++) {
+                    write_fire(i);
+                    launch(i);
+                    setInterval('stepthrough(' + i + ')', speed);
+                }
+            }
+        }
+
+        function write_fire(N) {
+            var i, rlef, rdow;
+            stars[N + 'r'] = createDiv('|', 12);
+            boddie.appendChild(stars[N + 'r']);
+            for (i = bits * N; i < bits + bits * N; i++) {
+                stars[i] = createDiv('*', 13);
+                boddie.appendChild(stars[i]);
+            }
+        }
+
+        function createDiv(char, size) {
+            var div = document.createElement("div");
+            div.style.font = size + "px monospace";
+            div.style.position = "absolute";
+            div.style.backgroundColor = "transparent";
+            div.appendChild(document.createTextNode(char));
+            return (div);
+        }
+
+        function launch(N) {
+            colour[N] = Math.floor(Math.random() * colours.length);
+            Xpos[N + "r"] = swide * 0.5;
+            Ypos[N + "r"] = shigh - 5;
+            bangheight[N] = Math.round((0.5 + Math.random()) * shigh * 0.4);
+            dX[N + "r"] = (Math.random() - 0.5) * swide / bangheight[N];
+            if (dX[N + "r"] > 1.25) stars[N + "r"].firstChild.nodeValue = "/";
+            else if (dX[N + "r"] < -1.25) stars[N + "r"].firstChild.nodeValue = "\\";
+            else stars[N + "r"].firstChild.nodeValue = "|";
+            stars[N + "r"].style.color = colours[colour[N]];
+        }
+
+        function bang(N) {
+            var i, Z, A = 0;
+            for (i = bits * N; i < bits + bits * N; i++) {
+                Z = stars[i].style;
+                Z.left = Xpos[i] + "px";
+                Z.top = Ypos[i] + "px";
+                if (decay[i]) decay[i]--;
+                else A++;
+                if (decay[i] == 15) Z.fontSize = "7px";
+                else if (decay[i] == 7) Z.fontSize = "2px";
+                else if (decay[i] == 1) Z.visibility = "hidden";
+                if (decay[i] > 1 && Math.random() < .1) {
+                    Z.visibility = "hidden";
+                    setTimeout('stars[' + i + '].style.visibility="visible"', speed - 1);
+                }
+                Xpos[i] += dX[i];
+                Ypos[i] += (dY[i] += 1.25 / intensity[N]);
+
+            }
+            if (A != bits) setTimeout("bang(" + N + ")", speed);
+        }
+
+        function stepthrough(N) {
+            var i, M, Z;
+            var oldx = Xpos[N + "r"];
+            var oldy = Ypos[N + "r"];
+            Xpos[N + "r"] += dX[N + "r"];
+            Ypos[N + "r"] -= 4;
+            if (Ypos[N + "r"] < bangheight[N]) {
+                M = Math.floor(Math.random() * 3 * colours.length);
+                intensity[N] = 5 + Math.random() * 4;
+                for (i = N * bits; i < bits + bits * N; i++) {
+                    Xpos[i] = Xpos[N + "r"];
+                    Ypos[i] = Ypos[N + "r"];
+                    dY[i] = (Math.random() - 0.5) * intensity[N];
+                    dX[i] = (Math.random() - 0.5) * (intensity[N] - Math.abs(dY[i])) * 1.25;
+                    decay[i] = 16 + Math.floor(Math.random() * 16);
+                    Z = stars[i];
+                    if (M < colours.length) Z.style.color = colours[i % 2 ? colour[N] : M];
+                    else if (M < 2 * colours.length) Z.style.color = colours[colour[N]];
+                    else Z.style.color = colours[i % colours.length];
+                    Z.style.fontSize = "13px";
+                    Z.style.visibility = "visible";
+                }
+                bang(N);
+                launch(N);
+            }
+            stars[N + "r"].style.left = oldx + "px";
+            stars[N + "r"].style.top = oldy + "px";
+        }
+
+        window.onresize = set_width;
+        function set_width() {
+            var sw_min = 999999;
+            var sh_min = 999999;
+            if (document.documentElement && document.documentElement.clientWidth) {
+                if (document.documentElement.clientWidth > 0) sw_min = document.documentElement.clientWidth;
+                if (document.documentElement.clientHeight > 0) sh_min = document.documentElement.clientHeight;
+            }
+            if (typeof (self.innerWidth) != "undefined" && self.innerWidth) {
+                if (self.innerWidth > 0 && self.innerWidth < sw_min) sw_min = self.innerWidth;
+                if (self.innerHeight > 0 && self.innerHeight < sh_min) sh_min = self.innerHeight;
+            }
+            if (document.body.clientWidth) {
+                if (document.body.clientWidth > 0 && document.body.clientWidth < sw_min) sw_min = document.body.clientWidth;
+                if (document.body.clientHeight > 0 && document.body.clientHeight < sh_min) sh_min = document.body.clientHeight;
+            }
+            if (sw_min == 999999 || sh_min == 999999) {
+                sw_min = 800;
+                sh_min = 600;
+            }
+            swide = sw_min;
+            shigh = sh_min;
+        }
+        // ]]>
+    </script>
+</head>
+<style>
+    body {
+        background-color: #000;
+        background-size: auto;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+        overflow: hidden;
+    }
+
+    @font-face {
+        font-family: "netmarbleB";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/netmarbleB.woff") format("woff");
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    html,
+    button {
+        font-family: netmarbleB;
+    }
+
+    h2,
+    p {
+        margin: 0;
+    }
+
+    .game-wrap {
+        background-color: #000;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .sun {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        width: 5rem;
+        height: 5rem;
+        background-image: url("/src/main/resources/static/der.png");
+        background-size: cover;
+        animation: rotate 5s linear infinite;
+    }
+
+    @keyframes rotate {
+        to {
+            rotate: 1turn;
+        }
+    }
+
+    .ground {
+        position: absolute;
+        bottom: 0.8rem;
+        left: 0;
+        width: 100%;
+        height: 0.2rem;
+        background: #fff;
+        z-index: 0;
+    }
+
+    .score {
+        color: #fff;
+        display: flex;
+        gap: 6px;
+        position: absolute;
+        top: 8px;
+        left: 0;
+        font-size: 1.5rem;
+    }
+
+    .info {
+        color: #fff;
+        width: fit-content;
+        margin: 0 auto;
+        padding: 10px;
+        border: 4px solid;
+        border-radius: 8px;
+        text-align: center;
+        cursor: default;
+    }
+
+    #canvas {
+        margin-top: 12rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .game-over {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 10;
+    }
+
+    .game-over .pop-up {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        align-items: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 400px;
+        width: 100%;
+        height: fit-content;
+        padding: 40px 0 32px;
+        background-color: #fff;
+    }
+
+    .game-over .pop-up .replay {
+        padding: 4px 8px;
+        margin-top: 8px;
+        border: 3px solid #191919;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .game-over .pop-up .home {
+        padding: 4px 8px;
+        margin-top: 8px;
+        border: 3px solid #191919;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .game-over .pop-up .get-coins {
+        padding: 4px 8px;
+        margin-top: 8px;
+        border: 3px solid #191919;
+        border-radius: 4px;
+        background-color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    @media (max-width: 420px) {
+        .game-over .pop-up {
+            max-width: 300px;
+        }
+    }
+
+    .game-over-img {
+        width: 20rem;
+        height: 20rem;
+    }
+</style>
+
+<body>
+    <div class="game-wrap">
+        <div class="bakcground">
+            <div class="ground"></div>
+            <a th:href="@{/home}">
+                <div class="sun" th:style="'background-image:url(' + @{/eco-house.png} + ')'"></div>
+
+            </a>
+        </div>
+        <div class="score">
+            <p>SCORE</p>
+            <span></span>
+        </div>
+        <canvas id="canvas" height="200"></canvas>
+    </div>
+    <!-- 안내 -->
+    <h3 class="info">SPACE BAR로 JUMP 하세요!</h3>
+    <!-- 게임오버 -->
+    <div class="game-over">
+        <div class="pop-up">
+            <img class="game-over-img" th:src="@{/link.png}" alt="게임오버" />
+            <h2>충전소를 찾지 못했다!</h2>
+            <p><span class="total-score"></span> 점</p>
+            <button class="replay">다시하기</button>
+            <button class="home">홈으로</button>
+            <button class="get-coins" style="display: none;">찌리릿 코인 받기</button>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const homeButton = document.querySelector(".home");
+        homeButton.addEventListener("click", function () {
+            window.location.href = "/home";
+        });
+
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        let currentCar = 0;
+        canvas.width = window.innerWidth;
+
+        var carImages = [new Image(), new Image()];
+        carImages[0].src = "/cargame.png";
+        carImages[1].src = "/cargame.png";
+
+        let electricCar = {
+            x: 20,
+            y: 50,
+            width: 80,
+            height: 80,
+            draw() {
+                ctx.drawImage(
+                    carImages[currentCar],
+                    this.x,
+                    this.y,
+                    this.width,
+                    this.height
+                );
+            },
+            jump() {
+                if (this.y > 40) {
+                    this.y -= 60;
+                }
+            },
+            fall() {
+                if (this.y < 120) {
+                    this.y += 10;
+                }
+            },
+        };
+
+        // 장애물
+        var boxImages = [new Image(), new Image()];
+        boxImages[0].src = "/pong.png";
+        boxImages[1].src = "/pong2.png";
+
+        class Box {
+            constructor() {
+                this.width = 40;
+                this.height = 40;
+                this.x = canvas.width - this.width;
+                this.y = 155;
+
+                // 장애물 이미지 선택
+                const randomImageIndex = Math.floor(Math.random() * boxImages.length);
+                this.image = boxImages[randomImageIndex];
+            }
+            draw() {
+                ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+            }
+        }
+        // 도착지 좌표
+        const destinationX = 20; // 도착지 x 좌표
+        const destinationY = 50;  // 도착지 y 좌표
+
+        // 도착지 이미지 로드
+        let destinationImage = new Image();
+        destinationImage.src = "/link.png";
+
+        class Destination {
+            constructor() {
+                this.width = 40;
+                this.height = 40;
+                this.x = canvas.width - this.width; // 장애물과 동일한 위치에서 시작
+                this.y = 155;
+                // 새로 생성한 도착지와 다른 장애물들과의 충돌 확인
+                let isCollision = manyBoxes.some(existingBox => {
+                    return (
+                        this.x < existingBox.x + existingBox.width &&
+                        this.x + this.width > existingBox.x
+                    );
+                });
+
+                // 충돌이 있으면 다시 생성 시도
+                if (isCollision) {
+                    return new Destination();
+                }
+            }
+            draw() {
+                ctx.drawImage(destinationImage, this.x, this.y, this.width, this.height);
+            }
+        }
+
+        // score
+        let score = 0;
+        let scoreInterval;
+
+        function updateScore() {
+            score += 1;
+            document.querySelector(".score span").textContent = score;
+        }
+
+        let timer = 0;
+        let jumpTimer = 0;
+        let manyBoxes = [];
+        let animation;
+        let destination;
+
+        let isDestinationVisible = false; // 도착지 표시 여부
+
+        // 장애물 생성 함수
+        function createBox() {
+            let box = new Box();
+
+            // 새로 생성한 장애물과 다른 장애물들 및 도착지와의 충돌 확인
+            let isCollisionWithOtherBoxes = manyBoxes.some(existingBox => {
+                return (
+                    box.x < existingBox.x + existingBox.width &&
+                    box.x + box.width > existingBox.x
+                );
+            });
+
+            let isCollisionWithDestination =
+                destination &&
+                box.x < destination.x + destination.width &&
+                box.x + box.width > destination.x;
+
+            // 충돌이 없으면 배열에 추가, 있으면 다시 생성 시도.
+            if (!isCollisionWithOtherBoxes && !isCollisionWithDestination) {
+                manyBoxes.push(box);
+            } else {
+                createBox();  // 다시 생성 시도.
+            }
+        }
+
+        // 프레임마다 실행하기
+        function frameRun() {
+            animation = requestAnimationFrame(frameRun);
+            timer++;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 이미지 교체 & score 처리
+            if (timer % 10 === 0) {
+                currentCar = (currentCar + 1) % 2;
+                updateScore();
+            }
+            // 무작위로 장애물 소환
+            if (Math.random() < 0.005) {
+                createBox();
+            }
+
+            if (score >= 250 && !isDestinationVisible && score % 250 === 0) {
+                isDestinationVisible = true;
+                destination = new Destination();
+            } else if (score >= 200 && !isDestinationVisible && score % 200 === 0) {
+                isDestinationVisible = true;
+                destination = new Destination();
+            } else if (score >= 10 && !isDestinationVisible && score % 10 === 0) {
+                isDestinationVisible = true;
+                destination = new Destination();
+            }
+            if (isDestinationVisible) {
+                destination.x -= 2;
+                destination.draw();
+
+                // 도착지에 도달하면 성공 처리
+                if (electricCar.x + electricCar.width >= destination.x && electricCar.y + electricCar.height >= destination.y &&
+                    electricCar.x <= destination.x + destination.width && electricCar.y <= destination.y + destination.height) {
+                    showGameSuccess();
+                    cancelAnimationFrame(animation);
+                    clearInterval(scoreInterval);
+                    return;
+                }
+            }
+            // x좌표가 0미만이면 제거
+            manyBoxes.forEach((a, i, o) => {
+                if (a.x < 5) {
+                    o.splice(i, 1);
+                }
+                a.x -= 2;
+                // 충돌 체크
+                crash(electricCar, a);
+                a.draw();
+            });
+
+            // 점프!
+            if (jumpSwitch == true) {
+                electricCar.jump();
+                jumpTimer++;
+            }
+            if (jumpSwitch == false) {
+                if (electricCar.y < 120) {
+                    electricCar.y++;
+                }
+            }
+            if (jumpTimer > 40) {
+                jumpSwitch = false;
+                jumpTimer = 0;
+            }
+            electricCar.draw();
+        }
+
+        // 충돌확인
+        function crash(electricCar, box) {
+            let xCalculate = box.x - (electricCar.x + electricCar.width);
+            let yCalculate = box.y - (electricCar.y + electricCar.height);
+            if (xCalculate < 0 && yCalculate < 0) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                cancelAnimationFrame(animation);
+                clearInterval(scoreInterval);
+                const totalScore = document.querySelector(".total-score");
+                totalScore.textContent = `${score}`;
+                const sun = document.querySelector(".sun");
+                const gameOver = document.querySelector(".game-over");
+                sun.style.animationPlayState = "paused";
+                gameOver.style.display = "block";
+            }
+        }
+
+        // score 업데이트
+        scoreInterval = setInterval(updateScore, 2000);
+
+        // 리셋 버튼
+        const replayBtn = document.querySelector(".replay");
+
+        replayBtn.addEventListener("click", () => {
+            resetGame();
+        });
+
+        // spaceBar
+        var jumpSwitch = false;
+        let lastSpacePressTime = 0;
+
+        document.addEventListener("keydown", function (e) {
+            if (e.code === "Space") {
+                const currentTime = Date.now();
+                const timeSinceLastPress = currentTime - lastSpacePressTime;
+
+                if (timeSinceLastPress > 500) {
+                    jumpSwitch = true;
+                    lastSpacePressTime = currentTime;
+                }
+            }
+        });
+
+        // 게임리셋
+        function resetGame() {
+            cancelAnimationFrame(animation);
+            clearInterval(scoreInterval);
+            score = 0;
+            document.querySelector(".score span").textContent = score;
+            manyBoxes = [];
+            currentCar = 0;
+            jumpSwitch = false;
+            lastSpacePressTime = 0;
+
+
+            isDestinationVisible = false;
+            destination = null;
+
+            frameRun();
+
+            const sun = document.querySelector(".sun");
+            const gameOver = document.querySelector(".game-over");
+            sun.style.animationPlayState = "running";
+            gameOver.style.display = "none";
+
+            // 스코어 인터벌 제거
+            if (scoreInterval) {
+                clearInterval(scoreInterval);
+            }
+            // 스코어 인터벌 다시시작
+            scoreInterval = setInterval(updateScore, 2000);
+        }
+
+        // 도착지에 도달하면 게임 성공 팝업 표시
+        function showGameSuccess() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            cancelAnimationFrame(animation);
+            clearInterval(scoreInterval);
+
+            const totalScore = document.querySelector(".total-score");
+            totalScore.textContent = `${score}`;
+
+            const sun = document.querySelector(".sun");
+            const gameSuccess = document.querySelector(".game-over");
+
+            sun.style.animationPlayState = "paused";
+            gameSuccess.style.display = "block";
+
+            let gameOverMsgElement = document.querySelector('.game-over .pop-up h2');
+            gameOverMsgElement.textContent = '충전소에 도착했습니다!';
+
+            const getCoinsButton = document.querySelector(".get-coins");
+            getCoinsButton.style.display = "block"; // 버튼 표시
+
+            getCoinsButton.addEventListener("click", async function () {
+                const response = await fetch("/getCoins", {
+                    method: "GET",
+                });
+
+                if (response.ok) {
+                    const message = await response.text();
+                    alert(message);
+                    // 필요하다면 이후에 페이지를 새로고침하거나 다른 동작을 수행하세요.
+                } else {
+                    console.error("찌리릿 코인을 받는 중 오류가 발생했습니다: " + response.status);
+                }
+            });
+            
+            // "다시하기" 버튼을 숨깁니다.
+            const replayButton = document.querySelector(".replay");
+            replayButton.style.display = "none";
+        }
+
+        frameRun();
+    </script>

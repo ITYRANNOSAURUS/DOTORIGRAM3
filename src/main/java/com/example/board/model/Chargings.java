@@ -18,7 +18,7 @@ public class Chargings {
 	private String address;
 	private int fastch;
     private int slowch;
-	private String latitude;
-	private String longitude;
+	private double latitude;
+	private double longitude;
 
 }

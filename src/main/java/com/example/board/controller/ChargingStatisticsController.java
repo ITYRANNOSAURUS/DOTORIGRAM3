@@ -37,16 +37,6 @@ public class ChargingStatisticsController {
   @Autowired
   ChargerStatusRegionRepsoitory chargerStatusRegionRepository;
 
-  @GetMapping("/statistic/ChargerService")
-  public String ChargerService(Model model) {
-    return "ChargerService";
- }
-
- @GetMapping("/statistic/ChargerExpense")
-  public String ChargerExpense(Model model) {
-    return "ChargerExpense";
- }
-
   @GetMapping("/statistic/chqRegistser")
   public String chqRegistser(Model model) {
     
@@ -70,15 +60,13 @@ public class ChargingStatisticsController {
   ChargerStatusYear y = chargerStatusYearRepository.findById(yearId)
   .orElseThrow(() -> new IllegalArgumentException("Invalid year ID: " + yearId));
 
-  // chargerStatus.setChargerStatusRegion(r);
-  // chargerStatus.setChargerStatusYear(y);
-
+  
   Optional<ChargerStatus> existingStatus = chargerStatusRepository.findByChargerStatusRegionAndChargerStatusYear(r, y);
   if (existingStatus.isPresent()) {
     
     ChargerStatus existing = existingStatus.get();
     existing.setQuantity(chargerStatus.getQuantity());
-    // chargerStatus = existing;
+    
 
     chargerStatusRepository.save(existing);
   }
@@ -86,49 +74,8 @@ public class ChargingStatisticsController {
    return "redirect:/statistic/chqRegistser";
 }
 
-
-
-  // @PostMapping("/statistic/save")
-  // public String addchargings(@ModelAttribute ChargerStatus chargerStatus,
-  // @ModelAttribute ChargerStatusRegion r,
-  // @ModelAttribute ChargerStatusYear y, Model model) {
-    
-  //   Optional<ChargerStatusRegion> existingRegion = chargerStatusRegionRepository.findById(r.getId());
-  // if (existingRegion.isPresent()) {
-  //   r = existingRegion.get();
-  // } else {
-  //   chargerStatusRegionRepository.save(r);
-  // }
-
-  // Optional<ChargerStatusYear> existingYear = chargerStatusYearRepository.findById(y.getId());
-  // if (existingYear.isPresent()) {
-  //   y = existingYear.get();
-  // } else {
-  //   chargerStatusYearRepository.save(y);
-  // }
-    
-  //   chargerStatus.setChargerStatusRegion(r);
-  //   chargerStatus.setChargerStatusYear(y);
-
-  //   Optional<ChargerStatus> existingStatus = chargerStatusRepository.findByChargerStatusRegionAndChargerStatusYear(r, y);
-
-  // if (existingStatus.isPresent()) {
-   
-  //   ChargerStatus existing = existingStatus.get();
-  //   existing.setQuantity(chargerStatus.getQuantity());
-  //   chargerStatus = existing;
-  // }
-  //   chargerStatusRepository.save(chargerStatus);
-  //   return "redirect:/statistic/chqRegistser";
-  // }
-
-
-  @GetMapping("/statistic/carStatus")
-  public String carStatus(Model model) {
-    return "carStatus";
- }
-
-  @GetMapping("/statistic/chargerStatus")
+// ******
+@GetMapping("/statistic/chargerStatus")
   public String chargerStatus(Model model) {
     List<ChargerStatus> chargerStatus = chargerStatusRepository.findAll();
     List<ChargerStatusYear> chargerStatusYear = chargerStatusYearRepository.findAll();
@@ -143,14 +90,13 @@ public class ChargingStatisticsController {
     for (ChargerStatus status : chargerStatus) {
       String year = status.getChargerStatusYear().getYear();
       long quantity = status.getQuantity();
-      // data2.put(year, quantity);
+    
       String region = status.getChargerStatusRegion().getRegion();
-      // data.put(region, data2);
+      
       if (!data.containsKey(region)) {
         data.put(region, new HashMap<>());
       }
 
-      // Add year and quantity to the correct inner map
       data.get(region).put(year, quantity);
     }
 
@@ -171,19 +117,20 @@ public class ChargingStatisticsController {
       log.error(quantitySet.toString());
     }
 
-    // List<String> keySet = new ArrayList<>(data.keySet());
-    // List<Long> values = new ArrayList<>(data.values());
-
-    // model.addAttribute("keySet", keySet);
-    // model.addAttribute("values", values);
-
-    // return "chargerStatus";
-    // return "chargerStatus2";
+    
     return "chargerStatus3";
-    // return "test10";
+    
   }
 
-  @GetMapping("/statistic/chargerStatus5")
+  // *******
+ @GetMapping("/statistic/carStatus")
+  public String carStatus(Model model) {
+    return "carStatus";
+ }
+
+  // *******
+
+@GetMapping("/statistic/chargerStatus5")
   @ResponseBody
   public Map<String, Map<String, Long>> getChargerData() {
     List<ChargerStatus> chargerStatus = chargerStatusRepository.findAll();
@@ -210,35 +157,7 @@ public class ChargingStatisticsController {
     return data;
   }
 
-  @GetMapping("/statistic/chargerStatus2")
-  @ResponseBody
-  public List<ChargerStatus> chargerStatus2(Model model) {
-    List<ChargerStatus> chargerStatus = chargerStatusRepository.findAll();
-    return chargerStatus;
-  }
-
-  @GetMapping("/statistic/chargerStatus6")
-  @ResponseBody
-  public List<Map<String, Object>> getChargerData2() {
-    List<ChargerStatus> chargerStatuses = chargerStatusRepository.findAll();
-    List<ChargerStatusYear> chargerStatusYear = chargerStatusYearRepository.findAll();
-    List<ChargerStatusRegion> chargerStatusRegion = chargerStatusRegionRepository.findAll();
-
-    return chargerStatuses
-      .stream()
-      .map(status -> {
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", status.getId());
-        map.put("city", status.getChargerStatusRegion().getRegion());
-        map.put("year", status.getChargerStatusYear().getYear());
-        map.put("quantity", status.getQuantity());
-        return map;
-      })
-      .collect(Collectors.toList());
-    //       You start with List<ChargerStatus> (chargerStatuses)
-    // You convert it to Stream<ChargerStatus> (stream())
-    // Then you transform it to Stream<SomethingElse> (map(status -> {})), where SomethingElse depends on what transformation you define inside {}.
-  }
+  
 
   @GetMapping("/statistic/chargerStatus7")
   @ResponseBody
@@ -259,4 +178,21 @@ public class ChargingStatisticsController {
       })
       .collect(Collectors.toList());
   }
+
+  // ******
+  
+  @GetMapping("/statistic/ChargerService")
+  public String ChargerService(Model model) {
+    return "ChargerService";
+ }
+
+ @GetMapping("/statistic/ChargerExpense")
+  public String ChargerExpense(Model model) {
+    return "ChargerExpense";
+ }
+
+   
+  
+
+  
 }

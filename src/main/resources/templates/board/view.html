@@ -3,6 +3,26 @@
 
 <head th:replace="common/head"></head>
 
+<style>
+  @font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  body {
+    font-family: 'TheJamsil5Bold';
+    height: 100vh;
+    /* 화면 높이의 100%로 설정 */
+    background-color: #000;
+    background-size: cover;
+    /* 이미지를 화면에 맞게 조절 */
+    background-repeat: no-repeat;
+    /* 이미지 반복을 중지 */
+  }
+</style>
+
 <body>
 
   <div th:replace="common/header"></div>
@@ -36,16 +56,18 @@
         첨부된 파일📥
         <!-- 첨부된 파일 목록 -->
         <ul th:each="fileAtch : ${board.fileAtchs}">
-          <li>
+
+          <li style="list-style-type: none;">
             <a th:href="@{/download(id=${fileAtch.id})}">
               [[${fileAtch.originalName}]]
             </a>
             <!-- 파일 삭제 버튼 -->
             <button th:if="${session.user_info != null && session.user_info.email == board.user.email}"
-              th:onclick="'fileRm(' + ${fileAtch.id} +')'">파일삭제✂️</button>
+              th:style="${fileAtch.originalName == '' ? 'display:none;' : ''}"
+              th:onclick="'fileRm(' + ${fileAtch.id} +')'">파일삭제✂️
+            </button>
           </li>
         </ul>
-
       </div>
     </div>
   </div>
@@ -55,16 +77,14 @@
         <a class="nav-link" th:href="@{/board/list}" id="list">목록</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" th:href="@{'/board/update/' + ${board.id}}" id="update">수정</a>
+        <a class="nav-link" th:href="@{'/board/update/' + ${board.id}}" id="update">수정</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" th:data-num="${board.id}" id="delete">삭제</a>
+        <a class="nav-link" th:data-num="${board.id}" id="delete">삭제</a>
       </li>
     </ul>
   </div>
 
-  <!-- <div th:replace="common/footer">
-  </div> -->
 
   <script>
     var authorUserId = "[[${board.user.email}]]";

@@ -1,24 +1,92 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>자동차 정보 입력</title>
+
+<head th:replace="common/head">
+
 </head>
+
+<style>
+    @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    body {
+        font-family: 'TheJamsil5Bold';
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: #000;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+    }
+
+    .btn-primary {
+        background-color: #efc19d;
+        border-color: #efc19d;
+        color: black;
+    }
+    
+    .card {
+        padding: 2rem;
+    }
+
+    body {
+        font-family: 'TheJamsil5Bold';
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: black;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+    }
+
+    .btn-primary {
+        background-color: #f7ed81;
+        border-color: #f7ed81;
+        color: black;
+    }
+
+    .card{
+    padding: 2rem;
+    }
+    /* .container .mt-5 {
+        background-color: white;
+    } */
+</style>
+
 <body>
-    <h1>자동차 정보 입력</h1>
-    <form action="/addCar" method="post">
-        <div>
-            <label for="carType">회사 선택:</label>
-            <select class="form-select" id="company" name="company">
-                <option value="">회사를 선택하세요</option>
-                <option th:each="type : ${companys}" th:value="${type.companyName}" th:text="${type.companyName}"></option>
-            </select>
+    <div th:replace="common/header"> </div>
+    <nav th:replace="common/nav"></nav>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="row">
+                <h1>자동차 정보 입력</h1>
+                <form method="post" action="/addCar" id="carform">
+                    <div class="mb-3">
+                        <label for="campany">회사 선택:</label>
+                        <select class="form-select" id="qnacompany" name="qnacompany">
+                            <option value="">회사를 선택하세요</option>
+                            <option th:each="type : ${companys}" th:value="${type.companyName}"
+                                th:text="${type.companyName}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name">차 이름:</label><br>
+                        <input type="text" id="qnacarname" name="qnacarname" required>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" id="signup">등록하기</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-            <label for="name">차 이름:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <button type="submit">등록</button>
-    </form>
+    </div>
 </body>
+
 </html>
