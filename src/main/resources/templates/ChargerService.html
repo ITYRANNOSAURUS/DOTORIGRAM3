@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charger Status</title>
+    <link rel="stylesheet" href="/chargerStatus.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
+</head>
+<style>
+	@font-face {
+	  font-family: 'TheJamsil5Bold';
+	  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+	  font-weight: 500;
+	  font-style: normal;
+	}
+  
+	body {
+	  font-family: 'TheJamsil5Bold';
+	  height: 100vh;
+	  /* 화면 높이의 100%로 설정 */
+	  background-color: #000;
+	  background-size: cover;
+	  /* 이미지를 화면에 맞게 조절 */
+	  background-repeat: no-repeat;
+	  /* 이미지 반복을 중지 */
+	}
+  
+	.table {
+	  color: white;
+	}
+  
+	#write-btn {
+	  background-color: #f0e3d9;
+	  width: 150px;
+	  height: 40px;
+	  position: fixed;
+	  float: right;
+	  right: 120px;
+	  bottom: 20px;
+	}
+  
+	#write-btn:hover {
+	  background-color: #ad5919;
+	  border-color: #ad5919;
+	}
+  
+	#search-btn {
+	  background-color: #f0e3d9;
+	  border-color: #f0e3d9;
+	}
+  
+	.pagination-form {
+	  margin-top: 20px;
+	}
+  
+	.search-form {
+	  margin-top: 20px;
+	  margin-bottom: 40px;
+	}
+  
+	.pagination .page-link {
+	  color: #9c6262;
+	}
+  
+	.pagination .page-link:hover {
+	  color: #FFFFFF;
+	  background-color: #cb6f45;
+	}
+  </style>
+<body>
+
+    <div th:replace="common/header"> </div>
+  <nav th:replace="common/nav"></nav>
+    
+
+    <div id="wrap">
+        <h1>서비스 안내
+            <span><a href="#">HOME</a> > 서비스 안내 > <strong>전기차 충전방식</strong></span>
+        </h1>
+        <div class="tab_wrap">
+            <div class="tab01">
+                <ul>
+                    <li ><a href="/statistic/ChargerExpense">충전요금</a></li>
+                    <li class="active"><a href="/statistic/ChargerService">전기차 충전방식</a></li>
+                </ul>
+            </div>
+        </div>
+
+      <!-- new code -->
+        <div id="contents" class="sub_contents" style="display: flex; justify-content: space-between;">
+            <div class="in_content" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="margin: 30px;">
+                    <h5 class="s_tit" style="font-size: 18px; color: #333; line-height: 120%; font-weight: 700; margin-top: 50px; margin-right: 50px;">전기차 충전방식(급속/완속)</h5>
+                </div>
+                <div style="margin: 40px;">
+                    <h5 class="page_stitle" style="font-size: 22px; color: #333; line-height: 120%; margin-bottom: 20px; font-weight: 600;">‘시행일자 : 2023.05.16(화)</h5>
+                </div>
+            </div>
+        </div>
+
+        <div id="contents" class="sub_contents" style="display: flex; justify-content: space-between;">
+            <div class="in_content" style="display: flex; justify-content: space-between;">
+               
+        
+                <div id="contents1" class="sub_contents1" style="display: flex; justify-content: space-between;">
+                    <div class="in_content1" style="display: flex; justify-content: space-between;">
+                        
+                        <div class="clear mar_t20" style="display: flex; justify-content: space-between;">
+                            <div class="fl wd49p" style="width: 49%;"><img src="/carch.png" alt="급속충전기(50kW)는 전기차에 공급, 완속충전기는(7kW)는 AC공급, 전기차는 배터리/탑재형충전기로 공급받는다." style="width: 700px; margin: 0 auto;"/></div>
+                            <div class="fr wd47p" style="width: 47%;">
+                                <table style="width: 100%; border-top: 2px solid #3b476c; border-bottom: 1px solid #b5b9c4; margin-top: 4px; font-size: 15px; background: #fff; table-layout: fixed;">
+                                    <caption style="display: none;"></caption>
+                                    <colgroup style="display: table-column-group;">
+                                        <col style="display: table-column;">
+                                        <col style="display: table-column;">
+                                        <col style="display: table-column;">
+                                        <col style="display: table-column;">
+                                    </colgroup>
+                                    <thead style="display: table-header-group; vertical-align: middle; border-color: inherit;">
+                                        <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+                                            <th scope="col" style="text-align: center; font-weight: 600; vertical-align: middle; background-color: #f2f6f9; color: #494949; padding: 12px 5px;">구분</th>
+                                            <th scope="col" style="text-align: center; font-weight: 600; vertical-align: middle; background-color: #f2f6f9; color: #494949; padding: 12px 5px;">용량</th>
+                                            <th scope="col" style="text-align: center; font-weight: 600; vertical-align: middle; background-color: #f2f6f9; color: #494949; padding: 12px 5px;">충전전압</th>
+                                            <th scope="col" style="text-align: center; font-weight: 600; vertical-align: middle; background-color: #f2f6f9; color: #494949; padding: 12px 5px;">시간</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="display: table-row-group; vertical-align: middle; border-color: inherit;">
+                                        <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+                                            <th scope="row" rowspan="2" style="text-align: center; background: #f2f6f9; line-height: 160%;">급속</th>
+                                            <td style="color: #333; padding: 12px 5px; line-height: 160%;">100kW 초과</td>
+                                            <td style="color: #333; padding: 12px 5px; line-height: 160%;">800V<sub>DC</sub></td>
+                                            <td style="color: #333; padding: 12px 5px; line-height: 160%;">30분 이내</td>
+                                        </tr>
+                                        <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+                                            <td style="color: #333; padding: 12px 5px; line-height: 160%;">50~100kW</td>
+                                            <td style="color: #333; padding: 12px 5px; line-height: 160%;">450V<sub>DC</sub></td>
+                                            <td style="color: #333; padding: 12px 5px; line-height: 160%;">30~60분</td>
+                                        </tr>
+                                        <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+                                            <th scope="row" style="text-align: center; background: #f2f6f9; line-height: 160%;">완속</th>
+                                            <td style="color: #333; padding: 12px 5px; line-height: 160%;">40kW 미만</td>
+                                            <td style="color: #333; padding: 12px 5px; line-height: 160%;">220V<sub>AC</sub></td>
+                                            <td style="color: #333; padding: 12px 5px; line-height: 160%;">약 4~8시간</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <ul class="blue_dot mar_t10 mar_l10" style="position: relative;">
+                                    <li style="background: url(/publish/images/sub/blue_dot.png) no-repeat 0 11px; padding-left: 12px; font-size: 15px; margin-top: 5px; line-height: 1.5;">급 속 : 충전기에서 직류전력을 변환하여 EV 배터리에 직접 충전</li>
+                                    <li style="background: url(/publish/images/sub/blue_dot.png) no-repeat 0 11px; padding-left: 12px; font-size: 15px; margin-top: 5px; line-height: 1.5;">완 속 : 차량 내부 OBC에서 변환(교류→직류)하여 배터리에 충전</li>
+                                </ul>
+                                <p class="mar_t10 mar_l10" style="margin-top: 10px; margin-left: 10px !important;">※ OBC : 완속충전 시 교류(AC)를 직류(DC)전원으로 변환하여 충전시키는 장치</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+</body>
+
+</html>
