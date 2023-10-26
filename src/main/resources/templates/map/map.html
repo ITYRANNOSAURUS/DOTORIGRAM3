@@ -92,7 +92,7 @@
                 <li class="list-group-item">
                     <div>반경 <input type="text" class="distance" style="width: 44px;"> km 내의 충전소</div>
                     <button onclick="getData()">찾기</button>
-                    <button onclick="removeMarkers()">숨기기</button>
+                    <button onclick="removeMarkers(),removeInfo()">숨기기</button>
                 </li>
 
                 <li class="list-group-item">
@@ -227,11 +227,19 @@
                                         let distanceInKm = getDistanceFromLatLonInKm(lng, lat, stationlng, stationlat);
                                         const distance = document.querySelector('.distance').value;
                                         if (distanceInKm <= distance) {
-                                            createMarker(stationlat, stationlng);
+                                            var address = `${v.address}`;
+                                             var kakaoMapLink = "https://map.kakao.com/link/map/" + encodeURIComponent(address);
+
+                                            var content =
+                                `<div class="ininfo"> 충전소 위치: ${v.name} <br> 주소: ${v.address} <br> 운영기관: ${v.company} <br> 이용가능시간: ${v.tim} <br>
+                                                <a href="${kakaoMapLink}" target="_blank">카카오맵에서 보기</a> </div>`;
+                                                
+                                            createMarker(stationlat, stationlng,content);
+
                                         }
                                     });
                                 })
-
+                                .catch(error => console.log(error));
 
             }
             );
@@ -255,7 +263,7 @@
             return deg * (Math.PI / 180)
         }
 
-        function createMarker(lat, lng) {
+        function createMarker(lat, lng, content) {
             const markerPosition = new kakao.maps.LatLng(lat, lng);
             var imageSrc = 'https://cdn-icons-png.flaticon.com/512/7512/7512521.png', // 마커이미지의 주소입니다    
                 imageSize = new kakao.maps.Size(50, 52), // 마커이미지의 크기입니다
@@ -265,6 +273,17 @@
             const marker = new kakao.maps.Marker({
                 position: markerPosition,
                 image: markerImage
+            });
+            infowindow = new kakao.maps.InfoWindow({
+                content: content,
+                removable: true
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                map.panTo(markerPosition);
+
             });
             const mark = {
                 marker: marker,
@@ -522,6 +541,9 @@
             marker.setMap(map);
         }
 
+        function removeInfo() {
+            infowindow.close();
+        }
         function removeInfo1() {
             infowindow.close();
         }

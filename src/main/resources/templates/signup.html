@@ -53,40 +53,41 @@
     content: "\f070";
     color: white;
   }
+
   /* modal */
   .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        padding-top: 100px;
-        font-family: 'TheJamsil5Bold' ;
-    }
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    font-family: 'TheJamsil5Bold';
+  }
 
-    .modal-content {
-        background-color: #fefefe;
-        margin: auto;
-        width: 600px;
-        padding: 30px;
-        color: black;
-        overflow-y: scroll;
-    }
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    width: 600px;
+    padding: 30px;
+    color: black;
+    overflow-y: scroll;
+  }
 
-    .close {
-        color: #aaaaaa;
-    }
+  .close {
+    color: #aaaaaa;
+  }
 
-    .subscribe-title {
-        text-align: center;
-        font-size: 30px;
-        margin-bottom: 50px;
-    }
+  .subscribe-title {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 50px;
+  }
 
-    .content-info {
-        text-align: center;
-        margin-top: 2px;
-        font-weight: bold;
-        font-size: large;
-    }
+  .content-info {
+    text-align: center;
+    margin-top: 2px;
+    font-weight: bold;
+    font-size: large;
+  }
 </style>
 
 <body>
@@ -162,8 +163,25 @@
 
         </div>
       </div>
-      
+
       <script>
+
+        const signupButton = document.getElementById('signup');
+        signupButton.disabled = true;
+        let isEmailValid = false;
+        let isEmailCodeValid = false;
+
+        function updateSignupButtonState(){
+          if(isEmailValid && isEmailCodeValid){
+            signupButton.disabled = false;
+          }else{
+            signupButton.disabled = true;
+
+          }
+        }
+
+
+
         // id중복체크
         async function checkEmail() {
           const email = document.querySelector("[name=email]").value;
@@ -177,12 +195,15 @@
           if (result == "가입불가") {
             duplicateResultElement.textContent = "중복된 Email입니다.";
             duplicateResultElement.style.color = "red";
+            isEmailValid = false;
             // 다른 스타일링 등의 추가적인 처리 가능
           } else if (result == "가입가능") {
             duplicateResultElement.textContent = "사용 가능한 Email입니다.";
             duplicateResultElement.style.color = "green";
+            isEmailValid = true;
             // 다른 스타일링 등의 추가적인 처리 가능
           }
+          updateSignupButtonState();
         }
         // 비밀번호 보이기표시
         function togglePasswordVisibility() {
@@ -263,12 +284,16 @@
           if (result === "코드불일치") {
             var contentInfo = document.querySelector('.content-info');
             contentInfo.innerHTML = '<h1>코드불일치</h1>';
+            isEmailCodeValid =false;
           } else if (result === "코드일치") {
             var contentInfo = document.querySelector('.content-info');
             contentInfo.innerHTML = '<h1>성공</h1>';
+            isEmailCodeValid =true;
           }
-
+          updateSignupButtonState();
         }
+
+        
       </script>
     </div>
 
