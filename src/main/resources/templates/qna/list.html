@@ -37,7 +37,7 @@
   }
 
   #write-btn, #write-btn2, #write-btn3 {
-    background-color: #f0e3d9;
+    background-color: #f2f5c0;
     width: 150px;
     height: 40px;
     position: relative;
@@ -48,13 +48,13 @@
   }
 
   #write-btn:hover {
-    background-color: #ad5919;
-    border-color: #ad5919;
+    background-color: #e2ce38;
+    border-color: #e2ce38;
   }
 
   #search-btn {
-    background-color: #f0e3d9;
-    border-color: #f0e3d9;
+    background-color: #f2f5c0;
+    border-color: #f2f5c0;
   }
 
   .pagination-form {
@@ -67,12 +67,12 @@
   }
 
   .pagination .page-link {
-    color: #9c6262;
+    color: #7e7c53;
   }
 
   .pagination .page-link:hover {
     color: #FFFFFF;
-    background-color: #cb6f45;
+    background-color: #e2ce38;
   }
 </style>
 </style>
@@ -133,10 +133,10 @@
       </div>
       <div class="d-flex justify-content-center search-form">
         <form th:action="@{/qna/list}" method="get">
-          <input type="text" name="keyword" placeholder="검색어 입력">
-          <button type="button" id="search-btn">검색</button>
+            <input type="text" name="keyword" placeholder="검색어 입력">
+            <button type="submit" id="search-btn">검색</button>
         </form>
-      </div>
+    </div>
     </div>
   </div>
   <script>

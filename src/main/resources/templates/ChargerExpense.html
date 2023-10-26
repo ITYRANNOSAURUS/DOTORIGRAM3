@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head >
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Charger Status</title>
+	<link rel="stylesheet" href="/chargerStatus.css">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" language="javascript"
+		src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
+</head>
+<style>
+	@font-face {
+	  font-family: 'TheJamsil5Bold';
+	  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+	  font-weight: 500;
+	  font-style: normal;
+	}
+  
+	body {
+	  font-family: 'TheJamsil5Bold';
+	  height: 100vh;
+	  /* 화면 높이의 100%로 설정 */
+	  background-color: #000;
+	  background-size: cover;
+	  /* 이미지를 화면에 맞게 조절 */
+	  background-repeat: no-repeat;
+	  /* 이미지 반복을 중지 */
+	}
+  
+	.table {
+	  color: white;
+	}
+  
+	#write-btn {
+	  background-color: #f0e3d9;
+	  width: 150px;
+	  height: 40px;
+	  position: fixed;
+	  float: right;
+	  right: 120px;
+	  bottom: 20px;
+	}
+  
+	#write-btn:hover {
+	  background-color: #ad5919;
+	  border-color: #ad5919;
+	}
+  
+	#search-btn {
+	  background-color: #f0e3d9;
+	  border-color: #f0e3d9;
+	}
+  
+	.pagination-form {
+	  margin-top: 20px;
+	}
+  
+	.search-form {
+	  margin-top: 20px;
+	  margin-bottom: 40px;
+	}
+  
+	.pagination .page-link {
+	  color: #9c6262;
+	}
+  
+	.pagination .page-link:hover {
+	  color: #FFFFFF;
+	  background-color: #cb6f45;
+	}
+  </style>
+<body>
+	<div th:replace="common/header"> </div>
+  <nav th:replace="common/nav"></nav>
+
+
+	<div id="wrap">
+		<h1>서비스 안내
+			<span><a href="#">HOME</a> > 서비스 안내 > <strong>전기차 충전방식</strong></span>
+		</h1>
+		<div class="tab_wrap">
+			<div class="tab01">
+				<ul>
+					<li class="active"><a href="/statistic/ChargerExpense">충전요금</a></li>
+					<li><a href="/statistic/ChargerService">전기차 충전방식</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- new code -->
+
+		<div id="contents" class="sub_contents">
+			<div class="in_content">
+
+				<!-- <h4 class="page_title">충전요금</h4> -->
+				<!-- <h4 class="h4_title mar_t0">시행일자 : <span class="blue02" id="priceYmd"></span></h4> -->
+				<p style="text-align: right;">시행일자</p>
+
+				<div>
+					<h4 class="h4_title" style="margin: 35px;">공용 충전기</h4>
+				</div>
+				<p class="table_info r" style="margin-top:-25px;width:900px; ">(원/kWh, VAT 포함)</p>
+				<div class="table_type1 align_center mar_t10" style="width: 900px">
+					<table>
+						<caption>공용 충전기</caption>
+						<colgroup>
+							<col style="width:20%;">
+							<col style="width:20%;">
+							<col style="width:20%;">
+							<col style="width:3.4%;">
+							<col style="width:3.4%;">
+							<col style="width:3.4%;">
+							<col style="width:3.4%;">
+							<col style="width:3.4%;">
+							<col style="width:3.4%;">
+							<col style="width:19.6%;">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" rowspan="2">구분</th>
+								<th scope="col" rowspan="2">KEPCO_PLUG<br> 회원결제</th>
+								<th scope="colgroup" colspan="7">타 사업자 로밍 결제</th>
+								<th scope="col" rowspan="2">신용카드</th>
+							</tr>
+							<tr>
+								<th scope="col" style="padding:12px 5px 13px 5px;">환경부<br /><span
+										style="font-size:12px;word-break:keep-all;letter-spacing:-1px;">(한국자동차환경협회)</span>
+								</th>
+								<th scope="colgroup" colspan="6">환경부 외 사업자</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>100kW미만</th>
+								<td>324.4</td>
+								<td>324.4</td>
+								<td rowspan="2" colspan="6">충전사업자 <br>요금정책에 따름</td>
+								<td>324.4</td>
+							</tr>
+							<tr>
+								<th>100kW이상</th>
+								<td>347.2</td>
+								<td>347.2</td>
+								<td>347.2</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="mar_t10">
+					<p class="comment"><strong>심야시간대</strong> : 23:00~09:00, <strong>주간시간대</strong> : 09:00~23:00</p>
+					<p class="comment">타 사업자 로밍 결제시 해당 충전사업자가 고객에게 충전요금을 부과하며, 위 금액과 상이할 수 있음<br><span
+							class="mar_l15">(요금 변동사항 및 이벤트 등은 해당 사업자 홈페이지를 확인해주세요)</span></p>
+				</div>
+
+				<h4 class="h4_title" style="margin: 35px;">아파트용 충전기</h4>
+				<p class="table_info r" style="margin-top:-25px;">(원/kWh, VAT 포함)</p>
+				<div class="table_type1 align_center">
+					<table>
+						<caption>아파트용 충전기 표로 구분별 충전요금 정보 제공</caption>
+						<colgroup>
+							<col style="width:25%;">
+							<col style="width:25%;">
+							<col style="width:25%;">
+							<col style="width:25%;">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">구분</th>
+								<th scope="col">여름</th>
+								<th scope="col">봄&middot;가을</th>
+								<th scope="col">겨울</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">경부하 시간대</th>
+								<td id="load131price"></td>
+								<td id="load121price"></td>
+								<td id="load111price"></td>
+							</tr>
+							<tr>
+								<th scope="row">중간부하 시간대</th>
+								<td id="load231price"></td>
+								<td id="load221price"></td>
+								<td id="load211price"></td>
+							</tr>
+							<tr>
+								<th scope="row">최대부하 시간대</th>
+								<td id="load332price"></td>
+								<td id="load322price"></td>
+								<td id="load312price"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<h5 class="h5_title">이용요금 적용구간별 시간대 구분<span class="blue02 fs16">(전기요금 시간대 구분과 동일)</span></h5>
+				<div class="table_type1 align_center">
+					<table>
+						<caption>이용요금 적용구간별 시간대 구분</caption>
+						<colgroup>
+							<col style="width:25%;">
+							<col style="width:25%;">
+							<col style="width:25%;">
+							<col style="width:25%;">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">구 분</th>
+								<th scope="col">경부하 시간대</th>
+								<th scope="col">중간부하 시간대</th>
+								<th scope="col">최대부하 시간대</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">여름철<br>(6~8월)</th>
+								<td id="area1load1time3"></td>
+								<td id="area1load2time3"></td>
+								<td id="area1load3time3"></td>
+							</tr>
+							<tr>
+								<th scope="row">봄·가을철<br>(3~5, 9~10월)</th>
+								<td id="area1load1time2"></td>
+								<td id="area1load2time2"></td>
+								<td id="area1load3time2"></td>
+							</tr>
+							<tr>
+								<th scope="row">겨울철<br>(11~익년 2월)</th>
+								<td id="area1load1time1"></td>
+								<td id="area1load2time1"></td>
+								<td id="area1load3time1"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<h5 class="h5_title">제주특별자치도 별도 구분<span style="font-size:15px;">(시행일 : <span
+							class="blue02 fs18">2021</span>년 <span class="blue02 fs18">9</span>월 <span
+							class="blue02 fs18">1</span>일)</span></h5>
+				<div class="table_type1 align_center">
+					<table>
+						<caption>제주특별자치도 이용요금 적용구간별 시간대 구분</caption>
+						<colgroup>
+							<col style="width:25%;">
+							<col style="width:25%;">
+							<col style="width:25%;">
+							<col style="width:25%;">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">구 분</th>
+								<th scope="col">경부하 시간대</th>
+								<th scope="col">중간부하 시간대</th>
+								<th scope="col">최대부하 시간대</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">전 계절</th>
+								<td>22:00∼08:00</td>
+								<td>08:00∼16:00</td>
+								<td>16:00∼22:00</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<p class="comment mar_t10">공휴일(일요일 포함)은 전체 시간 경부하 적용 / 토요일은 최대부하만 중간부하로 하향 적용</p>
+
+			</div>
+		</div>
+		<!--// contents -->
+	</div>
+
+
+</body>
+
+</html>
