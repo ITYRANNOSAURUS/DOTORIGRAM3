@@ -173,6 +173,7 @@
         // ]]>
     </script>
 </head>
+
 <style>
     body {
         background-color: #000;
@@ -350,7 +351,7 @@
         <canvas id="canvas" height="200"></canvas>
     </div>
     <!-- 안내 -->
-    <h3 class="info">SPACE BAR로 JUMP 하세요!</h3>
+    <h3 class="info">SPACE BAR로 JUMP 하세요! <br> 주유소에 도달하면 코인이 지급됩니다.</h3>
     <!-- 게임오버 -->
     <div class="game-over">
         <div class="pop-up">
@@ -424,9 +425,10 @@
                 ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
             }
         }
+
         // 도착지 좌표
-        const destinationX = 20; // 도착지 x 좌표
-        const destinationY = 50;  // 도착지 y 좌표
+        // const destinationX = 20; // 도착지 x 좌표
+        // const destinationY = 50;  // 도착지 y 좌표
 
         // 도착지 이미지 로드
         let destinationImage = new Image();
@@ -434,10 +436,10 @@
 
         class Destination {
             constructor() {
-                this.width = 40;
-                this.height = 40;
+                this.width = 100;
+                this.height = 100;
                 this.x = canvas.width - this.width; // 장애물과 동일한 위치에서 시작
-                this.y = 155;
+                this.y = 95;
                 // 새로 생성한 도착지와 다른 장애물들과의 충돌 확인
                 let isCollision = manyBoxes.some(existingBox => {
                     return (
@@ -451,6 +453,7 @@
                     return new Destination();
                 }
             }
+
             draw() {
                 ctx.drawImage(destinationImage, this.x, this.y, this.width, this.height);
             }
@@ -470,8 +473,6 @@
         let manyBoxes = [];
         let animation;
         let destination;
-
-        let isDestinationVisible = false; // 도착지 표시 여부
 
         // 장애물 생성 함수
         function createBox() {
@@ -498,6 +499,8 @@
             }
         }
 
+        let isDestinationVisible = false;
+
         // 프레임마다 실행하기
         function frameRun() {
             animation = requestAnimationFrame(frameRun);
@@ -514,16 +517,12 @@
                 createBox();
             }
 
-            if (score >= 250 && !isDestinationVisible && score % 250 === 0) {
-                isDestinationVisible = true;
-                destination = new Destination();
-            } else if (score >= 200 && !isDestinationVisible && score % 200 === 0) {
-                isDestinationVisible = true;
-                destination = new Destination();
-            } else if (score >= 10 && !isDestinationVisible && score % 10 === 0) {
+             // 도착지 생성 조건 수정
+            if (score >= 10 && score % 100 === 0 && !isDestinationVisible) {
                 isDestinationVisible = true;
                 destination = new Destination();
             }
+
             if (isDestinationVisible) {
                 destination.x -= 2;
                 destination.draw();
@@ -537,12 +536,13 @@
                     return;
                 }
             }
+            
             // x좌표가 0미만이면 제거
             manyBoxes.forEach((a, i, o) => {
                 if (a.x < 5) {
                     o.splice(i, 1);
                 }
-                a.x -= 2;
+                a.x -= 3;
                 // 충돌 체크
                 crash(electricCar, a);
                 a.draw();
@@ -672,7 +672,7 @@
                     console.error("찌리릿 코인을 받는 중 오류가 발생했습니다: " + response.status);
                 }
             });
-            
+
             // "다시하기" 버튼을 숨깁니다.
             const replayButton = document.querySelector(".replay");
             replayButton.style.display = "none";
