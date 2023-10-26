@@ -16,11 +16,13 @@ import com.example.board.model.CarQna;
 import com.example.board.model.CarType;
 import com.example.board.model.Chargings;
 import com.example.board.model.Company;
+import com.example.board.model.Coupon;
 import com.example.board.model.User;
 import com.example.board.repository.CarQnaRepository;
 import com.example.board.repository.CarTypeRepository;
 import com.example.board.repository.ChargingsRepository;
 import com.example.board.repository.CompanyRepository;
+import com.example.board.repository.CouponRepository;
 import com.example.board.repository.MembershipRepository;
 import com.example.board.repository.UserRepository;
 
@@ -49,6 +51,9 @@ public class AdminController {
 	@Autowired
 	MembershipRepository membershipRepository;
 
+	@Autowired
+	CouponRepository couponRepository;
+
   @GetMapping("")
 	public String admin(Model model) {
 		//유저수 
@@ -64,6 +69,10 @@ public class AdminController {
 		long carQnaCount = carQnaRepository.count();
 		long totalQnaCount = chargingCount+carQnaCount;
 		model.addAttribute("totalQnaCount", totalQnaCount);
+
+		//쿠폰 리스트
+		 List <Coupon>  coupons =couponRepository.findAll();
+		 model.addAttribute("coupons", coupons);
 
 		// 사용자 정보 가져오기
     User user = (User) session.getAttribute("user_info");
