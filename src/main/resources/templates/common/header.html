@@ -150,7 +150,10 @@
             <div class="dropdown">
               <a class='dropdown-item' th:href='@{/membership}'>구독하기</a>
                 <div class="dropdown">
-                  <a class='dropdown-item' th:href='@{/mymembership}'>나의 멤버십</a>
+                  <!-- <a th:if="${session != null and session.user_info != null and session.user_info.role == 'ADMIN'}" th:href="@{/admin}" class="word">
+                    Admin
+                  </a> -->
+                  <a th:if="${session != null and session.user_info != null and session.has_membership}" class='dropdown-item' th:href='@{/mymembership}'>나의 멤버십</a>
                 </div>
             </div>
           </div>

@@ -18,10 +18,12 @@ import javax.servlet.http.HttpSession;
 import com.example.board.model.CarType;
 import com.example.board.model.Company;
 import com.example.board.model.Coupon;
+import com.example.board.model.Membership;
 import com.example.board.model.User;
 import com.example.board.repository.CarTypeRepository;
 import com.example.board.repository.CompanyRepository;
 import com.example.board.repository.CouponRepository;
+import com.example.board.repository.MembershipRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -43,6 +45,9 @@ public class UserController {
 
 	@Autowired
 	CouponRepository couponRepository;
+
+	@Autowired
+	MembershipRepository membershipRepository;
 
 	@GetMapping("/email-check")
 	@ResponseBody
@@ -78,7 +83,16 @@ public class UserController {
 		boolean isMatch = passwordEncoder.matches(userPwd, encodedPwd);
 
 		if (isMatch) {
+			// 로그인 성공한 경우
 			session.setAttribute("user_info", dbUser);
+			
+			// 멤버십 정보
+			List<Membership> memberships = membershipRepository.findByUser(dbUser);
+			if (memberships != null && !memberships.isEmpty()) {
+				session.setAttribute("has_membership", true);
+			} else {
+					session.setAttribute("has_membership", false);
+			}
 
 			return "redirect:/";
 		} else {
