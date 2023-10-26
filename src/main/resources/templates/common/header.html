@@ -150,7 +150,7 @@
                   <!-- <a th:if="${session != null and session.user_info != null and session.user_info.role == 'ADMIN'}" th:href="@{/admin}" class="word">
                     Admin
                   </a> -->
-                  <a th:if="${session != null and session.user_info != null and session.membership_info != null}" class='dropdown-item' th:href='@{/mymembership}'>나의 멤버십</a>
+                  <a th:if="${session != null and session.user_info != null and session.has_membership}" class='dropdown-item' th:href='@{/mymembership}'>나의 멤버십</a>
                 </div>
             </div>
           </div>

@@ -146,10 +146,10 @@
       const company = document.querySelector('#company');
       const carSelect = document.querySelector('#carname');
       company.addEventListener('change', async (e) => {
-        // console.dir(e.target);
-        // console.dir(e.target.selectedIndex);
+        console.dir(e.target);
+        console.dir(e.target.selectedIndex);
         const index = e.target.selectedIndex;
-        // console.dir(e.target[index]);
+        console.dir(e.target[index]);
         const selectedCompany = e.target[index].innerText;
         console.dir(selectedCompany);
         await getCarTypes(selectedCompany);
@@ -180,6 +180,7 @@
         });
       }
 
+      
     </script>
   </div>
 

@@ -23,6 +23,7 @@ import com.example.board.model.User;
 import com.example.board.repository.CarTypeRepository;
 import com.example.board.repository.CompanyRepository;
 import com.example.board.repository.CouponRepository;
+import com.example.board.repository.MembershipRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -44,6 +45,9 @@ public class UserController {
 
 	@Autowired
 	CouponRepository couponRepository;
+
+	@Autowired
+	MembershipRepository membershipRepository;
 
 	@GetMapping("/email-check")
 	@ResponseBody
@@ -82,10 +86,12 @@ public class UserController {
 			// 로그인 성공한 경우
 			session.setAttribute("user_info", dbUser);
 			
-			// 멤버십 정보 가져와서 세션에 저장
-			List<Membership> memberships = dbUser.getMemberships();
-			if(memberships != null){
-				session.setAttribute("membership_info", memberships);
+			// 멤버십 정보
+			List<Membership> memberships = membershipRepository.findByUser(dbUser);
+			if (memberships != null && !memberships.isEmpty()) {
+				session.setAttribute("has_membership", true);
+			} else {
+					session.setAttribute("has_membership", false);
 			}
 
 			return "redirect:/";

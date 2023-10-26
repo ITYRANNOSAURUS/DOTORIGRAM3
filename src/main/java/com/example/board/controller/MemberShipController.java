@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -61,6 +62,11 @@ public class MemberShipController {
 		Membership newMembership = new Membership();
 		newMembership.setStartDate(LocalDate.now());
 		newMembership.setEndDate(LocalDate.now().plusMonths(1));
+		
+		//찌리릿코인 2개지급
+		int membershipCoins = user.getCoin();
+		membershipCoins += 2;
+		user.setCoin(membershipCoins);
 
 		// 3. session user정보 newmembership에 저장
 		newMembership.setUser(user);
@@ -68,7 +74,11 @@ public class MemberShipController {
 		// 4. newmembership정보 membershipRepository저장
 		membershipRepository.save(newMembership);
 		
+		// 5. 변경된 코인 수 userRepository에 저장
+		userRepository.save(user);
 		
+		// 6. 세션의 has_membership을 true로 설정
+    session.setAttribute("has_membership", true);
 		return ResponseEntity.ok().build();
 	}
 
