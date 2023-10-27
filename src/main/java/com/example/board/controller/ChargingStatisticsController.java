@@ -50,7 +50,7 @@ public class ChargingStatisticsController {
       model.addAttribute("Year", chargerStatusYear);
       List<ChargerStatusRegion> chargerStatusRegion = chargerStatusRegionRepository.findAll();
        model.addAttribute("Region", chargerStatusRegion);
-      return "chqRegistser";
+      return "infomation/chqRegistser";
   }
 
    @PostMapping("/statistic/save")
@@ -77,7 +77,7 @@ public class ChargingStatisticsController {
     chargerStatusRepository.save(existing);
   }
 
-   return "redirect:/statistic/chqRegistser";
+   return "redirect:/infomation/statistic/chqRegistser";
 }
 
 // ******
