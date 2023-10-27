@@ -116,17 +116,14 @@ public class ChargingStatisticsController {
       log.error(yearSet.toString());
       log.error(quantitySet.toString());
     }
-
-    
-    // return "chargerStatus3";
-     return "chargerStatus4";
+     return "infomation/chargerStatus4";
     
   }
 
   // *******
  @GetMapping("/statistic/carStatus")
   public String carStatus(Model model) {
-    return "carStatus";
+    return "infomation/carStatus";
  }
 
   // *******
@@ -184,12 +181,12 @@ public class ChargingStatisticsController {
   
   @GetMapping("/statistic/ChargerService")
   public String ChargerService(Model model) {
-    return "ChargerService";
+    return "infomation/ChargerService";
  }
 
  @GetMapping("/statistic/ChargerExpense")
   public String ChargerExpense(Model model) {
-    return "ChargerExpense";
+    return "infomation/ChargerExpense";
  }
 
    
