@@ -22,18 +22,18 @@
     /* 이미지 반복을 중지 */
   }
 
-  .btn-primary {
+  .btnn-primary {
     background-color: #f2f5c0;
     border-color: #f2f5c0;
     color: black;
   }
-  .btn-primary:disabled{
+  .btnn-primary:disabled{
     background-color: #f2f5c0;
     border-color: #f2f5c0;
     color: black;
     
   }
-  .btn-primary:hover{
+  .btnn-primary:hover{
     background-color: #e2ce38;
     border-color: #e2ce38;
     color: black;
@@ -321,8 +321,8 @@
         </li>
       </ul>
       <ul class="footBtwrap clearfix">
-        <li><button type="button" class="fpmgBt1 btn btn-primary" onclick="disagreement()">비동의</button></li>
-        <li><button type="button" class="fpmgBt2 btn btn-primary" onclick="agreement()">동의</button></li>
+        <li><button type="button" class="fpmgBt1 btn btnn-primary" onclick="disagreement()">비동의</button></li>
+        <li><button type="button" class="fpmgBt2 btn btnn-primary" onclick="agreement()">동의</button></li>
       </ul>
     </form>
 
@@ -333,8 +333,8 @@
             <label for="email">Email:</label>
             <input type="email" class="form-control" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,}$"
               title=" 정확한 이메일 주소를 입력해주세요" placeholder="ex.daram@dotori.com" required>
-            <button class="btn btn-primary" type="button" onclick="checkEmail()">중복확인</button>
-            <button class="btn btn-primary" type="button" onclick="run()">이메일 인증</button>
+            <button class="btn btnn-primary" type="button" onclick="checkEmail()">중복확인</button>
+            <button class="btn btnn-primary" type="button" onclick="run()">이메일 인증</button>
             <span id="duplicateResult"></span>
           </div>
           <div class="mb-3">
@@ -372,7 +372,7 @@
           </div>
           <div class="d-grid gap-2">
 
-            <button class="btn btn-primary" id="signup" style="width : 250px;">가입하기</button>
+            <button class="btn btnn-primary" id="signup" style="width : 250px;">가입하기</button>
           </div>
         </form>
       </div>

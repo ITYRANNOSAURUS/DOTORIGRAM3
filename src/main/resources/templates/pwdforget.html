@@ -22,21 +22,17 @@
     /* 이미지 반복을 중지 */
   }
 
-  .btn-primary {
+  .btnn-primary {
     background-color: #f2f5c0;
     border-color: #f2f5c0;
     color: black;
   }
-  .btn-primary:hover{
+  .btnn-primary:hover{
     background-color: #e2ce38;
     border-color: #e2ce38;
     color: black;
   }
-  .btn-primary:checked{
-    background-color: #e2ce38;
-    border-color: #e2ce38;
-    color: black;
-  }
+  
 
   #pwd i .eyes {
     position: absolute;
@@ -108,6 +104,7 @@
   .modal2 {
     font-size: 22px;
   }
+  
 </style>
 
 <body>
@@ -136,7 +133,7 @@
             title="10-11자리의 숫자를 '-' 없이 입력하세요" placeholder="휴대전화번호('-'기호 제외 10~11자리)" required>
         </div>
         <div class="d-grid gap-2">
-          <button type="button" class="btn btn-primary" id="signup" onclick="validateUser()">본인 인증하기</button>
+          <button type="button" class="btn btnn-primary" id="signup" onclick="validateUser()" >본인 인증하기</button>
         </div>
         <div id="change-password-form" class="d-none">
           <div class="mb-3">
@@ -147,7 +144,7 @@
             <i class="fa fa-eye fa-lg eyes" th:attr="onclick='togglePasswordVisibility()'"></i>
           </div>
           <div class="d-grid gap-2">
-            <button type="button" class="btn btn-primary" id="changePassword">비밀번호
+            <button type="button" class="btn btnn-primary" id="changePassword">비밀번호
               변경</button>
           </div>
         </div>
