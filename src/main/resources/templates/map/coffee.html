@@ -398,7 +398,7 @@
                             const lng = v.longitude;
                             const id = v.id;
 
-                            const content = `<div class="info-box"> 상호명: ${v.coffeestore} <br> 주소: ${v.address} <br> 이용시간 : ${v.tim} <br> <a href="${v.link}" target="_blank">주소 보기</a> <br>
+                            const content = `<div class="info-box"> 상호명: ${v.coffeestore} <br> 주소: ${v.address} <br> 이용시간 : ${v.tim} <br> <a href="${v.link}" target="_blank">상세 정보 보기</a> <br>
                 <button class = "info-btn" onclick="run('${v.coffeestore}')" >쿠폰 받기</buttton> </div>`;
                             coffeePositions.push();
 
@@ -416,7 +416,7 @@
                             const lat = v.latitude;
                             const lng = v.longitude;
                             const content = `<div class="info-box"> 상호명: ${v.store} <br> 주소: ${v.address} <br> 
-                <button class = "custom-btn btn-6" onclick="run('${v.store}')">쿠폰 받기</buttton> </div>`;
+                <button class = "info-btn" onclick="run('${v.store}')">쿠폰 받기</buttton> </div>`;
                             storePositions.push();
                             createStoreMarkers(lat, lng, content);
 
@@ -432,7 +432,7 @@
                             const lat = v.latitude;
                             const lng = v.longitude;
                             const content = `<div class="info-box"> 상호명: ${v.restaurant} <br> 주소: ${v.address} <br> 
-                <button class = "custom-btn btn-6" onclick="run('${v.restaurant}')" >쿠폰 받기</buttton></div>`;
+                <button class = "info-btn" onclick="run('${v.restaurant}')" >쿠폰 받기</buttton></div>`;
                             carparkPositions.push();
                             createCarparkMarkers(lat, lng, content);
 
