@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="common/head"></head>
+
+<style>
+  @font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  body {
+    font-family: 'TheJamsil5Bold';
+    height: 100vh;
+    /* 화면 높이의 100%로 설정 */
+    background-color: #000;
+    background-size: cover;
+    /* 이미지를 화면에 맞게 조절 */
+    background-repeat: no-repeat;
+    /* 이미지 반복을 중지 */
+  }
+
+  .btn-primary {
+    background-color: #f2f5c0;
+    border-color: #f2f5c0;
+    color: black;
+  }
+  .btn-primary:hover{
+    background-color: #e2ce38;
+    border-color: #e2ce38;
+    color: black;
+  }
+  .btn-primary:checked{
+    background-color: #e2ce38;
+    border-color: #e2ce38;
+    color: black;
+  }
+
+  #pwd i .eyes {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto 2px;
+    height: 30px;
+    font-size: 22px;
+    cursor: pointer;
+    color: white;
+  }
+
+  label {
+    color: white
+  }
+
+  .fa-eye:before {
+    content: "\f06e";
+    color: white;
+  }
+
+  .fa-eye-slash:before {
+    content: "\f070";
+    color: white;
+  }
+
+  /* modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    font-family: 'TheJamsil5Bold';
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    width: 600px;
+    padding: 30px;
+    color: black;
+    overflow-y: scroll;
+  }
+
+  .close {
+    color: #aaaaaa;
+  }
+
+  .subscribe-title {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 50px;
+  }
+
+  .subscribe-content {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .content-info {
+    text-align: center;
+    margin-top: 2px;
+    font-weight: bold;
+    font-size: large;
+  }
+
+  .modal2 {
+    font-size: 22px;
+  }
+</style>
+
+<body>
+  <div th:replace="common/header"> </div>
+  <nav th:replace="common/nav"></nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <form method="post" action="/pwdforget">
+        <div class="mb-3">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" name="email" pattern="[a-z0-9._+-]+@[a-z]+\.[a-z]{2,}$"
+            title=" 정확한 이메일 주소를 입력해주세요" placeholder="ex.daram@dotori.com" required>
+          <!-- <button class="btn btn-primary" type="button" onclick="checkEmail()">중복확인</button> -->
+          <!-- <button class="btn btn-primary" type="button" onclick="run()">이메일 인증</button> -->
+          <span id="duplicateResult"></span>
+        </div>
+        <div class="mb-3">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" name="name" pattern="^[가-힣]+$" title="올바른 이름을 입력하세요 ex.홍길동"
+            placeholder="이름" required>
+        </div>
+        <div class="mb-3">
+          <label for="name">Phone:</label>
+          <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]{10,11}"
+            title="10-11자리의 숫자를 '-' 없이 입력하세요" placeholder="휴대전화번호('-'기호 제외 10~11자리)" required>
+        </div>
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-primary" id="signup" onclick="validateUser()">본인 인증하기</button>
+        </div>
+        <div id="change-password-form" class="d-none">
+          <div class="mb-3">
+            <label for="pwd">New Password:</label>
+            <input type="password" class="form-control" id="newPassword" name="newPassword"
+              pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" title="영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호를 입력하세요"
+              placeholder="새로운 비밀번호를 입력하세요">
+            <i class="fa fa-eye fa-lg eyes" th:attr="onclick='togglePasswordVisibility()'"></i>
+          </div>
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-primary" id="changePassword">비밀번호
+              변경</button>
+          </div>
+        </div>
+
+        <div id="error-message1" class="d-none" style="color: red; margin: 10px;">
+          <p>입력하신 정보와 일치하는 사용자를 찾을 수 없습니다.</p>
+        </div>
+        <div id="error-message2" class="d-none" style="color: red; margin: 10px;">
+          <p>비밀번호 형식이 올바르지 않습니다. 영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호를 입력하세요.</p>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <script>
+    //본인 인증
+    function validateUser() {
+      var email = document.getElementById('email').value;
+      var name = document.getElementById('name').value;
+      var phone = document.getElementById('phone').value;
+
+      // AJAX 요청을 사용하여 서버에 사용자의 정보가 유효한지 확인합니다.
+      $.ajax({
+        url: '/validateUser',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          email: email,
+          name: name,
+          phone: phone
+        }),
+        success: function (response) {
+          if (response.isValid) {
+            // 유효하면 비밀번호 변경 폼을 보여줍니다.
+            document.getElementById('error-message1').classList.add('d-none');
+            document.getElementById('change-password-form').classList.remove('d-none');
+          } else {
+            // 유효하지 않으면 에러 메시지를 보여줍니다.
+            document.getElementById('error-message1').classList.remove('d-none');
+          }
+        }
+      });
+    }
+
+    //비밀번호 변경
+    const changeBtn = document.querySelector('#changePassword')
+    changeBtn.addEventListener('click', changePassword);
+    function changePassword() {
+      var email = document.getElementById('email').value;
+      var name = document.getElementById('name').value;
+      var phone = document.getElementById('phone').value;
+      var newPassword = document.getElementById('newPassword').value;
+      console.log(newPassword);
+
+      //data 속성을 통해 내용을 서버로 전달
+      $.ajax({
+        url: '/pwdforget',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          email: email,
+          name: name,
+          phone: phone,
+          newPassword: newPassword
+        }),
+        success: function (response) {
+          // 서버에서 응답이 오면, 성공 메시지를 보여줍니다.
+          alert(response);
+          location = '/signin';
+        },
+        error: function (error) {
+          // 에러가 발생한 경우, 에러 메시지를 보여줍니다.
+          alert("오류가 발생했습니다: " + error.responseText);
+        }
+      });
+    }
+    
+
+    // 비밀번호 보이기표시
+    function togglePasswordVisibility() {
+      var $passwordInput = $('#newPassword'); // ID를 사용하여 비밀번호 입력란을 선택
+      if ($passwordInput.attr('type') === 'password') {
+        $('.eyes').removeClass('fa-eye').addClass('fa-eye-slash');
+        $passwordInput.attr('type', 'text');
+      } else {
+        $('.eyes').removeClass('fa-eye-slash').addClass('fa-eye');
+        $passwordInput.attr('type', 'password');
+      }
+    }
+
+  </script>
+  </div>
+
+  <div th:replace="common/footer" style="margin-top: 1rem;">
+  </div>
+
+</body>
+
+</html>

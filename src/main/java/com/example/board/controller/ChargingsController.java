@@ -17,6 +17,7 @@ import com.example.board.model.ChargerStatus;
 import com.example.board.model.Chargings;
 import com.example.board.model.User;
 import com.example.board.repository.ChargingsRepository;
+import com.example.board.repository.ExpenseRepository;
 import com.example.board.repository.UserRepository;
 
 @Controller
@@ -24,6 +25,9 @@ public class ChargingsController {
 
 	@Autowired
 	ChargingsRepository chargingsRepository;
+
+	@Autowired
+	ExpenseRepository expenseRepository;
 
 	 @GetMapping("/stations/find")
 	public String stationsFind() {
