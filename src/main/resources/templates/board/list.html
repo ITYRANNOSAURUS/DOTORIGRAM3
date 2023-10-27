@@ -107,7 +107,7 @@
             <a class="page-link" th:href="@{/board/list(P=${prevGroupStart})}">〈</a>
           </li>
           <th:block th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
-            <li class="page-item">
+            <li class="page-item" th:if="${pageNumber > 0}">
               <a class="page-link" th:href="@{/board/list(P=${pageNumber})}">[[ ${pageNumber} ]]</a>
             </li>
           </th:block>
