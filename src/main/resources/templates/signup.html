@@ -23,10 +23,21 @@
   }
 
   .btn-primary {
-    background-color: #efc19d;
-    border-color: #efc19d;
+    background-color: #f2f5c0;
+    border-color: #f2f5c0;
     color: black;
 
+  }
+  .btn-primary:disabled{
+    background-color: #f2f5c0;
+    border-color: #f2f5c0;
+    color: black;
+    
+  }
+  .btn-primary:hover{
+    background-color: #e2ce38;
+    border-color: #e2ce38;
+    color: black;
   }
 
   #pwd i .eyes {
@@ -103,6 +114,27 @@
   .mb-3 {
     width: 50%;
   }
+  .btn-gradient {
+        text-decoration: none;
+        color: white;
+        padding: 10px 30px;
+        display: inline-block;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.21);
+        border-bottom: 4px solid rgba(0, 0, 0, 0.21);
+        border-radius: 4px;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-gradient.yellow {
+        background: rgba(240, 210, 100, 1);
+        background: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(240, 210, 100, 1)), to(rgba(229, 201, 96, 1)));
+        background: -webkit-linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        background: -moz-linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        background: -o-linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        background: linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f0d264', endColorstr='#e5c960', GradientType=0);
+    }
 
   /* joinForm */
   * {
@@ -186,7 +218,7 @@
     height: 100%;
     font-size: 20px;
     text-align: center;
-    line-height: 60px;
+    line-height: 43px;
   }
 
   .fpmgBt1 {
@@ -195,7 +227,17 @@
   }
 
   .fpmgBt2 {
-    background-color: #efc19d;
+    background-color: #f2f5c0;
+    color: #171616
+  }
+  .fpmgBt2:hover {
+    background-color: #e2ce38;
+    border-color: #e2ce38;
+    color: #171616
+  }
+  .fpmgBt2:disabled {
+    background-color: #f2f5c0;
+    border-color: #f2f5c0;
     color: #171616
   }
 
@@ -255,7 +297,7 @@
           <ul class="clearfix">
             <li>위치정보 이용약관 동의(선택)</li>
             <li class="checkBtn">
-              <input type="checkbox" name="chk">
+              <input type="checkbox" name="chk1">
             </li>
           </ul>
 
@@ -267,15 +309,15 @@
           <ul class="clearfix">
             <li>이벤트 등 프로모션 알림 메일 수신(선택)</li>
             <li class="checkBtn">
-              <input type="checkbox" name="chk">
+              <input type="checkbox" name="chk1">
             </li>
           </ul>
 
         </li>
       </ul>
       <ul class="footBtwrap clearfix">
-        <li><button class="fpmgBt1">비동의</button></li>
-        <li><button class="fpmgBt2" onclick="agreement()">동의</button></li>
+        <li><button type="button" class="fpmgBt1 btn btn-primary" onclick="disagreement()">비동의</button></li>
+        <li><button type="button" class="fpmgBt2 btn btn-primary" onclick="agreement()">동의</button></li>
       </ul>
     </form>
 
@@ -345,7 +387,7 @@
             </div>
             <div class="coupon-btn"
               style="display: flex; justify-content: space-evenly;align-items: center; margin-top: 20px;">
-              <a href="#" class="btn-gradient yellow large" onclick="checkEmailcode()">확인</a>
+              <button class="btn-gradient yellow large" onclick="checkEmailcode()">확인</button>
             </div>
           </div>
         </div>
@@ -356,17 +398,22 @@
   
       <script>
 // 이용약관
+
+const pchkBoxes = document.querySelectorAll('input[name="chk"]');
+const cchkBoxes = document.querySelectorAll('input[name="chk1"]');
 function chkAll(isChecked) {
-  const chkBoxes = document.querySelectorAll('input[name="chk"]');
-  const agreeButton = document.querySelector('.fpmgBt2');
+  
 
   // 모든 체크박스를 루프 돌며 상태를 chkAll과 동일하게 설정
-  chkBoxes.forEach((checkbox) => {
+  pchkBoxes.forEach((checkbox) => {
+    checkbox.checked = isChecked;
+  });
+  cchkBoxes.forEach((checkbox) => {
     checkbox.checked = isChecked;
   });
 
   // 최소 두 개의 체크박스가 선택되었는지 확인하여 "동의" 버튼을 활성화
-  const checkedCount = Array.from(chkBoxes).filter((checkbox) => checkbox.checked).length;
+  const checkedCount = Array.from(pchkBoxes).filter((checkbox) => checkbox.checked).length;
   agreeButton.disabled = checkedCount < 2;
 }
 
@@ -384,9 +431,45 @@ individualCheckboxes.forEach((checkbox) => {
   });
 
 });
+// function chkAll(isChecked) {
+//   const chkBoxes = document.querySelectorAll('input[name="chk1"]');
+  
 
+//   // 모든 체크박스를 루프 돌며 상태를 chkAll과 동일하게 설정
+//   chkBoxes.forEach((checkbox) => {
+//     checkbox.checked = isChecked;
+//   });
+
+//   // 최소 두 개의 체크박스가 선택되었는지 확인하여 "동의" 버튼을 활성화
+//   const checkedCount = Array.from(chkBoxes).filter((checkbox) => checkbox.checked).length;
+//   agreeButton.disabled = checkedCount < 1;
+//   console.log(checkedCount);
+//   if(checkedCount==2){
+//     agreeButton.disabled = false;
+//   }
+// }
+
+// // chkAll 체크박스에 이벤트 리스너 추가
+// document.querySelector('#chk').addEventListener('change', function () {
+//   chkAll(this.checked);
+// });
+
+// // "동의" 버튼을 업데이트하는 개별 체크박스에 이벤트 리스너 추가
+// const individualCheckboxes = document.querySelectorAll('input[name="chk"]');
+// individualCheckboxes.forEach((checkbox) => {
+//   checkbox.addEventListener('change', function () {
+//     const checkedCount = Array.from(individualCheckboxes).filter((checkbox) => checkbox.checked).length;
+//     agreeButton.disabled = checkedCount < 1;
+//   });
+
+// });
+
+let agree;
 function agreement(){
-  const agree = true;
+  agree = true;
+}
+function disagreement(){
+  alert("이용약관 필수사항에 동의하시지 않으셨습니다.")
 }
 
 
@@ -394,6 +477,7 @@ function agreement(){
         const signupButton = document.getElementById('signup');
         signupButton.disabled = true;
         const agreeButton = document.querySelector('.fpmgBt2');
+        agreeButton.disabled = true;
         let isEmailValid = false;
         let isEmailCodeValid = false;
 
