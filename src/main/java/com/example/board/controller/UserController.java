@@ -1,17 +1,23 @@
 package com.example.board.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -85,13 +91,13 @@ public class UserController {
 		if (isMatch) {
 			// 로그인 성공한 경우
 			session.setAttribute("user_info", dbUser);
-			
+
 			// 멤버십 정보
 			List<Membership> memberships = membershipRepository.findByUser(dbUser);
 			if (memberships != null && !memberships.isEmpty()) {
 				session.setAttribute("has_membership", true);
 			} else {
-					session.setAttribute("has_membership", false);
+				session.setAttribute("has_membership", false);
 			}
 
 			return "redirect:/";
@@ -200,8 +206,55 @@ public class UserController {
 		User user = (User) session.getAttribute("user_info");
 		userRepository.delete(user);
 		session.invalidate();
-		
+
 		return "redirect:/";
+	}
+
+	// 비밀번호 변경하기
+	@GetMapping("/pwdforget")
+	public String pwdforget() {
+		return "/pwdforget";
+	}
+
+	@PostMapping("/pwdforget")
+	@ResponseBody
+	public String pwdforgetPost(@RequestBody User user) {
+		// 세션에서 사용자 정보 가져오기
+    User sessionUser = (User) session.getAttribute("user");
+		if (sessionUser != null) {
+			String newPassword = user.getNewPassword();
+			if (newPassword != null && !newPassword.isEmpty()) {
+					String hashedPassword = passwordEncoder.encode(newPassword);
+					sessionUser.setPwd(hashedPassword);
+					userRepository.save(sessionUser);
+					return "비밀번호가 성공적으로 변경되었습니다.";
+			} else {
+					return "비밀번호 값을 올바르게 입력하십시오.";
+			}
+	}
+
+	return "비밀번호 변경에 실패하셨습니다.";
+	
+	}
+	
+	// 본인 인증하기
+	@PostMapping("/validateUser")
+	public ResponseEntity<Map<String, Boolean>> validateUser(@RequestBody User user) {
+		String email = user.getEmail();
+		String name = user.getName();
+		Integer phone = user.getPhone();
+		List<User> resultList = userRepository.findByEmailAndNameAndPhone(email, name, phone);
+
+		Map<String, Boolean> response = new HashMap<>();
+		if (!resultList.isEmpty()) {
+			response.put("isValid", true);
+			// 세션에 사용자 정보 저장
+			session.setAttribute("user", resultList.get(0));
+		} else {
+			response.put("isValid", false);
+		}
+
+		return ResponseEntity.ok(response);
 	}
 
 }

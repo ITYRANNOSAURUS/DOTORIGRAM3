@@ -20,10 +20,16 @@
     /* 이미지 반복을 중지 */
   }
   .btn-primary {
-    background-color: #efc19d;
-    border-color: #efc19d;
+    background-color: #f2f5c0;
+    border-color: #f2f5c0;
     color: black;
   }
+  .btn-primary:hover{
+    background-color: #e2ce38;
+    border-color: #e2ce38;
+    color: black;
+  }
+  
   #pwd{
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -78,7 +84,9 @@
         </div>
         <div class="d-grid gap-2">
           <button class="btn btn-primary" id="signin">로그인</button>
-          <!-- <button class="btn btn-primary"  th:href="@{/signup}" id="signup">회원가입</button> -->
+        </div>
+        <div class="d-grid gap-2">
+          <a class="pwdforget" id="pwdforget" href="/pwdforget">비밀번호가 기억나지 않는다면?</a>
         </div>
       </form>
     </div>
