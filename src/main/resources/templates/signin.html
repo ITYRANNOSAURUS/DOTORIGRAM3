@@ -48,12 +48,19 @@
   .form-control:focus + .eyes {
     z-index: 3 ; /* 포커스된 입력란과 연결된 눈 모양 아이콘을 더 높은 z-index로 설정하여 포커스 시 위로 오게 합니다. */
   }
+  .title h1{
+        text-align: center;
+        margin-bottom: 3rem;
+        color: white;
+    }
 </style>
 
 <body>
   <div th:replace="common/header"></div>
   <nav th:replace="common/nav"></nav>
-
+  <div class="title">
+    <h1>로그인</h1>
+</div>
   <div class="container mt-5">
     <div class="row">
       <form method="post" action="/signin">
