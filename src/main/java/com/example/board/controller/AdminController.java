@@ -30,7 +30,7 @@ import com.example.board.repository.UserRepository;
 @RequestMapping("/admin")
 public class AdminController {
 
-  @Autowired
+    @Autowired 
 	UserRepository userRepository;
 
 	@Autowired

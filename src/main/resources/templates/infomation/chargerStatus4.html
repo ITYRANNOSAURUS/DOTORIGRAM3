@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pika</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+ 
+    <!-- <link rel="stylesheet" href="/chargerStatus.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+</head>
+
+<style>
+    @font-face {
+        font-family: 'TheJamsil5Bold';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    body {
+        font-family: 'TheJamsil5Bold';
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: black;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+    }
+
+    #wrap {
+        position: relative;
+        width: 100%;
+        word-break: break-all;
+        background: black;
+        padding: 5rem 0 50px !important;
+        
+    }
+
+    #wrap>h1 {
+        font-size: 36px;
+        max-width: 1400px;
+        width: 1400px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        box-sizing: border-box;
+        min-height: 120px;
+        padding-top: 20px;
+        /* padding: 50px 0 0; */
+    }
+
+    #wrap>h1>span {
+        display: inline-block;
+        float: right;
+        font-size: 14px;
+        vertical-align: bottom;
+        position: absolute;
+        right: 0;
+        bottom: 35%;
+        font-weight: 100;
+        cursor: default;
+    }
+
+    #wrap>h1>span>a {
+        vertical-align: top;
+    }
+
+    /* 현황 */
+    #wrap .tab_wrap {
+        margin: 0 26rem;
+        width: 100rem;
+        overflow: hidden;
+        font-size: 18px;
+    }
+
+
+    #wrap .tab_wrap .tab01 {
+        width: 100%;
+    }
+
+    #wrap .tab_wrap .tab01 ul {
+        padding: 0;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+    }
+
+
+    #wrap .tab_wrap .tab01 ul li {
+
+        list-style: none;
+        float: left;
+        flex: 1;
+    }
+
+    li {
+        display: list-item;
+        text-align: -webkit-match-parent;
+    }
+
+    #wrap .tab_wrap .tab01 ul li.active a {
+        background: #f9f477;
+        color: black;
+    }
+
+    a {
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+        -webkit-transition: all 0.3s ease;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    #wrap .tab_wrap .tab01 ul li a {
+        display: block;
+        background: #fff;
+        line-height: 60px;
+        border: 1px solid #ddd;
+        margin: -1px;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        font-weight: bold;
+    }
+
+    /* up to here till end of 현황 */
+
+    /* table in below */
+    div {
+        display: block;
+    }
+
+    #contents {
+        width: 1400px;
+        position: relative;
+        margin: 0 auto;
+        padding-bottom: 30px;
+        height: 100%;
+    }
+
+    .in_content {
+        padding: 20px 0 0;
+        position: relative;
+        width: 1400px;
+    }
+
+    .s_tit {
+        position: relative;
+        font-size: 18px;
+        color: white;
+        line-height: 120%;
+        font-weight: 700;
+        background: url(/publish/images/sub/bg_stit.png) no-repeat 0 center;
+        padding-left: 14px;
+    }
+
+    .s_tit .abs {
+        position: absolute;
+        right: 0;
+        bottom: -10px;
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .table_type1 {
+        margin-bottom: 5px;
+    }
+
+    .mar_t20,
+    .mt20 {
+        margin-top: 20px !important;
+    }
+
+    caption {
+        display: none;
+        text-align: -webkit-center;
+    }
+
+    colgroup {
+        display: table-column-group;
+    }
+
+    col {
+        display: table-column;
+    }
+
+    thead {
+        display: table-header-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+
+    tr {
+        display: table-row;
+        vertical-align: inherit;
+        border-color: inherit;
+    }
+
+    .table_type1 th,
+    .table_type1 td {
+        border-left: 1px solid #d9d9d9;
+        border-bottom: 1px solid #d9d9d9;
+        border-right: 1px solid #d9d9d9;
+    }
+
+
+    .table_type1 th {
+        text-align: center;
+        font-weight: 600;
+        vertical-align: middle;
+        background-color: #f2f6f9;
+        color: #494949;
+        padding: 12px 5px;
+    }
+
+    .table_type1 tbody th {
+        background: #f2f6f9;
+        line-height: 160%;
+    }
+
+    .table_type1.align_center td {
+        text-align: center;
+
+    }
+
+    .table_type1 td {
+        color: #333;
+        padding: 12px 5px;
+        line-height: 160%;
+    }
+
+    .table_type1 table {
+        text-align: center;
+        border-top: 2px solid #3b476c;
+        border-bottom: 1px solid #b5b9c4;
+        margin-top: 4px;
+        font-size: 15px;
+        background: #fff;
+        width: 100%;
+        table-layout: fixed;
+        /* Use fixed table layout to distribute column widths equally */
+    }
+
+    table {
+        border-spacing: 0;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .data-container {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .charts-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+    }
+
+    .chart-container {
+        flex: 1 0 auto;
+        margin: 10px;
+        width: calc(50% - 20px);
+        max-width: 400px;
+    }
+</style>
+
+<body>
+
+    <div th:replace="common/header2"> </div>
+    <nav th:replace="common/nav"> </nav>
+
+    <div id="wrap">
+        <div class="tab_wrap">
+            <div class="tab01">
+                <ul>
+                    <li><a href="/statistic/carStatus">전기차 현황</a></li>
+                    <li class="active"><a href="/statistic/chargerStatus">충전기 현황</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- table -->
+        <div id="contents" class="sub_contents">
+            <div class="in_content">
+                <h5 class="s_tit">한국전력공사_지역별 전기차 충전소 현황정보 <span class="abs">‘23. 10. 20 기준 실시간 충전기 합</span></h5>
+                <div class="table_type1 bord1px align_center mar_t20">
+                    <table>
+
+                        <caption>한국전력공사 충전기 대수 (단위 : 개)</caption>
+                        <colgroup>
+                            <col width="25%">
+                        </colgroup>
+
+                        <tr>
+                            <th class="bg" scope="row">Region</th>
+                            <th class="bg" scope="col" th:each="status : ${chargerStatusYear}" th:text="${status.year}">
+                            </th>
+                        </tr>
+
+                        <tr th:each="regionStatus : ${chargerStatusRegion}">
+                            <td th:text="${regionStatus.region}"></td>
+                            <td th:each="status : ${chargerStatusYear}"
+                                th:text="${data.get(regionStatus.region).get(status.year)}"></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div>
+    <div class="data-container">
+        <h2 align="center" style="margin-bottom: 50px; text-align: center; font-size: 30px; font-weight: bolder; color:white;">Data Graph</h2>
+    </div>
+    <div class="charts-container" style="width: 70%; margin: 0 auto;">
+    </div>
+</div>
+
+
+    <div style="width: 80%; margin: 0 auto;">
+        <div style="margin-top: 50px; margin-bottom: 50px; text-align: center; font-size: 30px; font-weight: bolder; color:white;">Search for specific data</div>
+    </div>
+
+    <div style="width: 80%; margin: 0 auto; background-color: white; padding: 1rem;">
+        <table id="example" class="display" style="width:100%"></table>
+    </div>
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <script>
+        async function getData2() {
+            const response = await fetch('/statistic/chargerStatus7');
+            return await response.json();
+        }
+
+        async function init2() {
+            var data5 = await getData2();
+
+            $("#example").DataTable({
+                data: data5,
+                columns: [
+                    { title: "ID" },
+                    { title: "City" },
+                    { title: "Year" },
+                    { title: "Quantity" }
+                ]
+            });
+        }
+
+        $(document).ready(function () {
+            init2();
+        });
+
+    </script>
+
+    <script th:inline="javascript">
+
+        init();
+
+        async function getData() {
+            const data = await fetch('/statistic/chargerStatus5');
+            const res = await data.json();
+            return res;
+        }
+        async function init() {
+            var data = await getData();
+            console.log(data, typeof data);
+
+
+
+            const region = {};
+            let i = 0;
+            for (const key in data) {
+                i++;
+                const categories = [];
+                const quantitySet = [];
+                for (const category in data[key]) {
+
+                    categories.push(category);
+                    quantitySet.push(data[key][category]);
+
+                }
+
+                // const obj = {};
+                // obj['categories'] = categories;
+                // obj['quantitySet'] = quantitySet;
+                // region[key] = obj;
+
+                console.log(categories)
+                console.log(quantitySet)
+                // const obj = {}
+
+                const container = `<div class="chart-container"><div id="container${i}" style="width: 100%; height: 400px;"></div></div>`;
+
+                // const container = `<div class="chart-container"><div id="container${i}" style="width: 550px; height: 400px; margin: 0 auto"></div><div class="text-box">Your text here</div></div>`;
+                // const container = `<div id="container${i}" style="width: 550px; height: 400px; margin: 0 auto"></div>`;
+                // document.querySelector('.container > h2').innerHTML("afterend", container);
+                // document.querySelector('.container > h2').insertAdjacentHTML("afterend", container);
+                document.querySelector('.charts-container').insertAdjacentHTML("beforeend", container);
+
+
+                Highcharts.chart(`container${i}`, {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: key
+                        // data[key]
+                    },
+                    subtitle: {
+                        text: 'Quantity/Year'
+                    },
+                    xAxis: {
+                        categories: categories, crosshair: true
+                        // categories: categories, crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        max: 250,
+                        title: {
+                            text: 'Quantity'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:20px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: '',
+                        data: quantitySet
+                        // data: region[key]['quantitySet']
+                    }]
+                });
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

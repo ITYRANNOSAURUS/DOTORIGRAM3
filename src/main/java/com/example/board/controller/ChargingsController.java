@@ -27,30 +27,30 @@ public class ChargingsController {
 
 	 @GetMapping("/stations/find")
 	public String stationsFind() {
-		return "stationsFind";
+		return "infomation/stationsFind";
 	}
 
 	@GetMapping("/chlregister")
 	public String chlregister() {
-		return "chlregister";
+		return "infomation/chlregister";
 	}
 
 	@PostMapping("/save")
 	public String addchargings(@ModelAttribute Chargings chargings) {
 		chargingsRepository.save(chargings);
-		return "redirect:/chargingslist";
+		return "redirect:/infomation/chargingslist";
 	} 
 
 	@GetMapping("/chargingslist")
 	public String getAllchargings(Model model) {
 		List<Chargings> chargings = chargingsRepository.findAll();
 		model.addAttribute("chargings", chargings);
-		return "chargingslist";
+		return "infomation/chargingslist";
 	}
 
 	@GetMapping("/chargingsSearch")
 	public String chargingsSearch() {
-		 return "chargingsSearch";
+		 return "infomation/chargingsSearch";
 	}
 
 	@ResponseBody
@@ -66,9 +66,9 @@ public class ChargingsController {
 		if (Opchargings.isPresent()) {
 			Chargings ch = Opchargings.get();
 			model.addAttribute("ChL", ch);
-			return "chargingsDetail";
+			return "infomation/chargingsDetail";
 		} else {
-			return "redirect:/charginsglist";
+			return "redirect:/infomation/charginsglist";
 		}
 	}
 }

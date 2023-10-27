@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="common/head">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pika</title>
+	<!-- <link rel="stylesheet" href="/carStatus.css"> -->
+</head>
+<style>
+	@font-face {
+		font-family: 'TheJamsil5Bold';
+		src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+		font-weight: 500;
+		font-style: normal;
+	}
+
+	body {
+        font-family: 'TheJamsil5Bold';
+        height: 100vh;
+        /* 화면 높이의 100%로 설정 */
+        background-color: black;
+        background-size: cover;
+        /* 이미지를 화면에 맞게 조절 */
+        background-repeat: no-repeat;
+        /* 이미지 반복을 중지 */
+    }
+
+    #wrap {
+        position: relative;
+        width: 100%;
+        word-break: break-all;
+        background: black;
+        padding: 5rem 0 50px !important;
+        
+    }
+
+    #wrap>h1 {
+        font-size: 36px;
+        max-width: 1400px;
+        width: 1400px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        box-sizing: border-box;
+        min-height: 120px;
+        padding-top: 20px;
+        /* padding: 50px 0 0; */
+    }
+
+    #wrap>h1>span {
+        display: inline-block;
+        float: right;
+        font-size: 14px;
+        vertical-align: bottom;
+        position: absolute;
+        right: 0;
+        bottom: 35%;
+        font-weight: 100;
+        cursor: default;
+    }
+
+    #wrap>h1>span>a {
+        vertical-align: top;
+    }
+
+    /* 현황 */
+    #wrap .tab_wrap {
+        margin: 0 260px;
+        width: 1000px;
+		height: 59.6px;
+        overflow: hidden;
+        font-size: 18px;
+    }
+
+
+    #wrap .tab_wrap .tab01 {
+        width: 100%;
+    }
+
+    #wrap .tab_wrap .tab01 ul {
+        padding: 0;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+    }
+
+
+    #wrap .tab_wrap .tab01 ul li {
+
+        list-style: none;
+        float: left;
+        flex: 1;
+    }
+
+    li {
+        display: list-item;
+        text-align: -webkit-match-parent;
+    }
+
+    #wrap .tab_wrap .tab01 ul li.active a {
+        background: #f9f477;
+        color: black;
+    }
+
+	a {
+		text-decoration: none;
+		color: #333;
+		transition: all 0.3s ease;
+		-webkit-transition: all 0.3s ease;
+		vertical-align: middle;
+		cursor: pointer;
+	}
+
+	#wrap .tab_wrap .tab01 ul li a {
+        display: block;
+        background: #fff;
+        line-height: 60px;
+        border: 1px solid #ddd;
+        margin: -1px;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        font-weight: bold;
+    }
+
+
+
+	/* up to here till end of 현황 */
+
+	/* table in below */
+	div {
+		display: block;
+	}
+
+	#contents {
+		width: 1400px;
+		position: relative;
+		margin: 0 auto;
+		padding-bottom: 30px;
+		height: 100%;
+	}
+
+	.in_content {
+		padding: 20px 0 0;
+		position: relative;
+		width: 1400px;
+	}
+
+	.s_tit {
+		position: relative;
+		font-size: 18px;
+		color: #333;
+		line-height: 120%;
+		font-weight: 700;
+		background: url(/publish/images/sub/bg_stit.png) no-repeat 0 center;
+		padding-left: 14px;
+	}
+
+	.s_tit .abs {
+		position: absolute;
+		right: 0;
+		bottom: -10px;
+		font-size: 14px;
+		font-weight: 400;
+	}
+
+	.table_type1 {
+		margin-bottom: 5px;
+	}
+
+	.mar_t20,
+	.mt20 {
+		margin-top: 20px !important;
+	}
+
+	caption {
+		display: none;
+		text-align: -webkit-center;
+	}
+
+	colgroup {
+		display: table-column-group;
+	}
+
+	col {
+		display: table-column;
+	}
+
+	thead {
+		display: table-header-group;
+		vertical-align: middle;
+		border-color: inherit;
+	}
+
+	tr {
+		display: table-row;
+		vertical-align: inherit;
+		border-color: inherit;
+	}
+
+	.table_type1 th,
+	.table_type1 td {
+		border-left: 1px solid #d9d9d9;
+		border-bottom: 1px solid #d9d9d9;
+		border-right: 1px solid #d9d9d9;
+	}
+
+
+	.table_type1 th {
+		text-align: center;
+		font-weight: 600;
+		vertical-align: middle;
+		background-color: #f2f6f9;
+		color: #494949;
+		padding: 12px 5px;
+	}
+
+	.table_type1 tbody th {
+		background: #f2f6f9;
+		line-height: 160%;
+	}
+
+	.table_type1.align_center td {
+		text-align: center;
+	}
+
+	.table_type1 td {
+		color: #333;
+		padding: 12px 5px;
+		line-height: 160%;
+	}
+
+	.table_type1 table {
+		text-align: center;
+		border-top: 2px solid #3b476c;
+		border-bottom: 1px solid #b5b9c4;
+		margin-top: 4px;
+		font-size: 15px;
+		background: #fff;
+		width: 100%;
+	}
+
+	table {
+		border-spacing: 0;
+		border-collapse: collapse;
+		table-layout: fixed;
+	}
+
+
+	.h4_title:first-child {
+		margin-top: 0;
+	}
+
+	.h4_title {
+		position: relative;
+		background: none;
+		padding-left: 14px !important;
+		font-size: 22px !important;
+		font-weight: bold !important;
+		color: white !important;
+		margin: 40px 0 10px;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin: 0;
+		font-size: 1em;
+	}
+
+	h4 {
+		display: block;
+		margin-block-start: 1.33em;
+		margin-block-end: 1.33em;
+		margin-inline-start: 0px;
+		margin-inline-end: 0px;
+		font-weight: bold;
+	}
+
+
+	.sub_tab_wrap2 {
+		width: 1400px;
+		margin: 20px 0;
+	}
+
+	div {
+		display: block;
+	}
+
+	.sub_tab_wrap2 .sub_tab {
+		width: 1500px;
+		background: #fff;
+		padding: 10px;
+		box-sizing: border-box;
+		border: 1px solid #d3d3d3;
+	}
+
+	.sub_tab_wrap2 .sub_tab {
+		width: 1400px;
+		background: #fff;
+		padding: 10px;
+		box-sizing: border-box;
+		border: 1px solid #d3d3d3;
+	}
+
+	dd,
+	dl,
+	ol,
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+
+	ul {
+		display: block;
+		list-style-type: disc;
+		margin-block-start: 1em;
+		margin-block-end: 1em;
+		margin-inline-start: 0px;
+		margin-inline-end: 0px;
+		padding-inline-start: 40px;
+	}
+
+	.sub_tab_wrap2 .sub_tab.col12 li:nth-child(10n+1) {
+		background: none;
+	}
+
+	.sub_tab_wrap2 .sub_tab.col12 li {
+		width: 12.5%;
+	}
+
+	.sub_tab_wrap2 .sub_tab li {
+		position: relative;
+		float: left;
+		width: 20%;
+	}
+
+	li {
+		list-style-type: none;
+	}
+
+	li {
+		display: list-item;
+		text-align: -webkit-match-parent;
+	}
+
+	.sub_tab_wrap2 .sub_tab.col12 li {
+		width: 12.5%;
+	}
+
+	.sub_tab_wrap2 .sub_tab li {
+		position: relative;
+		float: left;
+		width: 20%;
+	}
+
+	.sub_tab_wrap2 .sub_tab li.active a {
+		border: 1px solid #004a98;
+		color: #004a98;
+		background: #fff;
+		font-weight: bold;
+		box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+		height: 35px;
+	}
+
+	.sub_tab_wrap2 .sub_tab li a {
+		display: block;
+		padding: 6px 15px 7px;
+		margin: 0 10px;
+		text-align: center;
+		font-size: 16px;
+		line-height: 22px;
+		color: #666;
+		opacity: 0.8;
+		border-radius: 3px;
+		box-sizing: border-box;
+	}
+
+	.sub_tab_wrap2 .sub_tab.col12 li {
+		width: 12.5%;
+	}
+
+
+	.sub_tab_wrap2 .sub_tab li a {
+		display: block;
+		padding: 6px 15px 7px;
+		margin: 0 10px;
+		text-align: center;
+		font-size: 16px;
+		line-height: 22px;
+		color: #666;
+		opacity: 0.8;
+		border-radius: 3px;
+		box-sizing: border-box;
+	}
+
+	.sub_tab_wrap2 .sub_tab.col12 li {
+		width:12.5%;
+	}
+
+	.sub_tab_wrap2 .sub_tab li a {
+		display: block;
+		padding: 6px 15px 7px;
+		margin: 0 10px;
+		text-align: center;
+		font-size: 16px;
+		line-height: 22px;
+		color: #666;
+		opacity: 0.8;
+		border-radius: 3px;
+		box-sizing: border-box;
+	}
+
+	.sub_tab_wrap2 .sub_tab.col12 li {
+		width: 12.5%;
+	}
+
+	.sub_tab_wrap2 .sub_tab li a {
+		display: block;
+		padding: 6px 15px 7px;
+		margin: 0 10px;
+		text-align: center;
+		font-size: 16px;
+		line-height: 22px;
+		color: #666;
+		opacity: 0.8;
+		border-radius: 3px;
+		box-sizing: border-box;
+	}
+
+	.sub_tab_wrap2 .sub_tab.col12 li {
+		width: 12.5%;
+	}
+
+	.sub_tab_wrap2 .sub_tab li:before {
+		position: absolute;
+		left: 0;
+		top: 10px;
+		width: 1px;
+		height: 15px;
+		background: #ddd;
+		content: '';
+	}
+
+	.sub_tab_wrap2 .sub_tab li a {
+		display: block;
+		padding: 6px 15px 7px;
+		margin: 0 10px;
+		text-align: center;
+		font-size: 16px;
+		line-height: 22px;
+		color: #666;
+		opacity: 0.8;
+		border-radius: 3px;
+		box-sizing: border-box;
+	}
+
+	.sub_tab_wrap2 .sub_tab:after {
+		display: block;
+		content: '';
+		clear: both;
+	}
+
+	.car_list {
+		padding: 0;
+		width: 1400px;
+		margin: 30px auto;
+		overflow: hidden;
+	}
+
+	.car_list>li.first {
+		margin-left: 0;
+	}
+
+	.car_img {
+		float: left;
+		width: 322px;
+		height: 250px;
+		border-right: 1px solid #d3d3d3;
+		overflow: hidden;
+		line-height: 1%;
+	}
+
+	.car_img a {
+		display: block;
+	}
+
+	.car_img img {
+		width: 100%;
+		height: 268px;
+		border: 0;
+		line-height: 1%;
+	}
+
+	.car_list_txt {
+		float: left;
+		width: 361px;
+	}
+
+	.car_list_txt h6 {
+		background: url(/publish/images/sub/bg_car_title.png) no-repeat 0 0;
+		height: 60px;
+		line-height: 45px;
+		color: #fff;
+		font-size: 17px;
+		padding-left: 10px;
+		background-size: 100% 60px;
+		margin-bottom: 15px;
+		letter-spacing: -0.03em;
+	}
+
+	.car_list>li {
+		float: left;
+		/* width: 542px; */
+		width: 49%;
+		margin-left: 2%;
+		border: 1px solid #d4d4d4;
+		margin-bottom: 30px;
+		background: #fff;
+		box-sizing: border-box;
+	}
+
+	.car_list_txt ul {
+		margin-left: 10px;
+	}
+
+	.blue_dot02 li:first-child {
+		margin-top: 0;
+	}
+
+	cite,
+	code,
+	dfn,
+	del,
+	em,
+	ins,
+	label,
+	q,
+	span,
+	strong {
+		display: inline-block;
+	}
+
+	user agent stylesheet strong {
+		font-weight: bold;
+	}
+
+	.car_list>li:after {
+		content: ".";
+		height: 0;
+		font-size: 0;
+		visibility: hidden;
+		display: block;
+		clear: both;
+	}
+
+	.car_list>li.first {
+		margin-left: 0;
+	}
+
+	.clear:after {
+		content: ".";
+		height: 0;
+		font-size: 0;
+		visibility: hidden;
+		display: block;
+		clear: both;
+	}
+
+	element.style {
+		display: block;
+	}
+
+	.car_list_txt li {
+		line-height: 1.5;
+	}
+
+	.blue_dot02 li {
+		background: url(/publish/images/sub/blue_dot.png) no-repeat 0 center;
+		padding-left: 12px;
+		font-size: 15px;
+		margin-top: 4px;
+		line-height: 1.4;
+	}
+
+	li {
+		list-style-type: none;
+	}
+
+	li {
+		display: list-item;
+		text-align: -webkit-match-parent;
+	}
+</style>
+
+<body>
+
+	<div th:replace="common/header"> </div>
+	<nav th:replace="common/nav"></nav>
+
+	<div id="wrap">
+		<div class="tab_wrap">
+			<div class="tab01">
+				<ul>
+					<li class="active"><a href="/statistic/chargerStatus">전기차 현황</a></li>
+					<li><a href="/statistic/chargerStatus">충전기 현황</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="contents" class="sub_contents">
+			<div class="in_content">
+				<h4 class="h4_title">국내 전기자동차 소개</h4>
+
+				<div class="sub_tab_wrap2">
+					<ul class="sub_tab col12">
+						<li class="active"><a href="#carList01" onclick="carListShow(1);return false;">기아</a></li>
+						<li><a href="#carList02" onclick="carListShow(2);return false;">대창모터스</a></li>
+						<li><a href="#carList03" onclick="carListShow(3);return false;">마이브</a></li>
+						<li><a href="#carList04" onclick="carListShow(4);return false;">벤츠</a></li>
+						<li><a href="#carList05" onclick="carListShow(5);return false;">볼보</a></li>
+						<li><a href="#carList06" onclick="carListShow(6);return false;">스마트솔루션즈</a></li>
+						<li><a href="#carList07" onclick="carListShow(7);return false;">스텔란티스</a></li>
+						<li><a href="#carList08" onclick="carListShow(8);return false;">쎄보</a></li>
+						<li><a href="#carList09" onclick="carListShow(9);return false;">케이지</a></li>
+						<li><a href="#carList10" onclick="carListShow(10);return false;">테슬라</a></li>
+						<li><a href="#carList11" onclick="carListShow(11);return false;">폭스바겐</a></li>
+						<li><a href="#carList12" onclick="carListShow(12);return false;">폴스타</a></li>
+						<li><a href="#carList13" onclick="carListShow(13);return false;">한국지엠</a></li>
+						<li><a href="#carList14" onclick="carListShow(14);return false;">토요타</a></li>
+						<li><a href="#carList15" onclick="carListShow(15);return false;">현대</a></li>
+						<li><a href="#carList16" onclick="carListShow(16);return false;">BMW</a></li>
+					</ul>
+				</div>
+				<!-- //sub_tab_wrap -->
+
+
+
+				<div id="carList1">
+					<ul class="car_list clear">
+						<li class="first">
+							<div class="car_img">
+								<a href="https://www.kia.com/kr/vehicles/ev6/features" rel="noopener noreferrer"
+									target="_blank" title="기아자동차 홈페이지 바로가기(새창열림)">
+									<img src="/car1.jpg" alt="기아자동차" />
+								</a>
+							</div>
+							<div class="car_list_txt">
+								<h6>EV6 롱레인지 2WD 19인치</h6>
+								<ul class="blue_dot02">
+									<li><strong>충전방식 :</strong> DC콤보</li>
+									<li><strong>승차인원 :</strong> 5인승</li>
+									<li><strong>1회충전 주행거리 :</strong> (상온) 483km (저온) 446km</li>
+									<li><strong>배터리 종류 :</strong> 리튬이온</li>
+									<li><strong>배터리 용량 :</strong> 77.4kWh</li>
+									<li><strong>최고속도 :</strong> 185km/h</li>
+								</ul>
+							</div>
+						</li>
+						<li>
+							<div class="car_img">
+								<a href="https://www.kia.com/kr/vehicles/ev6/features" rel="noopener noreferrer"
+									target="_blank" title="기아자동차 홈페이지 바로가기(새창열림)">
+									<img src="/car2.jpg" alt="기아자동차" />
+								</a>
+							</div>
+							<div class="car_list_txt">
+								<h6>EV6 롱레인지 2WD 20인치</h6>
+								<ul class="blue_dot02">
+									<li><strong>충전방식 :</strong> DC콤보</li>
+									<li><strong>승차인원 :</strong> 5인승</li>
+									<li><strong>1회충전 주행거리 :</strong> (상온) 445km (저온) 411km</li>
+									<li><strong>배터리 종류 :</strong> 리튬이온</li>
+									<li><strong>배터리 용량 :</strong> 77.4kWh</li>
+									<li><strong>최고속도 :</strong> 185km/h</li>
+								</ul>
+							</div>
+
+						<li class="first">
+							<div class="car_img">
+								<a href="https://www.kia.com/kr/vehicles/ev6/features" rel="noopener noreferrer"
+									target="_blank" title="기아자동차 홈페이지 바로가기(새창열림)">
+									<img src="/car3.jpg" alt="기아자동차" />
+								</a>
+							</div>
+							<div class="car_list_txt">
+								<h6>EV6 롱레인지 4WD 19인치</h6>
+								<ul class="blue_dot02">
+									<li><strong>충전방식 :</strong> DC콤보</li>
+									<li><strong>승차인원 :</strong> 5인승</li>
+									<li><strong>1회충전 주행거리 :</strong> (상온) 458km (저온) 414km</li>
+									<li><strong>배터리 종류 :</strong> 리튬이온</li>
+									<li><strong>배터리 용량 :</strong> 77.4kWh</li>
+									<li><strong>최고속도 :</strong> 188km/h</li>
+								</ul>
+							</div>
+						</li>
+						<li>
+							<div class="car_img">
+								<a href="https://www.kia.com/kr/vehicles/ev6/features" rel="noopener noreferrer"
+									target="_blank" title="기아자동차 홈페이지 바로가기(새창열림)">
+									<img src="/car1.jpg" alt="기아자동차" />
+								</a>
+							</div>
+							<div class="car_list_txt">
+								<h6>EV6 롱레인지 4WD 20인치</h6>
+								<ul class="blue_dot02">
+									<li><strong>충전방식 :</strong> DC콤보</li>
+									<li><strong>승차인원 :</strong> 5인승</li>
+									<li><strong>1회충전 주행거리 :</strong> (상온) 407km (저온) 380km</li>
+									<li><strong>배터리 종류 :</strong> 리튬이온</li>
+									<li><strong>배터리 용량 :</strong> 77.4kWh</li>
+									<li><strong>최고속도 :</strong> 188km/h</li>
+								</ul>
+							</div>
+						</li>
+						<li class="first">
+							<div class="car_img">
+								<a href="https://www.kia.com/kr/vehicles/ev6/features" rel="noopener noreferrer"
+									target="_blank" title="기아자동차 홈페이지 바로가기(새창열림)">
+									<img src="/car1.jpg" alt="기아자동차" />
+								</a>
+							</div>
+							<div class="car_list_txt">
+								<h6>EV6 스탠다드 2WD 19인치</h6>
+								<ul class="blue_dot02">
+									<li><strong>충전방식 :</strong> DC콤보</li>
+									<li><strong>승차인원 :</strong> 5인승</li>
+									<li><strong>1회충전 주행거리 :</strong> (상온) 377km (저온) 347km</li>
+									<li><strong>배터리 종류 :</strong> 리튬이온</li>
+									<li><strong>배터리 용량 :</strong> 58.124kWh</li>
+									<li><strong>최고속도 :</strong> 185km/h</li>
+								</ul>
+							</div>
+						</li>
+
+
+
+
+						</li>
+					</ul>
+				</div>
+</body>
+
+</html>

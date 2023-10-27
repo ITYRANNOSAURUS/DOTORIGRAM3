@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="common/head">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<style>
+	@font-face {
+	  font-family: 'TheJamsil5Bold';
+	  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+	  font-weight: 500;
+	  font-style: normal;
+	}
+  
+	body {
+	  font-family: 'TheJamsil5Bold';
+	  height: 100vh;
+	  /* 화면 높이의 100%로 설정 */
+	  background-color: #000;
+	  background-size: cover;
+	  /* 이미지를 화면에 맞게 조절 */
+	  background-repeat: no-repeat;
+	  /* 이미지 반복을 중지 */
+	}
+  
+	.table {
+	  color: white;
+	}
+  
+	#write-btn {
+	  background-color: #f0e3d9;
+	  width: 150px;
+	  height: 40px;
+	  position: fixed;
+	  float: right;
+	  right: 120px;
+	  bottom: 20px;
+	}
+  
+	#write-btn:hover {
+	  background-color: #ad5919;
+	  border-color: #ad5919;
+	}
+  
+	#search-btn {
+	  background-color: #f0e3d9;
+	  border-color: #f0e3d9;
+	}
+  
+	.pagination-form {
+	  margin-top: 20px;
+	}
+  
+	.search-form {
+	  margin-top: 20px;
+	  margin-bottom: 40px;
+	}
+  
+	.pagination .page-link {
+	  color: #9c6262;
+	}
+  
+	.pagination .page-link:hover {
+	  color: #FFFFFF;
+	  background-color: #cb6f45;
+	}
+  </style>
+
+<body>
+  <div th:replace="common/header"> </div>
+  <nav th:replace="common/nav"></nav>
+
+  <div class="container mt-5">
+    <div class="card">
+    <div class="row">
+      <form method="post" action="/save" id="chargingsForm">
+        <div class="mb-3">
+          <label for="city">City:</label>
+          <input type="text" class="form-control" id="city" name="city" title=" 정확한 도시를 입력해주세요" placeholder="도시"
+            required>
+        </div>
+        <div class="mb-3">
+          <label for="location">Location:</label>
+          <input type="text" class="form-control" id="location" name="location" title="설치장소" placeholder="설치장소를 입력하세요"
+            required>
+        </div>
+
+
+        <div class="mb-3">
+          <label for="address">Adress:</label>
+          <input type="text" class="form-control" id="address" name="address" title="{주소를 입력하세요}" placeholder="{주소}"
+            required>
+          <button class="btn btn-primary" id="fetchCoordinates">Fetch Coordinates</button>
+        </div>
+
+
+
+        <div class="mb-3">
+          <label for="fastch">급속충전기 (대) :</label>
+          <input type="number" class="form-control" id="fastch" name="fastch" title="급속충전기 (대)" placeholder="급속충전기 (대)"
+            required>
+        </div>
+        <div class="mb-3">
+          <label for="slowch">완속충전기 (대) :</label>
+          <input type="number" class="form-control" id="slowch" name="slowch" title="완속충전기 (대)" placeholder="완속충전기 (대)"
+            required>
+        </div>
+
+
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+
+        <div class="d-grid gap-2">
+
+          <button class="btn btn-primary" id="signup">가입하기</button>
+        </div>
+      </form>
+
+
+      <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f6654953f7f2de9be8090793a3c14e09&libraries=services"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+      <script type='text/javascript'>
+        var geocoder = new kakao.maps.services.Geocoder();
+        document.getElementById('fetchCoordinates').addEventListener('click', function (event) {
+          event.preventDefault();
+
+          var address = document.getElementById('address').value;
+          geocoder.addressSearch(address, function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              var lat = result[0].y;
+              var lng = result[0].x;
+
+              document.getElementById('latitude').value = lat;
+              document.getElementById('longitude').value = lng;
+
+            }
+          });
+        });
+      </script>
+
+    </div>
+    </div>
+  </div>
+</body>
+
+</html>

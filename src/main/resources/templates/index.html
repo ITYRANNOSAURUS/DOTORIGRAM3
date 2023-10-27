@@ -6,12 +6,13 @@
 </head>
 
 <style>
-   @font-face {
-        font-family: 'TheJamsil5Bold';
-        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
-        font-weight: 500;
-        font-style: normal;
-    }
+  @font-face {
+    font-family: 'TheJamsil5Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+
   body {
     font-family: 'TheJamsil5Bold';
     height: 100vh;
@@ -21,6 +22,11 @@
     /* 이미지를 화면에 맞게 조절 */
     background-repeat: no-repeat;
     /* 이미지 반복을 중지 */
+  }
+
+  .container {
+    margin-left: 9rem;
+    margin-top: 5rem;
   }
 
   canvas {
@@ -46,9 +52,9 @@
   .image-box img {
     display: inline-block;
     height: 800px;
-    width: 700px;
+    width: 50rem;
     align-content: center;
-    margin-top: 300px;
+    margin-top: 25rem;
     opacity: 0;
     transform: translateY(-30px);
     animation: fadeInMoveDownImage 2s ease forwards;
@@ -70,6 +76,7 @@
     transform: translateX(-12rem);
     animation: fadeInMoveRight 1s ease-out forwards;
     margin-top: 140px;
+    width: 35rem;
   }
 
   .slogan2 {
@@ -82,6 +89,7 @@
     animation: fadeInMoveRight 1s ease-out forwards;
     margin-right: 4rem;
     margin-top: 2rem;
+    width: 35rem;
   }
 
 
@@ -132,10 +140,43 @@
       </a> -->
     </div>
     <canvas id="canvas"></canvas>
-    
+
 </body>
 
 <script>
+
+  // 쿠키 불러오기
+  function getCookie(name) {
+    var obj = name + "=";
+    var x = 0;
+    while (x <= document.cookie.length) {
+      var y = (x + obj.length);
+      if (document.cookie.substring(x, y) == obj) {
+        if ((endOfCookie = document.cookie.indexOf(";", y)) == -1)
+          endOfCookie = document.cookie.length;
+        return unescape(document.cookie.substring(y, endOfCookie));
+      }
+      x = document.cookie.indexOf(" ", x) + 1;
+
+      if (x == 0) break;
+    }
+    return "";
+  }
+
+  function move() {
+    location = '/membership';
+  }
+  function popUp() {
+    const value = getCookie('divpop1');
+    if (!value) {
+      window.open("popupmembership", "", "width=570px, height=600px");
+    }
+
+  }
+  window.onload = function () {
+    popUp();
+  };
+
   var canvasLightning = function (c, cw, ch) {
 
 
