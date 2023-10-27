@@ -78,6 +78,16 @@
     .list-group-item {
         padding: 0.565rem 1rem;
     }
+    .btnn-primary {
+    background-color: #f2f5c0;
+    border-color: black;
+    color: black;
+  }
+  .btnn-primary:hover{
+    background-color: #e2ce38;
+    border-color: black;
+    color: black;
+  }
 </style>
 
 <body>
@@ -90,13 +100,13 @@
         <div class="asidebar" id="mySidebar">
             <ul class="list-group">
                 <li class="list-group-item">
-                    <div>반경 <input type="text" class="distance" style="width: 44px;"> km 내의 충전소</div>
-                    <button onclick="getData()">찾기</button>
-                    <button onclick="removeMarkers(),removeInfo()">숨기기</button>
+                    <div style="padding-bottom: 3px; text-align: center;">반경 <input type="text" class="distance" style="width: 30px;"> km 내의 충전소</div>
+                    <button class ="btnn-primary" style="margin-left: 70px;" onclick="getData()">찾기</button>
+                    <button class ="btnn-primary" style="margin-left: 10px;" onclick="removeMarkers(),removeInfo()">숨기기</button>
                 </li>
 
                 <li class="list-group-item">
-                    <h5>구</h5>
+                    <h5>지역구</h5>
                 </li>
                 <li class="list-group-item">
                     <label style="color: black;"><input type="checkbox" id="areacheck1"
