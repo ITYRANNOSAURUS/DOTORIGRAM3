@@ -77,7 +77,7 @@ public class ChargingStatisticsController {
     chargerStatusRepository.save(existing);
   }
 
-   return "redirect:/infomation/statistic/chqRegistser";
+   return "redirect:/statistic/chqRegistser";
 }
 
 // ******

@@ -42,7 +42,7 @@ public class ChargingsController {
 	@PostMapping("/save")
 	public String addchargings(@ModelAttribute Chargings chargings) {
 		chargingsRepository.save(chargings);
-		return "redirect:/infomation/chargingslist";
+		return "redirect:/chargingslist";
 	} 
 
 	@GetMapping("/chargingslist")
@@ -72,7 +72,7 @@ public class ChargingsController {
 			model.addAttribute("ChL", ch);
 			return "infomation/chargingsDetail";
 		} else {
-			return "redirect:/infomation/charginsglist";
+			return "redirect:/charginsglist";
 		}
 	}
 }
