@@ -74,10 +74,10 @@
     <div class="container mt-5">
         <div style="color: white;">
           <h2>Charging Station Details</h2>
-          <p><strong>ID:</strong> <span th:text="${ChL.id}"></span></p>
+          <!-- <p><strong>ID:</strong> <span th:text="${ChL.id}"></span></p> -->
           <p><strong>city:</strong> <span th:text="${ChL.city}"></span></p>
           <p><strong>location:</strong> <span th:text="${ChL.location}"></span></p>
-          <p><strong>address:</strong> $<span th:text="${ChL.address}"></span></p>
+          <p><strong>address:</strong> <span th:text="${ChL.address}"></span></p>
 
           
           <input type="hidden" id="address" th:value="${ChL.address}" />

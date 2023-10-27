@@ -61,7 +61,10 @@ public class MemberShipController {
 		// 2. Create a new membership
 		Membership newMembership = new Membership();
 		newMembership.setStartDate(LocalDate.now());
+		//membership =>1달
 		newMembership.setEndDate(LocalDate.now().plusMonths(1));
+		//membership =>하루
+		// newMembership.setEndDate(LocalDate.now().plusDays(1));
 		
 		//찌리릿코인 2개지급
 		int membershipCoins = user.getCoin();
