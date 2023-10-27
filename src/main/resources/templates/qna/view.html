@@ -35,6 +35,11 @@
         <h5 class="card-title" th:text="${qna.title}"></h5>
         <h6 class="card-subtitle mb-2 text-muted" th:text="${qna.userId}"></h6>
         <p class="card-text" th:text="${qna.content}"></p>
+
+        <div id="imageContainer">
+          <img th:each="fileAtch : ${board.fileAtchs}" th:src="@{/download(id=${fileAtch.id})}" alt="첨부된 이미지">
+        </div>
+
         <form action="/qna/comment" method="post">
           <input type="text" name="content">
           <input type="hidden" name="qnaId" th:value="${qna.id}">
@@ -87,6 +92,28 @@
   </div> -->
 
   <script>
+
+    // 파일 업로드 input 요소의 change 이벤트를 감지하여 이미지를 표시
+    document.getElementById("fileInput").addEventListener("change", function (event) {
+      var files = event.target.files; // 선택된 파일들
+
+      // 이미지를 표시할 영역의 DOM 요소
+      var imageContainer = document.getElementById("imageContainer");
+
+      // 선택된 파일들을 순회하면서 이미지를 표시
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var imageURL = URL.createObjectURL(file); // 파일 URL 생성
+
+        // 이미지를 표시하는 <img> 요소 생성 및 설정
+        var imageElement = document.createElement("img");
+        imageElement.src = imageURL;
+
+        // 이미지를 표시할 영역에 추가
+        imageContainer.appendChild(imageElement);
+      }
+    });
+
     var authorUserId = "[[${qna.userId}]]";
 
     document.querySelector('#update').addEventListener('click', (e) => {
