@@ -431,38 +431,7 @@ individualCheckboxes.forEach((checkbox) => {
   });
 
 });
-// function chkAll(isChecked) {
-//   const chkBoxes = document.querySelectorAll('input[name="chk1"]');
-  
 
-//   // 모든 체크박스를 루프 돌며 상태를 chkAll과 동일하게 설정
-//   chkBoxes.forEach((checkbox) => {
-//     checkbox.checked = isChecked;
-//   });
-
-//   // 최소 두 개의 체크박스가 선택되었는지 확인하여 "동의" 버튼을 활성화
-//   const checkedCount = Array.from(chkBoxes).filter((checkbox) => checkbox.checked).length;
-//   agreeButton.disabled = checkedCount < 1;
-//   console.log(checkedCount);
-//   if(checkedCount==2){
-//     agreeButton.disabled = false;
-//   }
-// }
-
-// // chkAll 체크박스에 이벤트 리스너 추가
-// document.querySelector('#chk').addEventListener('change', function () {
-//   chkAll(this.checked);
-// });
-
-// // "동의" 버튼을 업데이트하는 개별 체크박스에 이벤트 리스너 추가
-// const individualCheckboxes = document.querySelectorAll('input[name="chk"]');
-// individualCheckboxes.forEach((checkbox) => {
-//   checkbox.addEventListener('change', function () {
-//     const checkedCount = Array.from(individualCheckboxes).filter((checkbox) => checkbox.checked).length;
-//     agreeButton.disabled = checkedCount < 1;
-//   });
-
-// });
 
 let agree;
 function agreement(){
