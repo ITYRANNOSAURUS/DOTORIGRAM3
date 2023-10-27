@@ -377,21 +377,21 @@ table {
 						<tbody>
 							<tr>
 								<th scope="row">Off-Peak Hours</th>
-								<td id="load131price"></td>
-								<td id="load121price"></td>
-								<td id="load111price"></td>
+								<td th:text="${expense[0].summarOff}"></td>
+								<td th:text="${expense[0].springOff}"></td>
+								<td th:text="${expense[0].winterOff}"></td>
 							</tr>
 							<tr>
 								<th scope="row">Mid-Load Hours</th>
-								<td id="load231price">324.4</td>
-								<td id="load221price">324.4</td>
-								<td id="load211price">324.4</td>
+								<td th:text="${expense[0].summarMid}"></td>
+								<td th:text="${expense[0].springMid}"></td>
+								<td th:text="${expense[0].winterMid}"></td>
 							</tr>
 							<tr>
 								<th scope="row">Peak Load Time</th>
-								<td id="load332price">324.4</td>
-								<td id="load322price">324.4</td>
-								<td id="load312price">324.4</td>
+								<td th:text="${expense[0].summarPeak}"></td>
+								<td th:text="${expense[0].springPeak}"></td>
+								<td th:text="${expense[0].winterPeak}"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -418,21 +418,21 @@ table {
 						<tbody>
 							<tr>
 								<th scope="row">여름철<br>(6~8월)</th>
-								<td id="area1load1time3">324.4</td>
-								<td id="area1load2time3">324.4</td>
-								<td id="area1load3time3">324.4</td>
+								<td th:text="${expense[0].summarOff}"></td>
+								<td th:text="${expense[0].summarMid}"></td>
+								<td th:text="${expense[0].summarPeak}"></td>
 							</tr>
 							<tr>
 								<th scope="row">봄·가을철<br>(3~5, 9~10월)</th>
-								<td id="area1load1time2">324.4</td>
-								<td id="area1load2time2">324.4</td>
-								<td id="area1load3time2">324.4</td>
+								<td th:text="${expense[0].springOff}"></td>
+								<td th:text="${expense[0].springMid}"></td>
+								<td th:text="${expense[0].springPeak}"></td>
 							</tr>
 							<tr>
 								<th scope="row">겨울철<br>(11~익년 2월)</th>
-								<td id="area1load1time1">324.4</td>
-								<td id="area1load2time1">324.4</td>
-								<td id="area1load3time1">324.4</td>
+								<td th:text="${expense[0].winterOff}"></td>
+								<td th:text="${expense[0].winterMid}"></td>
+								<td th:text="${expense[0].winterPeak}"></td>
 							</tr>
 						</tbody>
 					</table>
