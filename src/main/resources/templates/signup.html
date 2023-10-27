@@ -23,8 +23,20 @@
   }
 
   .btn-primary {
-    background-color: #efc19d;
-    border-color: #efc19d;
+    background-color: #f2f5c0;
+    border-color: #f2f5c0;
+    color: black;
+
+  }
+  .btn-primary:disabled{
+    background-color: #f2f5c0;
+    border-color: #f2f5c0;
+    color: black;
+    
+  }
+  .btn-primary:hover{
+    background-color: #e2ce38;
+    border-color: #e2ce38;
     color: black;
   }
 
@@ -98,61 +110,269 @@
   .modal2 {
     font-size: 22px;
   }
+
+  .mb-3 {
+    width: 50%;
+  }
+  .btn-gradient {
+        text-decoration: none;
+        color: white;
+        padding: 10px 30px;
+        display: inline-block;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.21);
+        border-bottom: 4px solid rgba(0, 0, 0, 0.21);
+        border-radius: 4px;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-gradient.yellow {
+        background: rgba(240, 210, 100, 1);
+        background: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(240, 210, 100, 1)), to(rgba(229, 201, 96, 1)));
+        background: -webkit-linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        background: -moz-linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        background: -o-linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        background: linear-gradient(rgba(240, 210, 100, 1) 0%, rgba(229, 201, 96, 1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f0d264', endColorstr='#e5c960', GradientType=0);
+    }
+
+  /* joinForm */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+  }
+
+  ul>li {
+    list-style: none
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  #joinForm {
+    width: 460px;
+    margin:  auto;
+  }
+
+  ul.join_box {
+    border: 2px solid #ddd;
+    background-color: #fff;
+    width:500px;
+    padding-inline-start:40px;
+    padding-inline-end:40px;
+  }
+
+  .checkBox,
+  .checkBox>ul {
+    position: relative;
+  }
+
+  .checkBox>ul>li {
+    float: left;
+  }
+
+  .checkBox>ul>li:first-child {
+    width: 85%;
+    padding: 15px;
+    font-weight: 600;
+    color: #888;
+  }
+
+  .checkBox>ul>li:nth-child(2) {
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    margin-top: -12px;
+  }
+
+  .checkBox textarea {
+    width: 96%;
+    height: 90px;
+    margin: 0 2%;
+    background-color: #f7f7f7;
+    color: #888;
+    border: none;
+  }
+
+  .footBtwrap {
+    margin-top: 15px;
+  }
+
+  .footBtwrap>li {
+    float: left;
+    width: 50%;
+    height: 60px;
+  }
+
+  .footBtwrap>li>button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    text-align: center;
+    line-height: 43px;
+  }
+
+  .fpmgBt1 {
+    background-color: #fff;
+    color: #888
+  }
+
+  .fpmgBt2 {
+    background-color: #f2f5c0;
+    color: #171616
+  }
+  .fpmgBt2:hover {
+    background-color: #e2ce38;
+    border-color: #e2ce38;
+    color: #171616
+  }
+  .fpmgBt2:disabled {
+    background-color: #f2f5c0;
+    border-color: #f2f5c0;
+    color: #171616
+  }
+
+  .signupForm{
+    display: flex;
+    margin-left: 10rem;
+  }
+  #realsignupForm{
+    display:inline-flex;
+    flex-direction: column;
+    align-items: center;
+  }
 </style>
 
 <body>
+
   <div th:replace="common/header"> </div>
   <nav th:replace="common/nav"></nav>
 
-  <div class="container mt-5">
-    <div class="row">
-      <form method="post" action="/signup">
-        <div class="mb-3">
-          <label for="email">Email:</label>
-          <input type="email" class="form-control" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,}$"
-            title=" 정확한 이메일 주소를 입력해주세요" placeholder="ex.daram@dotori.com" required>
-          <button class="btn btn-primary" type="button" onclick="checkEmail()">중복확인</button>
-          <button class="btn btn-primary" type="button" onclick="run()">이메일 인증</button>
-          <span id="duplicateResult"></span>
-        </div>
-        <div class="mb-3">
-          <label for="pwd">Password:</label>
-          <input type="password" class="form-control" id="pwd" name="pwd" pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}"
-            title="영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호를 입력하세요" placeholder="영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호" required>
-          <i class="fa fa-eye fa-lg eyes" th:attr="onclick='togglePasswordVisibility()'"></i>
+  <div class="signupForm">
+    <form action="" id="joinForm">
+      <ul class="join_box">
+        <li class="checkBox check01">
+          <ul class="clearfix">
+            <li>이용약관, 개인정보 수집 및 이용,
+              위치정보 이용약관(선택), 프로모션 안내
+              메일 수신(선택)에 모두 동의합니다.</li>
+            <li class="checkAllBtn">
+              <input type="checkbox" name="chkAll" id="chk" class="chkAll" onchange="chkAll(this.checked)">
+            </li>
+          </ul>
+        </li>
+        <li class="checkBox check02">
+          <ul class="clearfix">
+            <li>이용약관 동의(필수)</li>
+            <li class="checkBtn">
+              <input type="checkbox" name="chk">
+            </li>
+          </ul>
+          <textarea name="" id="">여러분을 환영합니다.
+        Pika 충전소 서비스 및 제품(이하 ‘서비스’)을 이용해 주셔서 감사합니다. 본 약관은 다양한 Pika 충전소 서비스의 이용과 관련하여 Pika 충전소 서비스를 제공하는 Pika 충전소 주식회사(이하 ‘Pika 충전소’)와 이를 이용하는 Pika 충전소 서비스 회원(이하 ‘회원’) 또는 비회원과의 관계를 설명하며, 아울러 여러분의 Pika 충전소 서비스 이용에 도움이 될 수 있는 유익한 정보를 포함하고 있습니다.
+        </textarea>
+        </li>
+        <li class="checkBox check03">
+          <ul class="clearfix">
+            <li>개인정보 수집 및 이용에 대한 안내(필수)</li>
+            <li class="checkBtn">
+              <input type="checkbox" name="chk">
+            </li>
+          </ul>
 
-        </div>
-        <div class="mb-3">
-          <label for="name">Name:</label>
-          <input type="text" class="form-control" id="name" name="name" pattern="^[가-힣]+$" title="올바른 이름을 입력하세요 ex.홍길동"
-            placeholder="이름" required>
-        </div>
-        <div class="mb-3">
-          <label for="name">Phone:</label>
-          <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]{10,11}"
-            title="10-11자리의 숫자를 '-' 없이 입력하세요" placeholder="휴대전화번호('-'기호 제외 10~11자리)" required>
-        </div>
-        <div class="mb-3">
-          <label for="campany">회사 선택:</label>
-          <select class="form-select" id="company" name="company">
-            <option value="">회사를 선택하세요</option>
-            <option th:each="type : ${companys}" th:value="${type.Id}" th:text="${type.companyName}"></option>
-          </select>
-          <label for="carType">차종 선택:</label>
-          <select class="form-select" id="carname" name="carname">
-            <option value="">차종을 선택하세요</option>
-            <!-- <option th:each="type : ${carTypes}" th:value="${type.name}" th:text="${type.name}"></option> -->
-          </select>
-        </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="isAdmin" name="isAdmin">
-          <label class="form-check-label" for="isAdmin">관리자</label>
-        </div>
-        <div class="d-grid gap-2">
+          <textarea name="" id="">여러분을 환영합니다.
+        Pika 충전소 서비스 및 제품(이하 ‘서비스’)을 이용해 주셔서 감사합니다. 본 약관은 다양한 Pika 충전소 서비스의 이용과 관련하여 Pika 충전소 서비스를 제공하는 Pika 충전소 주식회사(이하 ‘Pika 충전소’)와 이를 이용하는 Pika 충전소 서비스 회원(이하 ‘회원’) 또는 비회원과의 관계를 설명하며, 아울러 여러분의 Pika 충전소 서비스 이용에 도움이 될 수 있는 유익한 정보를 포함하고 있습니다.
+        </textarea>
+        </li>
+        <li class="checkBox check03">
+          <ul class="clearfix">
+            <li>위치정보 이용약관 동의(선택)</li>
+            <li class="checkBtn">
+              <input type="checkbox" name="chk1">
+            </li>
+          </ul>
 
-          <button class="btn btn-primary" id="signup">가입하기</button>
-        </div>
-      </form>
+          <textarea name="" id="">여러분을 환영합니다.
+          Pika 충전소 서비스 및 제품(이하 ‘서비스’)을 이용해 주셔서 감사합니다. 본 약관은 다양한 Pika 충전소 서비스의 이용과 관련하여 Pika 충전소 서비스를 제공하는 Pika 충전소 주식회사(이하 ‘Pika 충전소’)와 이를 이용하는 Pika 충전소 서비스 회원(이하 ‘회원’) 또는 비회원과의 관계를 설명하며, 아울러 여러분의 Pika 충전소 서비스 이용에 도움이 될 수 있는 유익한 정보를 포함하고 있습니다.
+        </textarea>
+        </li>
+        <li class="checkBox check04">
+          <ul class="clearfix">
+            <li>이벤트 등 프로모션 알림 메일 수신(선택)</li>
+            <li class="checkBtn">
+              <input type="checkbox" name="chk1">
+            </li>
+          </ul>
+
+        </li>
+      </ul>
+      <ul class="footBtwrap clearfix">
+        <li><button type="button" class="fpmgBt1 btn btn-primary" onclick="disagreement()">비동의</button></li>
+        <li><button type="button" class="fpmgBt2 btn btn-primary" onclick="agreement()">동의</button></li>
+      </ul>
+    </form>
+
+    <div class="container mt-5">
+      <div class="row">
+        <form method="post" action="/signup" id="realsignupForm">
+          <div class="mb-3">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,}$"
+              title=" 정확한 이메일 주소를 입력해주세요" placeholder="ex.daram@dotori.com" required>
+            <button class="btn btn-primary" type="button" onclick="checkEmail()">중복확인</button>
+            <button class="btn btn-primary" type="button" onclick="run()">이메일 인증</button>
+            <span id="duplicateResult"></span>
+          </div>
+          <div class="mb-3">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" name="pwd" pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}"
+              title="영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호를 입력하세요" placeholder="영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호" required>
+            <i class="fa fa-eye fa-lg eyes" th:attr="onclick='togglePasswordVisibility()'"></i>
+
+          </div>
+          <div class="mb-3">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" pattern="^[a-zA-Z가-힣]+$"
+              title="올바른 이름을 입력하세요 ex.홍길동" placeholder="이름" required>
+          </div>
+          <div class="mb-3">
+            <label for="name">Phone:</label>
+            <input type="text" class="form-control" id="phone" name="phone" pattern="[0-9]{10,11}"
+              title="10-11자리의 숫자를 '-' 없이 입력하세요" placeholder="휴대전화번호('-'기호 제외 10~11자리)" required>
+          </div>
+          <div class="mb-3">
+            <label for="campany">회사 선택:</label>
+            <select class="form-select" id="company" name="company">
+              <option value="">회사를 선택하세요</option>
+              <option th:each="type : ${companys}" th:value="${type.Id}" th:text="${type.companyName}"></option>
+            </select>
+            <label for="carType">차종 선택:</label>
+            <select class="form-select" id="carname" name="carname">
+              <option value="">차종을 선택하세요</option>
+              <!-- <option th:each="type : ${carTypes}" th:value="${type.name}" th:text="${type.name}"></option> -->
+            </select>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="isAdmin" name="isAdmin">
+            <label class="form-check-label" for="isAdmin">관리자</label>
+          </div>
+          <div class="d-grid gap-2">
+
+            <button class="btn btn-primary" id="signup" style="width : 250px;">가입하기</button>
+          </div>
+        </form>
+      </div>
+
+
       <!-- Modal -->
       <div id="myModal" class="modal">
         <div class="modal-dailog">
@@ -167,24 +387,102 @@
             </div>
             <div class="coupon-btn"
               style="display: flex; justify-content: space-evenly;align-items: center; margin-top: 20px;">
-              <a href="#" class="btn-gradient yellow large" onclick="checkEmailcode()">확인</a>
-
+              <button class="btn-gradient yellow large" onclick="checkEmailcode()">확인</button>
             </div>
-
           </div>
-
         </div>
       </div>
+    </div>
+  </div>
 
+  
       <script>
+// 이용약관
 
+const pchkBoxes = document.querySelectorAll('input[name="chk"]');
+const cchkBoxes = document.querySelectorAll('input[name="chk1"]');
+function chkAll(isChecked) {
+  
+
+  // 모든 체크박스를 루프 돌며 상태를 chkAll과 동일하게 설정
+  pchkBoxes.forEach((checkbox) => {
+    checkbox.checked = isChecked;
+  });
+  cchkBoxes.forEach((checkbox) => {
+    checkbox.checked = isChecked;
+  });
+
+  // 최소 두 개의 체크박스가 선택되었는지 확인하여 "동의" 버튼을 활성화
+  const checkedCount = Array.from(pchkBoxes).filter((checkbox) => checkbox.checked).length;
+  agreeButton.disabled = checkedCount < 2;
+}
+
+// chkAll 체크박스에 이벤트 리스너 추가
+document.querySelector('#chk').addEventListener('change', function () {
+  chkAll(this.checked);
+});
+
+// "동의" 버튼을 업데이트하는 개별 체크박스에 이벤트 리스너 추가
+const individualCheckboxes = document.querySelectorAll('input[name="chk"]');
+individualCheckboxes.forEach((checkbox) => {
+  checkbox.addEventListener('change', function () {
+    const checkedCount = Array.from(individualCheckboxes).filter((checkbox) => checkbox.checked).length;
+    agreeButton.disabled = checkedCount < 2;
+  });
+
+});
+// function chkAll(isChecked) {
+//   const chkBoxes = document.querySelectorAll('input[name="chk1"]');
+  
+
+//   // 모든 체크박스를 루프 돌며 상태를 chkAll과 동일하게 설정
+//   chkBoxes.forEach((checkbox) => {
+//     checkbox.checked = isChecked;
+//   });
+
+//   // 최소 두 개의 체크박스가 선택되었는지 확인하여 "동의" 버튼을 활성화
+//   const checkedCount = Array.from(chkBoxes).filter((checkbox) => checkbox.checked).length;
+//   agreeButton.disabled = checkedCount < 1;
+//   console.log(checkedCount);
+//   if(checkedCount==2){
+//     agreeButton.disabled = false;
+//   }
+// }
+
+// // chkAll 체크박스에 이벤트 리스너 추가
+// document.querySelector('#chk').addEventListener('change', function () {
+//   chkAll(this.checked);
+// });
+
+// // "동의" 버튼을 업데이트하는 개별 체크박스에 이벤트 리스너 추가
+// const individualCheckboxes = document.querySelectorAll('input[name="chk"]');
+// individualCheckboxes.forEach((checkbox) => {
+//   checkbox.addEventListener('change', function () {
+//     const checkedCount = Array.from(individualCheckboxes).filter((checkbox) => checkbox.checked).length;
+//     agreeButton.disabled = checkedCount < 1;
+//   });
+
+// });
+
+let agree;
+function agreement(){
+  agree = true;
+}
+function disagreement(){
+  alert("이용약관 필수사항에 동의하시지 않으셨습니다.")
+}
+
+
+        // 회원가입하기 버튼 비활성/활성화
         const signupButton = document.getElementById('signup');
         signupButton.disabled = true;
+        const agreeButton = document.querySelector('.fpmgBt2');
+        agreeButton.disabled = true;
         let isEmailValid = false;
         let isEmailCodeValid = false;
 
         function updateSignupButtonState() {
-          if (isEmailValid && isEmailCodeValid) {
+          if (isEmailValid && isEmailCodeValid && agree === true) {
             signupButton.disabled = false;
           } else {
             signupButton.disabled = true;
@@ -298,10 +596,13 @@
             var contentInfo = document.querySelector('.content-info');
             var subscribecontent = document.querySelector('.subscribe-content');
             var couponbtn = document.querySelector('.coupon-btn');
+            var closebtn = document.querySelector('.close');
             subscribecontent.innerHTML = '<div class="modal2">본인 인증에 실패했습니다.</div>';
             contentInfo.innerHTML = '<div class="modal2">다시 시도해주세요.</div>';
             couponbtn.innerHTML = '<h1></h1>';
+            closebtn.innerHTML = '<a href ="/signup">돌아가기</a>';
             isEmailCodeValid = false;
+
           } else if (result === "코드일치") {
             var contentInfo = document.querySelector('.content-info');
             var subscribecontent = document.querySelector('.subscribe-content');
@@ -316,8 +617,7 @@
 
 
       </script>
-    </div>
-
+    
     <div th:replace="common/footer" style="margin-top: 1rem;">
     </div>
 
