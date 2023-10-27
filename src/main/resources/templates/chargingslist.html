@@ -33,52 +33,22 @@
 
 	.table-striped>tbody>tr:nth-of-type(odd)>* {
     color: white;
-}
+	}
 
-	#write-btn {
-	  background-color: #f0e3d9;
-	  width: 150px;
-	  height: 40px;
-	  position: fixed;
-	  float: right;
-	  right: 120px;
-	  bottom: 20px;
+	.charginglist {
+		border: 2px solid white;
+		width: 80rem;
+        margin-left: 8rem;
+		margin-top: 3rem;
 	}
-  
-	#write-btn:hover {
-	  background-color: #ad5919;
-	  border-color: #ad5919;
-	}
-  
-	#search-btn {
-	  background-color: #f0e3d9;
-	  border-color: #f0e3d9;
-	}
-  
-	.pagination-form {
-	  margin-top: 20px;
-	}
-  
-	.search-form {
-	  margin-top: 20px;
-	  margin-bottom: 40px;
-	}
-  
-	.pagination .page-link {
-	  color: #9c6262;
-	}
-  
-	.pagination .page-link:hover {
-	  color: #FFFFFF;
-	  background-color: #cb6f45;
-	}
+
   </style>
 
 <body>
     <div th:replace="common/header"> </div>
     <nav th:replace="common/nav"></nav>
 
-        <div>
+        <div class="charginglist">
             <table class="table table-striped table-hover">
             <thead>
                 <tr>

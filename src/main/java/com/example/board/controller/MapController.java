@@ -109,21 +109,35 @@ public class MapController {
    @PostMapping("/couponsave")
    @ResponseBody
    public String saveCoupon(@RequestBody Coupon coupon){
-      Coupon newCoupon = new Coupon();
-      // 세션에서 로그인된 사용자의 정보 얻은 후
-      // coupon.setUser(세션로그인사용자)
-      User user = (User) session.getAttribute("user_info");
-      newCoupon.setUser(user);
-      //랜덤으로 code 생성
-      // coupon.setCode(랜덤코드)
-      String uniqueCode = Long.toString(Math.abs(new Random().nextLong()),36).substring(0,12);
-      newCoupon.setCode(uniqueCode);
-      //coupon 이름 가져오기
-      newCoupon.setName(coupon.getName());
-      newCoupon.setStartDate(LocalDate.now());
-      newCoupon.setEndDate(LocalDate.now().plusMonths(1));
+      
+      User user =(User) session.getAttribute("user_info");
+      
+      // 사용자가 이미 다운로드한 쿠폰의 수를 확인
+      List<Coupon> userCoupons = couponRepository.findByUser(user);
 
-      couponRepository.save(newCoupon);
+      int totalCouponCount = 0;
+      for(Coupon singleCoupon : userCoupons) {
+         totalCouponCount += singleCoupon.getCount();
+      }
+
+      if (totalCouponCount > 3) {
+        return "쿠폰 다운로드 횟수를 초과하였습니다.";
+      } else {
+         Coupon newCoupon = new Coupon();
+         newCoupon.setUser(user);
+
+         String uniqueCode = Long.toString(Math.abs(new Random().nextLong()),36).substring(0,12);
+         newCoupon.setCode(uniqueCode);
+         totalCouponCount += 1;
+         newCoupon.setCount(totalCouponCount);
+         newCoupon.setName(coupon.getName());
+         newCoupon.setStartDate(LocalDate.now());
+         newCoupon.setEndDate(LocalDate.now().plusMonths(1));
+
+         couponRepository.save(newCoupon);
+      
+      }
+
       return "저장완료";
    }
    
