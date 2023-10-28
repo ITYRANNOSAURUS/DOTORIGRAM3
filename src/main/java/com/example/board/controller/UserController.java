@@ -232,7 +232,6 @@ public class UserController {
 					return "비밀번호 값을 올바르게 입력하십시오.";
 			}
 	}
-
 	return "비밀번호 변경에 실패하셨습니다.";
 	
 	}
