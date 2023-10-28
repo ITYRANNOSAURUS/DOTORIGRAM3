@@ -118,9 +118,6 @@
           <label for="email">Email:</label>
           <input type="email" class="form-control" id="email" name="email" pattern="[a-z0-9._+-]+@[a-z]+\.[a-z]{2,}$"
             title=" 정확한 이메일 주소를 입력해주세요" placeholder="ex.daram@dotori.com" required>
-          <!-- <button class="btn btn-primary" type="button" onclick="checkEmail()">중복확인</button> -->
-          <!-- <button class="btn btn-primary" type="button" onclick="run()">이메일 인증</button> -->
-          <span id="duplicateResult"></span>
         </div>
         <div class="mb-3">
           <label for="name">Name:</label>
@@ -135,12 +132,15 @@
         <div class="d-grid gap-2">
           <button type="button" class="btn btnn-primary" id="signup" onclick="validateUser()" >본인 인증하기</button>
         </div>
+        <div id="error-message1" class="d-none" style="color: red; margin: 10px;">
+          <p>입력하신 정보와 일치하는 사용자를 찾을 수 없습니다.</p>
+        </div>
         <div id="change-password-form" class="d-none">
           <div class="mb-3">
             <label for="pwd">New Password:</label>
             <input type="password" class="form-control" id="newPassword" name="newPassword"
               pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" title="영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호를 입력하세요"
-              placeholder="새로운 비밀번호를 입력하세요">
+              placeholder="새로운 비밀번호를 입력하세요" required>
             <i class="fa fa-eye fa-lg eyes" th:attr="onclick='togglePasswordVisibility()'"></i>
           </div>
           <div class="d-grid gap-2">
@@ -149,12 +149,12 @@
           </div>
         </div>
 
-        <div id="error-message1" class="d-none" style="color: red; margin: 10px;">
+        <!-- <div id="error-message1" class="d-none" style="color: red; margin: 10px;">
           <p>입력하신 정보와 일치하는 사용자를 찾을 수 없습니다.</p>
-        </div>
-        <div id="error-message2" class="d-none" style="color: red; margin: 10px;">
+        </div> -->
+        <!-- <div id="error-message2" class="d-none" style="color: red; margin: 10px;">
           <p>비밀번호 형식이 올바르지 않습니다. 영문대소문자/숫자로 이루어진 최소 8글자의 비밀번호를 입력하세요.</p>
-        </div>
+        </div> -->
       </form>
 
     </div>
