@@ -1,5 +1,7 @@
 package com.example.board.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,7 +11,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Chargings {
+public class Chargings implements Serializable {
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
