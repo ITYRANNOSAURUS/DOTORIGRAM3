@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.board.model.CarQna;
 import com.example.board.model.ChargerStatus;
 import com.example.board.model.Chargings;
 import com.example.board.model.User;
@@ -75,4 +77,16 @@ public class ChargingsController {
 			return "redirect:/charginsglist";
 		}
 	}
+
+	//충전소 등록 삭제
+	@GetMapping("/chargingslist/remove")
+	public String chargingslistRemove(@RequestParam Long id) {
+	  Optional<Chargings> chargingsOptional = chargingsRepository.findById(id);
+		if (chargingsOptional.isPresent()) {
+			chargingsRepository.delete(chargingsOptional.get());
+		}
+	
+		return "redirect:/admin/";
+	}
+
 }

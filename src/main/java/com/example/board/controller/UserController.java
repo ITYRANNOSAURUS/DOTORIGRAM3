@@ -161,6 +161,7 @@ public class UserController {
 		User user = (User) session.getAttribute("user_info");
 		if (user != null) {
 			int userCoins = user.getCoin();
+			
 			model.addAttribute("userCoin", userCoins);
 		}
 

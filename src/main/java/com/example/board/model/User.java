@@ -43,10 +43,9 @@ public class User implements Serializable {
 	}
 
 	private Integer coin;
-
-    private Date coinDate;
-
-		private String newPassword;
+  private Date coinDate;
+	private String newPassword;
+	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
 	List<Board> boards = new ArrayList<>();
 
