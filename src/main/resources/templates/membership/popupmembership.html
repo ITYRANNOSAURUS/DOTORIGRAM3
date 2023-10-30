@@ -28,12 +28,22 @@
 
     // 닫기 버튼 클릭시
     function closeWin(key) {
-        var todaycloseyn = document.getElementById("todaycloseyn");
-        if (todaycloseyn.checked) {
-            setCookie('divpop' + key, 'Y', 1);
-            window.close();
-        }
+      var todaycloseyn = document.getElementById("todaycloseyn");
+      if (!todaycloseyn.checked || getCookie('divpop' + key)) { // 체크박스가 체크되어 있지 않거나 이미 쿠키가 설정된 경우에도 닫기 실행
+          window.close();
+      } else {
+          setCookie('divpop' + key, 'Y', 1); // 오늘 하루 동안 열지 않음 쿠키 설정
+      }
     }
+
+    // 닫기 버튼 클릭시
+    // function closeWin(key) {
+    //     var todaycloseyn = document.getElementById("todaycloseyn");
+    //     if (todaycloseyn.checked) {
+    //         setCookie('divpop' + key, 'Y', 1);
+    //         window.close();
+    //     }
+    // }
 
 </script>
 
