@@ -40,10 +40,6 @@
     padding: 0;
   }
 
-  li {
-    margin: 20px;
-  }
-
   .container {
     display: flex;
     flex-direction: column;
@@ -114,7 +110,7 @@
   }
 </style>
 
-<body class='main page'>
+<body>
 
   <div th:replace="common/header"></div>
 
@@ -187,6 +183,7 @@
                       <td>
                         <a class="btn btn-secondary btn-sm" th:href="@{/chargingsDetail/{id}(id=${b.id})}">View
                           Details</a>
+                        <button th:onclick="'chargingsRm(' + ${b.id} +')'">삭제</button>
                       </td>
                     </tr>
                   </tbody>
@@ -281,6 +278,13 @@
     document.querySelector('#charging-btn').addEventListener('click', () => {
       location = '/chlregister';
     });
+    //충전소 삭제 버튼
+    function chargingsRm(id) {
+      const isOk = confirm('삭제하시겠습니까?');
+      if (isOk) {
+        location = `/chargingslist/remove?id=${id}`;
+      }
+    }
     //차 등록 버튼
     document.querySelector('#plus-btn').addEventListener('click', () => {
       location = '/addCar';

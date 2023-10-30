@@ -73,7 +73,6 @@
             <input type="hidden" id="id" name="id" th:value="${user.id}">
             <label for="email">Email:</label>
             <input type="text" class="form-control" id="email" name="email" th:value="${user.email}" readonly>
-
           </div>
           <div class="mb-3">
             <label for="pwd">Password:</label>
@@ -94,7 +93,12 @@
           <div class="d-grid gap-2">
             <button class="btn btn-primary change-color" id="update" th:onclick="mypage()">회원정보 수정</button>
           </div>
-
+          <!-- <input type="hidden" id="id" name="id" th:value="${user.coin}">
+          <input type="hidden" id="id" name="id" th:value="${user.coinDate}">
+          <input type="hidden" id="id" name="id" th:value="${user.count}">
+          <input type="hidden" id="id" name="id" th:value="${user.creDate}">
+          <input type="hidden" id="id" name="id" th:value="${user.role}">
+          <input type="hidden" id="id" name="id" th:value="${user.newPassword}"> -->
         </form>
         <div class="exit-link">
           <button class="exit" id="exit" th:onclick="confirmDeletion()">회원탈퇴</button>
