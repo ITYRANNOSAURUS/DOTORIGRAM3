@@ -93,12 +93,12 @@
           <div class="d-grid gap-2">
             <button class="btn btn-primary change-color" id="update" th:onclick="mypage()">회원정보 수정</button>
           </div>
-          <!-- <input type="hidden" id="id" name="id" th:value="${user.coin}">
-          <input type="hidden" id="id" name="id" th:value="${user.coinDate}">
-          <input type="hidden" id="id" name="id" th:value="${user.count}">
-          <input type="hidden" id="id" name="id" th:value="${user.creDate}">
-          <input type="hidden" id="id" name="id" th:value="${user.role}">
-          <input type="hidden" id="id" name="id" th:value="${user.newPassword}"> -->
+          <input type="hidden" id="coin" name="coin" th:value="${user.coin}">
+          <!-- <input type="hidden" id="coinDate" name="coinDate" th:value="${user.coinDate}"> -->
+          <input type="hidden" id="count" name="count" th:value="${user.count}">
+          <!-- <input type="hidden" id="creDate" name="creDate" th:value="${user.creDate}"> -->
+          <input type="hidden" id="role" name="role" th:value="${user.role}">
+          <input type="hidden" id="newPassword" name="newPassword" th:value="${user.newPassword}">
         </form>
         <div class="exit-link">
           <button class="exit" id="exit" th:onclick="confirmDeletion()">회원탈퇴</button>
@@ -114,6 +114,28 @@
       if (confirm("정말로 회원탈퇴를 하시겠습니까?")) {
         location.href = "/exit";
       }
+    }
+    function mypage() {
+       // 폼 데이터 수집
+        var formData = {
+        id: document.getElementById("id").value,
+        email: document.getElementById("email").value,
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        car: document.getElementById("car").value
+    };
+
+    // AJAX 요청을 사용하여 서버로 데이터 전송
+    $.ajax({
+        type: "POST",
+        url: "/mypage",
+        data: formData,
+        success: function (response) {
+            // 수정 성공 시 처리
+            alert("회원 정보가 수정되었습니다.");
+            location.reload();  // 페이지 새로고침 또는 리디렉션
+        }
+    });
     }
   </script>
 </body>
