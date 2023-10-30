@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.board.model.Board;
+import com.example.board.model.Membership;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findTop5ByOrderByIdDesc();
 
     Page<Board> findByTitleContaining(String keyword, Pageable pageable);
+    List<Board> findByUserId(Long userId);
 }

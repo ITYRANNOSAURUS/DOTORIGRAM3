@@ -20,12 +20,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
+import com.example.board.model.Board;
 import com.example.board.model.CarType;
 import com.example.board.model.Company;
 import com.example.board.model.Coupon;
 import com.example.board.model.Membership;
 import com.example.board.model.User;
+import com.example.board.repository.BoardRepository;
 import com.example.board.repository.CarTypeRepository;
 import com.example.board.repository.CompanyRepository;
 import com.example.board.repository.CouponRepository;
@@ -53,6 +56,9 @@ public class UserController {
 	CouponRepository couponRepository;
 
 	@Autowired
+	BoardRepository boardRepository;
+
+	@Autowired
 	MembershipRepository membershipRepository;
 
 	@GetMapping("/email-check")
@@ -77,21 +83,20 @@ public class UserController {
 
 	@PostMapping("/signin")
 	public String signinPost(@ModelAttribute User user, Model model) {
-		User dbUser = userRepository.findByEmail(user.getEmail());
-
+		User dbUser = (User) userRepository.findByEmail(user.getEmail());
 		// 오류
 		if (dbUser == null) {
 			model.addAttribute("error", "이메일 또는 비밀번호가 일치하지 않습니다.");
 			return "signin";
 		}
 		String encodedPwd = dbUser.getPwd();
+	
 		String userPwd = user.getPwd();
 		boolean isMatch = passwordEncoder.matches(userPwd, encodedPwd);
 
 		if (isMatch) {
 			// 로그인 성공한 경우
-			session.setAttribute("user_info", dbUser);
-
+		  session.setAttribute("user_info", dbUser);
 			// 멤버십 정보
 			List<Membership> memberships = membershipRepository.findByUser(dbUser);
 			if (memberships != null && !memberships.isEmpty()) {
@@ -202,13 +207,28 @@ public class UserController {
 
 	// 탈퇴하기
 	@GetMapping("/exit")
-	public String exit() {
-		User user = (User) session.getAttribute("user_info");
-		userRepository.delete(user);
-		session.invalidate();
+	public String exit(Model model, HttpSession session) {
+    User user = (User) session.getAttribute("user_info");
+    Long userId = user.getId();
+	
+    // membership 테이블에서 해당 사용자와 관련된 데이터 삭제
+    List<Membership> memberships = membershipRepository.findByUserId(userId);
+    membershipRepository.deleteAll(memberships);
+	
+	List<Coupon> coupons = couponRepository.findByUserId(userId);
+	couponRepository.deleteAll(coupons);
 
-		return "redirect:/";
-	}
+	List<Board> boards = boardRepository.findByUserId(userId);
+	boardRepository.deleteAll(boards);
+
+    // user 테이블에서 해당 사용자의 데이터 삭제
+    userRepository.delete(user);
+
+    session.invalidate();
+
+    return "redirect:/";
+}
+
 
 	// 비밀번호 변경하기
 	@GetMapping("/pwdforget")
