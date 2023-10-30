@@ -37,7 +37,7 @@
         <p class="card-text" th:text="${qna.content}"></p>
 
         <div id="imageContainer">
-          <img th:each="fileAtch : ${board.fileAtchs}" th:src="@{/download(id=${fileAtch.id})}" alt="첨부된 이미지">
+          <img th:each="fileAtch : ${qna.fileAtchs}" th:src="@{/download(id=${fileAtch.id})}" alt="첨부된 이미지">
         </div>
 
         <form action="/qna/comment" method="post">
